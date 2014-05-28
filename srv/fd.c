@@ -6,7 +6,7 @@
 /*   By: vdefilip <vdefilip@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/05/24 17:00:40 by vdefilip          #+#    #+#             */
-/*   Updated: 2014/05/27 17:37:55 by vdefilip         ###   ########.fr       */
+/*   Updated: 2014/05/28 19:38:06 by vdefilip         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,12 +20,30 @@
 
 void			fd_destroy(t_env *e, int cs, char *msg)
 {
-	fd_clean(&e->fds[cs]);
-	printf("Client #%d gone away", cs);
+	t_iterator		iter;
+	int				*id;
+	t_list			*lst;
+
+	if (e->fds[cs].type == FD_BOT_CLIENT)
+	{
+		lst = e->bot_lst;
+		printf("Client #%d (BOT) gone away", cs);
+	}
+	else
+	{
+		lst = e->gfx_lst;
+		printf("Client #%d (GFX) gone away", cs);
+	}
 	if (msg)
 		printf(": %s", msg);
 	printf("\n");
-	e->nb_user--;
+	iter = NULL;
+	while ((id = (int *)ft_lst_iter_next_content(lst, &iter)))
+	{
+		if (*id == cs)
+			ft_lst_del_atom(lst, iter, free);
+	}
+	fd_clean(&e->fds[cs]);
 	close(cs);
 }
 
@@ -40,40 +58,35 @@ void			fd_clean(t_fd *fd)
 	fd->port = -1;
 }
 
-void			fd_init(t_env *e)
+void			fd_init(t_env *e, int fd)
 {
-	int		i;
-
-	FD_ZERO(&e->fd_read);
-	FD_ZERO(&e->fd_write);
-	i = 0;
-	e->max = 0;
-	while (i < e->maxfd)
-	{
-		if (e->fds[i].type != FD_FREE)
-		{
-			FD_SET(i, &e->fd_read);
-			if (strlen(e->fds[i].buf_write) > 0)
-				FD_SET(i, &e->fd_write);
-			e->max = i;
-		}
-		i++;
-	}
+	FD_SET(fd, &e->fd_read);
+	if (strlen(e->fds[fd].buf_write) > 0)
+		FD_SET(fd, &e->fd_write);
+	e->max = MAX(e->max, fd);
 }
 
-void			fd_check(t_env *e)
+void			fd_check(t_env *e, int fd)
 {
-	int		i;
+	if (FD_ISSET(fd, &e->fd_write))
+		e->fds[fd].fct_write(e, fd);
+	if (FD_ISSET(fd, &e->fd_read))
+		e->fds[fd].fct_read(e, fd);
+	if (FD_ISSET(fd, &e->fd_read) || FD_ISSET(fd, &e->fd_write))
+		e->res--;
+}
 
-	i = 0;
-	while (i < e->maxfd && e->res > 0)
-	{
-		if (FD_ISSET(i, &e->fd_read))
-			e->fds[i].fct_read(e, i);
-		if (FD_ISSET(i, &e->fd_write))
-			e->fds[i].fct_write(e, i);
-		if (FD_ISSET(i, &e->fd_read) || FD_ISSET(i, &e->fd_write))
-			e->res--;
-		i++;
-	}
+void			fd_iter_all(t_env *e, void (*fct)())
+{
+	t_iterator	iter;
+	int			*id;
+
+	fct(e, e->bot_srv);
+	fct(e, e->gfx_srv);
+	iter = NULL;
+	while ((id = (int *)ft_lst_iter_next_content(e->bot_lst, &iter)))
+		fct(e, *id);
+	iter = NULL;
+	while ((id = (int *)ft_lst_iter_next_content(e->gfx_lst, &iter)))
+		fct(e, *id);
 }

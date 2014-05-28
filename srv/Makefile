@@ -5,13 +5,13 @@
 #                                                     +:+ +:+         +:+      #
 #    By: vdefilip <vdefilip@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2014/05/28 15:59:41 by vdefilip          #+#    #+#              #
-#    Updated: 2014/05/28 15:59:41 by vdefilip         ###   ########.fr        #
+#    Created: 2014/05/28 19:37:51 by vdefilip          #+#    #+#              #
+#    Updated: 2014/05/28 19:37:51 by vdefilip         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME=serveur
-VERSION=1.0.7
+VERSION=1.0.8
 CFLAGS=-Wall -Werror -Wextra -g
 INCLUDES=-I ../libft/includes
 LIBS=-L ../libft -l ft

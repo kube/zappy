@@ -6,7 +6,7 @@
 /*   By: cfeijoo <cfeijoo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/05/24 17:00:41 by vdefilip          #+#    #+#             */
-/*   Updated: 2014/05/28 17:23:15 by vdefilip         ###   ########.fr       */
+/*   Updated: 2014/05/28 19:27:59 by vdefilip         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,13 +16,16 @@
 # include <sys/select.h>
 # include "libft.h"
 
-# define FD_FREE       0
-# define FD_BOT_SERVER 1
-# define FD_GFX_SERVER 2
-# define FD_BOT_CLIENT 3
-# define FD_GFX_CLIENT 4
-# define FD_SERVER     1
-# define FD_CLIENT     3
+#define CONNEXION_QUEUE   42
+
+# define FD_FREE          0
+# define FD_BOT_SERVER    1
+# define FD_GFX_SERVER    2
+# define FD_BOT_CLIENT    3
+# define FD_GFX_CLIENT    4
+
+# define FD_SERVER        1
+# define FD_CLIENT        3
 
 # define DEFAULT_BOT_PORT 1942
 # define DEFAULT_GFX_PORT 1984
@@ -52,6 +55,9 @@
 # define CYAN      "\033[36m"
 # define WHITE     "\033[37m"
 
+# define MAX(a, b) (a > b ? a : b);
+# define MIN(a, b) (a < b ? a : b);
+
 typedef struct rlimit	t_rlimit;
 
 typedef struct	s_opt
@@ -80,24 +86,28 @@ typedef struct	s_fd
 typedef struct	s_env
 {
 	t_opt		opt;
-	int			port;
 	int			maxfd;
 	t_fd		*fds;
-	t_fd		*srv;
-	int			nb_user;
+	int			bot_srv;
+	int			gfx_srv;
+	t_list		*bot_lst;
+	t_list		*gfx_lst;
 	fd_set		fd_read;
 	fd_set		fd_write;
 	int			max;
 	int			res;
 }				t_env;
 
+typedef void (*t_accept)(t_env *);
+
 int				try_int(int res, int err, char *str);
 void			*try_void(void *res, void *err, char *str);
 
 void			fd_destroy(t_env *e, int cs, char *msg);
 void			fd_clean(t_fd *fd);
-void			fd_init(t_env *e);
-void			fd_check(t_env *e);
+void			fd_init(t_env *e, int fd);
+void			fd_check(t_env *e, int fd);
+void			fd_iter_all(t_env *e, void (*fct)());
 
 void			client_read(t_env *e, int cs);
 void			client_write(t_env *e, int cs);
