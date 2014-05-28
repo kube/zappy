@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: vdefilip <vdefilip@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2014/05/24 17:01:10 by vdefilip          #+#    #+#             */
-/*   Updated: 2014/05/24 17:01:10 by vdefilip         ###   ########.fr       */
+/*   Created: 2014/05/23 19:09:00 by vdefilip          #+#    #+#             */
+/*   Updated: 2014/05/28 12:53:12 by vdefilip         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,6 +107,7 @@ char	*ft_strnstr(const char *s1, const char *s2, size_t n);
 int		ft_strcmp(const char *s1, const char *s2);
 int		ft_strncmp(const char *s1, const char *s2, size_t n);
 
+int		ft_strtab_count(char **tab);
 char	*ft_strmjoin(int freeflag, ...);
 char	*ft_strtabcat(char *dest, char **src, char *sep);
 char	*ft_strtabjoin(char **src, char *sep);

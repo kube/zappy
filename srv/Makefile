@@ -3,26 +3,27 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: cfeijoo <cfeijoo@student.42.fr>            +#+  +:+       +#+         #
+#    By: vdefilip <vdefilip@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2014/05/27 17:20:07 by vdefilip          #+#    #+#              #
-#    Updated: 2014/05/28 03:50:58 by cfeijoo          ###   ########.fr        #
+#    Created: 2014/05/28 15:59:41 by vdefilip          #+#    #+#              #
+#    Updated: 2014/05/28 15:59:41 by vdefilip         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME=serveur
-VERSION=1.0.6
+VERSION=1.0.7
 CFLAGS=-Wall -Werror -Wextra -g
 INCLUDES=-I ../libft/includes
 LIBS=-L ../libft -l ft
 
 SRC=client_handler.c \
 	fd.c \
-	server.c \
-	try.c \
+	opt.c \
 	parse_request.c \
 	requests.c \
 	responses.c \
+	server.c \
+	try.c \
 
 OBJ=$(SRC:.c=.o)
 
@@ -34,8 +35,8 @@ build:
 $(NAME): $(OBJ) ../libft/libft.a
 	gcc $(CFLAGS) $(INCLUDES) -o $(NAME) $(OBJ) $(LIBS)
 
-%.o: %.c server.h ../libft/includes
-	$(CC) $(CFLAGS) $(INCLUDES) -o $@ -c $<
+%.o: %.c requests.h server.h ../libft/includes
+	gcc $(CFLAGS) $(INCLUDES) -o $@ -c $<
 
 clean:
 	@(rm -rf $(OBJ))

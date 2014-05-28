@@ -6,7 +6,7 @@
 /*   By: cfeijoo <cfeijoo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/05/24 17:00:40 by vdefilip          #+#    #+#             */
-/*   Updated: 2014/05/28 01:26:09 by cfeijoo          ###   ########.fr       */
+/*   Updated: 2014/05/28 16:23:31 by vdefilip         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,12 +84,8 @@ int					main(int ac, char **av)
 {
 	t_env				e;
 
-	if (ac != 2)
-	{
-		fprintf(stderr, USAGE, av[0]);
-		exit(EXIT_FAILURE);
-	}
-	e.port = atoi(av[1]);
+	get_opt(ac, av, &e.opt);
+	e.port = e.opt.bot_port;
 	env_init(&e);
 	srv_create(&e, e.port);
 	while (1)

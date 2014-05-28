@@ -6,7 +6,7 @@
 /*   By: cfeijoo <cfeijoo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/05/24 17:00:41 by vdefilip          #+#    #+#             */
-/*   Updated: 2014/05/28 03:48:21 by cfeijoo          ###   ########.fr       */
+/*   Updated: 2014/05/28 17:23:15 by vdefilip         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,16 +16,55 @@
 # include <sys/select.h>
 # include "libft.h"
 
-# define FD_FREE 0
-# define FD_CLIENT 1
-# define FD_SERVER 2
-# define FD_GRAFX 3
+# define FD_FREE       0
+# define FD_BOT_SERVER 1
+# define FD_GFX_SERVER 2
+# define FD_BOT_CLIENT 3
+# define FD_GFX_CLIENT 4
+# define FD_SERVER     1
+# define FD_CLIENT     3
+
+# define DEFAULT_BOT_PORT 1942
+# define DEFAULT_GFX_PORT 1984
+# define DEFAULT_WIDTH    30
+# define DEFAULT_HEIGHT   20
+# define DEFAULT_LIMIT    10
+# define DEFAULT_T        7
+
+# define MAX_WIDTH  100
+# define MAX_HEIGHT 100
+# define MAX_LIMIT  20
+# define MAX_T      100
 
 # define BUF_SIZE 4096
 
-# define USAGE "Usage: %s port\n"
+# define DEFAULT   "\033[0m"
+# define HIGHLIGHT "\033[1m"
+# define UNDERLINE "\033[4m"
+# define BLINK     "\033[5m"
+
+# define BLACK     "\033[30m"
+# define RED       "\033[31m"
+# define GREEN     "\033[32m"
+# define YELLOW    "\033[33m"
+# define BLUE      "\033[34m"
+# define PURPLE    "\033[35m"
+# define CYAN      "\033[36m"
+# define WHITE     "\033[37m"
 
 typedef struct rlimit	t_rlimit;
+
+typedef struct	s_opt
+{
+	char	*prog_name;
+	int		bot_port;
+	int		gfx_port;
+	int		width;
+	int		height;
+	t_list	*team_name;
+	int		limit;
+	int		t;
+}				t_opt;
 
 typedef struct	s_fd
 {
@@ -40,6 +79,7 @@ typedef struct	s_fd
 
 typedef struct	s_env
 {
+	t_opt		opt;
 	int			port;
 	int			maxfd;
 	t_fd		*fds;
@@ -63,5 +103,6 @@ void			client_read(t_env *e, int cs);
 void			client_write(t_env *e, int cs);
 
 void			parse_request(char *str, t_env *e, int cs);
+void			get_opt(int ac, char **av, t_opt *opt);
 
 #endif

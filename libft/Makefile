@@ -3,15 +3,15 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: cfeijoo <cfeijoo@student.42.fr>            +#+  +:+       +#+         #
+#    By: vdefilip <vdefilip@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2014/05/24 17:00:56 by vdefilip          #+#    #+#              #
-#    Updated: 2014/05/28 02:09:23 by cfeijoo          ###   ########.fr        #
+#    Created: 2014/05/28 12:53:23 by vdefilip          #+#    #+#              #
+#    Updated: 2014/05/28 12:53:23 by vdefilip         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME=libft.a
-VERSION=1.1.2
+VERSION=1.1.3
 CFLAGS=-Wall -Werror -Wextra -g
 INCLUDES=-I ./includes
 
@@ -121,6 +121,7 @@ SRC=ft_atod.c \
 	ft_strsplit_raw.c \
 	ft_strstr.c \
 	ft_strsub.c \
+	ft_strtab_count.c \
 	ft_strtabcat.c \
 	ft_strtabjoin.c \
 	ft_strtocolor.c \
@@ -141,7 +142,7 @@ $(NAME): $(OBJ)
 	ar rc $(NAME) $(OBJ)
 
 %.o: %.c ./includes
-	$(CC) $(CFLAGS) $(INCLUDES) -o $@ -c $<
+	gcc $(CFLAGS) $(INCLUDES) -o $@ -c $<
 
 clean:
 	@(rm -rf $(OBJ))
