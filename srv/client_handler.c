@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   client_handler.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vdefilip <vdefilip@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cfeijoo <cfeijoo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/05/24 17:00:40 by vdefilip          #+#    #+#             */
-/*   Updated: 2014/05/27 17:37:25 by vdefilip         ###   ########.fr       */
+/*   Updated: 2014/05/28 03:48:05 by cfeijoo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,13 +42,11 @@ static int		check_buf_read(t_env *e, int cs)
 
 void			client_read(t_env *e, int cs)
 {
-	char	*send = "HELLO\nWORLD";
-
 	if (check_buf_read(e, cs) > 0)
 	{
 		printf("[%s]\n", e->fds[cs].buf_read);
-		//ft_strcpy(e->fds[cs].buf_write, e->fds[cs].buf_read);
-		ft_strcpy(e->fds[cs].buf_write, send);
+		ft_strcpy(e->fds[cs].buf_write, "Hello!");
+		parse_request(e->fds[cs].buf_read, e, cs);
 		ft_bzero(e->fds[cs].buf_read, BUF_SIZE);
 	}
 }

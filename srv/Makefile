@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: vdefilip <vdefilip@student.42.fr>          +#+  +:+       +#+         #
+#    By: cfeijoo <cfeijoo@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2014/05/27 17:20:07 by vdefilip          #+#    #+#              #
-#    Updated: 2014/05/27 17:20:07 by vdefilip         ###   ########.fr        #
+#    Updated: 2014/05/28 03:50:58 by cfeijoo          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,6 +20,9 @@ SRC=client_handler.c \
 	fd.c \
 	server.c \
 	try.c \
+	parse_request.c \
+	requests.c \
+	responses.c \
 
 OBJ=$(SRC:.c=.o)
 
@@ -32,7 +35,7 @@ $(NAME): $(OBJ) ../libft/libft.a
 	gcc $(CFLAGS) $(INCLUDES) -o $(NAME) $(OBJ) $(LIBS)
 
 %.o: %.c server.h ../libft/includes
-	gcc $(CFLAGS) $(INCLUDES) -o $@ -c $<
+	$(CC) $(CFLAGS) $(INCLUDES) -o $@ -c $<
 
 clean:
 	@(rm -rf $(OBJ))

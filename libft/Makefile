@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: vdefilip <vdefilip@student.42.fr>          +#+  +:+       +#+         #
+#    By: cfeijoo <cfeijoo@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2014/05/24 17:00:56 by vdefilip          #+#    #+#              #
-#    Updated: 2014/05/24 17:00:56 by vdefilip         ###   ########.fr        #
+#    Updated: 2014/05/28 02:09:23 by cfeijoo          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -141,7 +141,7 @@ $(NAME): $(OBJ)
 	ar rc $(NAME) $(OBJ)
 
 %.o: %.c ./includes
-	gcc $(CFLAGS) $(INCLUDES) -o $@ -c $<
+	$(CC) $(CFLAGS) $(INCLUDES) -o $@ -c $<
 
 clean:
 	@(rm -rf $(OBJ))

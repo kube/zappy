@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   server.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vdefilip <vdefilip@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cfeijoo <cfeijoo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/05/24 17:00:41 by vdefilip          #+#    #+#             */
-/*   Updated: 2014/05/27 17:37:34 by vdefilip         ###   ########.fr       */
+/*   Updated: 2014/05/28 03:48:21 by cfeijoo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,5 +61,7 @@ void			fd_check(t_env *e);
 
 void			client_read(t_env *e, int cs);
 void			client_write(t_env *e, int cs);
+
+void			parse_request(char *str, t_env *e, int cs);
 
 #endif

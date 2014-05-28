@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   server.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vdefilip <vdefilip@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cfeijoo <cfeijoo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/05/24 17:00:40 by vdefilip          #+#    #+#             */
-/*   Updated: 2014/05/27 17:38:07 by vdefilip         ###   ########.fr       */
+/*   Updated: 2014/05/28 01:26:09 by cfeijoo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,11 @@
 #include <sys/select.h>
 #include "libft.h"
 #include "server.h"
+
+// static void			send_basics()
+// {
+	
+// }
 
 static void			srv_accept(t_env *e, int s)
 {
