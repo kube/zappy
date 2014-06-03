@@ -6,7 +6,7 @@
 /*   By: cfeijoo <cfeijoo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/05/24 17:00:41 by vdefilip          #+#    #+#             */
-/*   Updated: 2014/06/03 15:02:03 by vdefilip         ###   ########.fr       */
+/*   Updated: 2014/06/03 17:49:34 by vdefilip         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,25 +93,37 @@ typedef struct	s_fd
 	int			port;
 }				t_fd;
 
+typedef struct	s_team
+{
+	char		*name;
+	int			limit;
+	int			nb_player;
+}				t_team;
+
 typedef struct	s_env
 {
 	t_opt		opt;
 	int			maxfd;
-	t_fd		*fds;
-	int			bot_srv;
-	int			gfx_srv;
-	t_list		*bot_lst;
-	t_list		*gfx_lst;
-	fd_set		fd_read;
-	fd_set		fd_write;
 	int			max;
 	int			res;
+	int			gfx_srv;
+	int			bot_srv;
+	t_fd		*fds;
+	fd_set		fd_read;
+	fd_set		fd_write;
+	int			n_sq;
+	t_list		*team;
+	t_list		**board;
+	t_list		*bot_lst;
+	t_list		*gfx_lst;
 }				t_env;
 
 typedef void (*t_accept)(t_env *);
 
 int				try_int(int res, int err, char *str);
 void			*try_void(void *res, void *err, char *str);
+
+int				sq_rand(t_env *e);
 
 void			fd_clean(t_fd *fd);
 void			fd_watch(t_env *e, int fd);
@@ -128,5 +140,7 @@ void			client_write(t_env *e, int cs);
 
 void			parse_request(char *str, t_env *e, int cs);
 void			get_opt(int ac, char **av, t_opt *opt);
+
+void			board_create(t_env *e);
 
 #endif

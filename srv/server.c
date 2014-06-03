@@ -6,7 +6,7 @@
 /*   By: cfeijoo <cfeijoo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/05/24 17:00:40 by vdefilip          #+#    #+#             */
-/*   Updated: 2014/06/03 15:02:04 by vdefilip         ###   ########.fr       */
+/*   Updated: 2014/06/03 17:54:32 by vdefilip         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,6 +86,9 @@ static void			env_init(t_env *e)
 {
 	int				i;
 	t_rlimit		rlimit;
+	t_iterator		iter;
+	char			*name;
+	t_team			*team;
 
 	try_int(getrlimit(RLIMIT_NOFILE, &rlimit), -1, "getrlimit");
 	e->maxfd = rlimit.rlim_cur;
@@ -98,6 +101,16 @@ static void			env_init(t_env *e)
 		fd_clean(&e->fds[i]);
 		i++;
 	}
+	e->team = ft_lst_new(NULL);
+	iter = NULL;
+	while ((name = (char *)ft_lst_iter_next_content(e->opt.team_name, &iter)))
+	{
+		team = (t_team *)try_void(malloc(sizeof(*team)), NULL, "malloc");
+		team->name = name;
+		team->limit = e->opt.limit;
+		team->nb_player = 0;
+		ft_lst_pushend(e->team, team);
+	}
 }
 
 int					main(int ac, char **av)
@@ -106,6 +119,7 @@ int					main(int ac, char **av)
 
 	get_opt(ac, av, &e.opt);
 	env_init(&e);
+	board_create(&e);
 	e.bot_srv = srv_create(&e, e.opt.bot_port, FD_BOT_SERVER, bot_srv_accept);
 	e.gfx_srv = srv_create(&e, e.opt.gfx_port, FD_GFX_SERVER, gfx_srv_accept);
 	while (1)
