@@ -6,7 +6,7 @@
 /*   By: cfeijoo <cfeijoo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/05/24 17:00:40 by vdefilip          #+#    #+#             */
-/*   Updated: 2014/05/28 19:37:30 by vdefilip         ###   ########.fr       */
+/*   Updated: 2014/06/03 15:02:04 by vdefilip         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ static void			bot_srv_accept(t_env *e)
 	e->fds[*cs].fct_write = client_write;
 	e->fds[*cs].addr = inet_ntoa(csin.sin_addr);
 	e->fds[*cs].port = ntohs(csin.sin_port);
-	ft_lst_pushend(e->bot_lst, cs);
+	ft_lst_pushend(e->bot_lst, bot_new(*cs));
 	printf("New client #%d (BOT) ", *cs);
 	printf("from %s:%d\n", e->fds[*cs].addr, e->fds[*cs].port);
 }
@@ -58,7 +58,7 @@ static void			gfx_srv_accept(t_env *e)
 	e->fds[*cs].fct_write = client_write;
 	e->fds[*cs].addr = inet_ntoa(csin.sin_addr);
 	e->fds[*cs].port = ntohs(csin.sin_port);
-	ft_lst_pushend(e->gfx_lst, cs);
+	ft_lst_pushend(e->gfx_lst, gfx_new(*cs));
 	printf("New client #%d (GFX) ", *cs);
 	printf("from %s:%d\n", e->fds[*cs].addr, e->fds[*cs].port);
 }
@@ -113,7 +113,7 @@ int					main(int ac, char **av)
 		FD_ZERO(&e.fd_read);
 		FD_ZERO(&e.fd_write);
 		e.max = 0;
-		fd_iter_all(&e, fd_init);
+		fd_iter_all(&e, fd_watch);
 		e.res = select(e.max + 1, &e.fd_read, &e.fd_write, NULL, NULL);
 		try_int(e.res, -1, "select");
 		fd_iter_all(&e, fd_check);

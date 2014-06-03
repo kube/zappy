@@ -6,7 +6,7 @@
 /*   By: vdefilip <vdefilip@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/05/24 17:00:40 by vdefilip          #+#    #+#             */
-/*   Updated: 2014/05/28 19:38:06 by vdefilip         ###   ########.fr       */
+/*   Updated: 2014/06/03 14:15:27 by vdefilip         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,35 +17,6 @@
 #include <sys/select.h>
 #include "libft.h"
 #include "server.h"
-
-void			fd_destroy(t_env *e, int cs, char *msg)
-{
-	t_iterator		iter;
-	int				*id;
-	t_list			*lst;
-
-	if (e->fds[cs].type == FD_BOT_CLIENT)
-	{
-		lst = e->bot_lst;
-		printf("Client #%d (BOT) gone away", cs);
-	}
-	else
-	{
-		lst = e->gfx_lst;
-		printf("Client #%d (GFX) gone away", cs);
-	}
-	if (msg)
-		printf(": %s", msg);
-	printf("\n");
-	iter = NULL;
-	while ((id = (int *)ft_lst_iter_next_content(lst, &iter)))
-	{
-		if (*id == cs)
-			ft_lst_del_atom(lst, iter, free);
-	}
-	fd_clean(&e->fds[cs]);
-	close(cs);
-}
 
 void			fd_clean(t_fd *fd)
 {
@@ -58,7 +29,7 @@ void			fd_clean(t_fd *fd)
 	fd->port = -1;
 }
 
-void			fd_init(t_env *e, int fd)
+void			fd_watch(t_env *e, int fd)
 {
 	FD_SET(fd, &e->fd_read);
 	if (strlen(e->fds[fd].buf_write) > 0)
@@ -79,14 +50,15 @@ void			fd_check(t_env *e, int fd)
 void			fd_iter_all(t_env *e, void (*fct)())
 {
 	t_iterator	iter;
-	int			*id;
+	t_bot		*bot;
+	t_gfx		*gfx;
 
 	fct(e, e->bot_srv);
 	fct(e, e->gfx_srv);
 	iter = NULL;
-	while ((id = (int *)ft_lst_iter_next_content(e->bot_lst, &iter)))
-		fct(e, *id);
+	while ((bot = (t_bot *)ft_lst_iter_next_content(e->bot_lst, &iter)))
+		fct(e, bot->fd);
 	iter = NULL;
-	while ((id = (int *)ft_lst_iter_next_content(e->gfx_lst, &iter)))
-		fct(e, *id);
+	while ((gfx = (t_gfx *)ft_lst_iter_next_content(e->gfx_lst, &iter)))
+		fct(e, gfx->fd);
 }

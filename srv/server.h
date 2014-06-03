@@ -6,7 +6,7 @@
 /*   By: cfeijoo <cfeijoo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/05/24 17:00:41 by vdefilip          #+#    #+#             */
-/*   Updated: 2014/05/28 19:27:59 by vdefilip         ###   ########.fr       */
+/*   Updated: 2014/06/03 15:02:03 by vdefilip         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@
 # define MAX_LIMIT  20
 # define MAX_T      100
 
-# define BUF_SIZE 4096
+# define BUF_SIZE   4096
 
 # define DEFAULT   "\033[0m"
 # define HIGHLIGHT "\033[1m"
@@ -72,6 +72,16 @@ typedef struct	s_opt
 	int		t;
 }				t_opt;
 
+typedef struct s_bot
+{
+	int			fd;
+}				t_bot;
+
+typedef struct	s_gfx
+{
+	int			fd;
+}				t_gfx;
+
 typedef struct	s_fd
 {
 	int			type;
@@ -103,11 +113,15 @@ typedef void (*t_accept)(t_env *);
 int				try_int(int res, int err, char *str);
 void			*try_void(void *res, void *err, char *str);
 
-void			fd_destroy(t_env *e, int cs, char *msg);
 void			fd_clean(t_fd *fd);
-void			fd_init(t_env *e, int fd);
+void			fd_watch(t_env *e, int fd);
 void			fd_check(t_env *e, int fd);
 void			fd_iter_all(t_env *e, void (*fct)());
+
+t_bot			*bot_new(int fd);
+void			bot_destroy(t_env *e, int fd, char *msg);
+t_gfx			*gfx_new(int fd);
+void			gfx_destroy(t_env *e, int fd, char *msg);
 
 void			client_read(t_env *e, int cs);
 void			client_write(t_env *e, int cs);

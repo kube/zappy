@@ -6,7 +6,7 @@
 /*   By: vdefilip <vdefilip@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/05/28 15:19:39 by vdefilip          #+#    #+#             */
-/*   Updated: 2014/05/28 17:22:49 by vdefilip         ###   ########.fr       */
+/*   Updated: 2014/06/03 15:02:56 by vdefilip         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,7 @@ static int		save_opt(char **av, t_opt *opt)
 		opt->limit = atoi(av[i + 1]);
 	else if (ft_strequ(av[i], "-t") && av[i + 1])
 		opt->t = atoi(av[i + 1]);
-	else if (ft_strequ(av[i], "-h") && av[i + 1])
+	else if (ft_strequ(av[i], "-h"))
 		usage(opt);
 	else if (ft_strequ(av[i], "-n") && av[i + 1])
 	{
