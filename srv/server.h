@@ -6,7 +6,7 @@
 /*   By: cfeijoo <cfeijoo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/05/24 17:00:41 by vdefilip          #+#    #+#             */
-/*   Updated: 2014/06/03 17:49:34 by vdefilip         ###   ########.fr       */
+/*   Updated: 2014/06/04 23:05:44 by vdefilip         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,24 +58,28 @@
 # define MAX(a, b) (a > b ? a : b);
 # define MIN(a, b) (a < b ? a : b);
 
+# define OBJ_NB    7
+# define OBJ_FOOD  0
+# define OBJ_ROCK1 1
+# define OBJ_ROCK2 2
+# define OBJ_ROCK3 3
+# define OBJ_ROCK4 4
+# define OBJ_ROCK5 5
+# define OBJ_ROCK6 6
+
 typedef struct rlimit	t_rlimit;
 
 typedef struct	s_opt
 {
-	char	*prog_name;
-	int		bot_port;
-	int		gfx_port;
-	int		width;
-	int		height;
-	t_list	*team_name;
-	int		limit;
-	int		t;
+	char		*prog_name;
+	int			bot_port;
+	int			gfx_port;
+	int			width;
+	int			height;
+	t_list		*team_name;
+	int			limit;
+	int			t;
 }				t_opt;
-
-typedef struct s_bot
-{
-	int			fd;
-}				t_bot;
 
 typedef struct	s_gfx
 {
@@ -97,39 +101,61 @@ typedef struct	s_team
 {
 	char		*name;
 	int			limit;
-	int			nb_player;
+	int			nb_bot;
 }				t_team;
+
+typedef struct	s_bot
+{
+	int			fd;
+}				t_bot;
+
+typedef struct	s_obj
+{
+	int			type;
+	int			lock;
+}				t_obj;
+
+typedef struct	s_sq
+{
+	t_list		*obj;
+	t_list		*bot;
+}				t_sq;
 
 typedef struct	s_env
 {
 	t_opt		opt;
+
 	int			maxfd;
 	int			max;
 	int			res;
+	fd_set		fd_read;
+	fd_set		fd_write;
 	int			gfx_srv;
 	int			bot_srv;
 	t_fd		*fds;
-	fd_set		fd_read;
-	fd_set		fd_write;
+
+	t_list		*gfx_lst;
+
 	int			n_sq;
 	t_list		*team;
-	t_list		**board;
 	t_list		*bot_lst;
-	t_list		*gfx_lst;
+	t_sq		*board;
 }				t_env;
 
 typedef void (*t_accept)(t_env *);
 
 int				try_int(int res, int err, char *str);
 void			*try_void(void *res, void *err, char *str);
-
 int				sq_rand(t_env *e);
+
+void			get_opt(int ac, char **av, t_opt *opt);
 
 void			fd_clean(t_fd *fd);
 void			fd_watch(t_env *e, int fd);
 void			fd_check(t_env *e, int fd);
 void			fd_iter_all(t_env *e, void (*fct)());
 
+t_obj			*obj_new(int type);
 t_bot			*bot_new(int fd);
 void			bot_destroy(t_env *e, int fd, char *msg);
 t_gfx			*gfx_new(int fd);
@@ -138,9 +164,9 @@ void			gfx_destroy(t_env *e, int fd, char *msg);
 void			client_read(t_env *e, int cs);
 void			client_write(t_env *e, int cs);
 
-void			parse_request(char *str, t_env *e, int cs);
-void			get_opt(int ac, char **av, t_opt *opt);
+void			init_connection(t_env *e);
+void			init_game(t_env *e);
 
-void			board_create(t_env *e);
+void			parse_request(char *str, t_env *e, int cs);
 
 #endif

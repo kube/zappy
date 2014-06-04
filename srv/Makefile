@@ -5,22 +5,24 @@
 #                                                     +:+ +:+         +:+      #
 #    By: vdefilip <vdefilip@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2014/06/03 17:49:43 by vdefilip          #+#    #+#              #
-#    Updated: 2014/06/03 17:49:43 by vdefilip         ###   ########.fr        #
+#    Created: 2014/06/04 19:33:56 by vdefilip          #+#    #+#              #
+#    Updated: 2014/06/04 19:33:56 by vdefilip         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME=serveur
-VERSION=1.1.0
+VERSION=1.1.2
 CFLAGS=-Wall -Werror -Wextra -g
 INCLUDES=-I ../libft/includes
 LIBS=-L ../libft -l ft
 
 SRC=bot.c \
 	client_handler.c \
+	connection.c \
 	fd.c \
 	game.c \
 	gfx.c \
+	obj.c \
 	opt.c \
 	parse_request.c \
 	requests.c \
