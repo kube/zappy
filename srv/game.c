@@ -6,7 +6,7 @@
 /*   By: vdefilip <vdefilip@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/06/04 13:05:23 by vdefilip          #+#    #+#             */
-/*   Updated: 2014/06/04 23:22:38 by vdefilip         ###   ########.fr       */
+/*   Updated: 2014/06/11 11:42:31 by vdefilip         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 #include "libft.h"
 #include "server.h"
 
-static void			print_board(t_env *e)
+void				print_board(t_env *e)
 {
 	t_iterator		iter;
 	int				i;
@@ -24,7 +24,7 @@ static void			print_board(t_env *e)
 	int				rock[OBJ_NB];
 
 	i = 0;
-	printf("[ SQ ] : FOOD R0 R1 R2 R3 R4 R5 BOTS ...");
+	printf("[ SQ ] : FOOD R0 R1 R2 R3 R4 R5 BOTS ...\n");
 	while (i < e->n_sq)
 	{
 		ft_bzero(rock, sizeof(int) * OBJ_NB);

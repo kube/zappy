@@ -6,7 +6,7 @@
 /*   By: vdefilip <vdefilip@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/06/04 13:20:00 by vdefilip          #+#    #+#             */
-/*   Updated: 2014/06/04 13:43:35 by vdefilip         ###   ########.fr       */
+/*   Updated: 2014/06/11 13:36:24 by vdefilip         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,8 @@ static void			bot_srv_accept(t_env *e)
 	int					*cs;
 	struct sockaddr_in	csin;
 	socklen_t			csin_len;
+	t_bot				*bot;
+	int					sq;
 
 	csin_len = sizeof(csin);
 	cs = (int *)try_void(malloc(sizeof(*cs)), NULL, "malloc");
@@ -37,8 +39,11 @@ static void			bot_srv_accept(t_env *e)
 	e->fds[*cs].fct_write = client_write;
 	e->fds[*cs].addr = inet_ntoa(csin.sin_addr);
 	e->fds[*cs].port = ntohs(csin.sin_port);
-	ft_lst_pushend(e->bot_lst, bot_new(*cs));
-	printf("New client #%d (BOT) ", *cs);
+	bot = bot_new(*cs);
+	ft_lst_pushend(e->bot_lst, bot);
+	sq = sq_rand(e);
+	move(e, bot, sq);
+	printf("New client #%d (BOT) @ %d ", *cs, sq);
 	printf("from %s:%d\n", e->fds[*cs].addr, e->fds[*cs].port);
 }
 

@@ -5,13 +5,13 @@
 #                                                     +:+ +:+         +:+      #
 #    By: vdefilip <vdefilip@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2014/06/04 19:33:56 by vdefilip          #+#    #+#              #
-#    Updated: 2014/06/04 19:33:56 by vdefilip         ###   ########.fr        #
+#    Created: 2014/06/11 17:24:09 by vdefilip          #+#    #+#              #
+#    Updated: 2014/06/11 17:24:09 by vdefilip         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME=serveur
-VERSION=1.1.2
+VERSION=1.1.5
 CFLAGS=-Wall -Werror -Wextra -g
 INCLUDES=-I ../libft/includes
 LIBS=-L ../libft -l ft
@@ -19,16 +19,19 @@ LIBS=-L ../libft -l ft
 SRC=bot.c \
 	client_handler.c \
 	connection.c \
+	dir.c \
 	fd.c \
 	game.c \
 	gfx.c \
+	look.c \
+	move.c \
 	obj.c \
 	opt.c \
 	parse_request.c \
+	rand.c \
 	requests.c \
 	responses.c \
 	server.c \
-	sq_rand.c \
 	try.c \
 
 OBJ=$(SRC:.c=.o)

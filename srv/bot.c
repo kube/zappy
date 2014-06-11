@@ -6,7 +6,7 @@
 /*   By: vdefilip <vdefilip@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/06/03 12:23:13 by vdefilip          #+#    #+#             */
-/*   Updated: 2014/06/04 23:23:04 by vdefilip         ###   ########.fr       */
+/*   Updated: 2014/06/11 17:19:35 by vdefilip         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,11 @@ t_bot			*bot_new(int fd)
 
 	new = (t_bot *)try_void(ft_memalloc(sizeof(*new)), NULL, "malloc");
 	new->fd = fd;
+	new->sq = -1;
+	new->dir = dir_rand();
+	new->life_unit = 10;
+	new->inventory = ft_lst_new(NULL);
+	new->level = 1;
 	return (new);
 }
 
@@ -51,3 +56,4 @@ void			bot_destroy(t_env *e, int fd, char *msg)
 	fd_clean(&e->fds[fd]);
 	close(fd);
 }
+

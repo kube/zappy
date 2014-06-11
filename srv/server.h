@@ -6,7 +6,7 @@
 /*   By: cfeijoo <cfeijoo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/05/24 17:00:41 by vdefilip          #+#    #+#             */
-/*   Updated: 2014/06/04 23:05:44 by vdefilip         ###   ########.fr       */
+/*   Updated: 2014/06/11 17:53:10 by vdefilip         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,19 @@
 # define OBJ_ROCK5 5
 # define OBJ_ROCK6 6
 
+# define FOOD  "nourriture"
+# define ROCK1 "linemate"
+# define ROCK2 "deraumere"
+# define ROCK3 "sibur"
+# define ROCK4 "mendiane"
+# define ROCK5 "phiras"
+# define ROCK6 "thystame"
+
+# define NORTH 1
+# define EAST  2
+# define SOUTH 3
+# define WEST  4
+
 typedef struct rlimit	t_rlimit;
 
 typedef struct	s_opt
@@ -107,6 +120,11 @@ typedef struct	s_team
 typedef struct	s_bot
 {
 	int			fd;
+	int			sq;
+	int			dir;
+	int			life_unit;
+	t_list		*inventory;
+	int			level;
 }				t_bot;
 
 typedef struct	s_obj
@@ -147,6 +165,7 @@ typedef void (*t_accept)(t_env *);
 int				try_int(int res, int err, char *str);
 void			*try_void(void *res, void *err, char *str);
 int				sq_rand(t_env *e);
+int				dir_rand();
 
 void			get_opt(int ac, char **av, t_opt *opt);
 
@@ -166,7 +185,20 @@ void			client_write(t_env *e, int cs);
 
 void			init_connection(t_env *e);
 void			init_game(t_env *e);
+void 			print_board(t_env *e);
 
 void			parse_request(char *str, t_env *e, int cs);
+
+void			turn_left(t_env *e, t_bot *bot);
+void			turn_right(t_env *e, t_bot *bot);
+void			step(t_env *e, t_bot *bot);
+void			move(t_env *e, t_bot *bot, int sq);
+
+int				get_north(t_env *e, int sq);
+int				get_south(t_env *e, int sq);
+int				get_east(t_env *e, int sq);
+int				get_west(t_env *e, int sq);
+
+char			*look(t_env *e, t_bot *bot);
 
 #endif
