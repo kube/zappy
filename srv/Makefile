@@ -5,13 +5,13 @@
 #                                                     +:+ +:+         +:+      #
 #    By: vdefilip <vdefilip@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2014/06/11 17:24:09 by vdefilip          #+#    #+#              #
-#    Updated: 2014/06/11 17:24:09 by vdefilip         ###   ########.fr        #
+#    Created: 2014/06/13 14:46:57 by vdefilip          #+#    #+#              #
+#    Updated: 2014/06/13 14:46:57 by vdefilip         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME=serveur
-VERSION=1.1.5
+VERSION=1.1.6
 CFLAGS=-Wall -Werror -Wextra -g
 INCLUDES=-I ../libft/includes
 LIBS=-L ../libft -l ft
@@ -32,6 +32,7 @@ SRC=bot.c \
 	requests.c \
 	responses.c \
 	server.c \
+	timer.c \
 	try.c \
 
 OBJ=$(SRC:.c=.o)

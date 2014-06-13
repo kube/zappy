@@ -6,7 +6,7 @@
 /*   By: vdefilip <vdefilip@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/05/24 17:00:40 by vdefilip          #+#    #+#             */
-/*   Updated: 2014/06/03 14:15:27 by vdefilip         ###   ########.fr       */
+/*   Updated: 2014/06/13 12:33:30 by vdefilip         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,9 +31,10 @@ void			fd_clean(t_fd *fd)
 
 void			fd_watch(t_env *e, int fd)
 {
-	FD_SET(fd, &e->fd_read);
 	if (strlen(e->fds[fd].buf_write) > 0)
 		FD_SET(fd, &e->fd_write);
+	else
+		FD_SET(fd, &e->fd_read);
 	e->max = MAX(e->max, fd);
 }
 

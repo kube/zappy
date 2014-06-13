@@ -6,7 +6,7 @@
 /*   By: vdefilip <vdefilip@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/06/04 13:20:00 by vdefilip          #+#    #+#             */
-/*   Updated: 2014/06/11 13:36:24 by vdefilip         ###   ########.fr       */
+/*   Updated: 2014/06/13 18:15:31 by vdefilip         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 #include <netinet/in.h>
 #include <arpa/inet.h>
 #include <sys/select.h>
+#include <sys/time.h>
 #include "libft.h"
 #include "server.h"
 
@@ -39,11 +40,13 @@ static void			bot_srv_accept(t_env *e)
 	e->fds[*cs].fct_write = client_write;
 	e->fds[*cs].addr = inet_ntoa(csin.sin_addr);
 	e->fds[*cs].port = ntohs(csin.sin_port);
-	bot = bot_new(*cs);
-	ft_lst_pushend(e->bot_lst, bot);
-	sq = sq_rand(e);
-	move(e, bot, sq);
-	printf("New client #%d (BOT) @ %d ", *cs, sq);
+	bot = connect_bot(e, e->team->first->content);
+	bot->fd = *cs;
+	sq = (bot->sq == -1 ? sq_rand(e) : bot->sq);
+	if (bot->sq == -1)
+		move(e, bot, sq);
+	gettimeofday(&bot->time, NULL);
+	printf("New client #%d (BOT #%d) @ %d ", *cs, bot->id, sq);
 	printf("from %s:%d\n", e->fds[*cs].addr, e->fds[*cs].port);
 }
 

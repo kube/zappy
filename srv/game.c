@@ -6,7 +6,7 @@
 /*   By: vdefilip <vdefilip@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/06/04 13:05:23 by vdefilip          #+#    #+#             */
-/*   Updated: 2014/06/11 11:42:31 by vdefilip         ###   ########.fr       */
+/*   Updated: 2014/06/13 14:53:29 by vdefilip         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,6 +97,7 @@ void				init_game(t_env *e)
 	t_iterator		iter;
 	char			*name;
 	t_team			*team;
+	int				i;
 
 	e->n_sq = e->opt.height * e->opt.width;
 	e->bot_lst = ft_lst_new(NULL);
@@ -108,7 +109,14 @@ void				init_game(t_env *e)
 		team = (t_team *)try_void(malloc(sizeof(*team)), NULL, "malloc");
 		team->name = name;
 		team->limit = e->opt.limit;
-		team->nb_bot = 0;
+		team->unconnected = ft_lst_new(NULL);
+		team->connected = ft_lst_new(NULL);
+		i = 0;
+		while (i < team->limit)
+		{
+			ft_lst_pushend(team->unconnected, bot_new(team));
+			i++;
+		}
 		ft_lst_pushend(e->team, team);
 	}
 	board_create(e);

@@ -6,7 +6,7 @@
 /*   By: cfeijoo <cfeijoo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/05/24 17:00:41 by vdefilip          #+#    #+#             */
-/*   Updated: 2014/06/11 17:53:10 by vdefilip         ###   ########.fr       */
+/*   Updated: 2014/06/13 18:15:35 by vdefilip         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@
 # define DEFAULT_WIDTH    30
 # define DEFAULT_HEIGHT   20
 # define DEFAULT_LIMIT    10
-# define DEFAULT_T        7
+# define DEFAULT_T        100
 
 # define MAX_WIDTH  100
 # define MAX_HEIGHT 100
@@ -80,7 +80,11 @@
 # define SOUTH 3
 # define WEST  4
 
+# define FOOD_UNIT 126
+
 typedef struct rlimit	t_rlimit;
+typedef struct timeval	t_tv;
+typedef unsigned long	t_ulong;
 
 typedef struct	s_opt
 {
@@ -114,17 +118,25 @@ typedef struct	s_team
 {
 	char		*name;
 	int			limit;
-	int			nb_bot;
+	t_list		*connected;
+	t_list*		unconnected;
 }				t_team;
 
 typedef struct	s_bot
 {
+	int			id;
+	t_team		*team;
 	int			fd;
 	int			sq;
 	int			dir;
 	int			life_unit;
 	t_list		*inventory;
 	int			level;
+	t_tv		time;
+	t_ulong		timer;
+	t_ulong		food_timer;
+	t_ulong		action_timer;
+	char		buf_action[BUF_SIZE + 1];
 }				t_bot;
 
 typedef struct	s_obj
@@ -175,7 +187,7 @@ void			fd_check(t_env *e, int fd);
 void			fd_iter_all(t_env *e, void (*fct)());
 
 t_obj			*obj_new(int type);
-t_bot			*bot_new(int fd);
+t_bot			*bot_new(t_team *team);
 void			bot_destroy(t_env *e, int fd, char *msg);
 t_gfx			*gfx_new(int fd);
 void			gfx_destroy(t_env *e, int fd, char *msg);
@@ -200,5 +212,9 @@ int				get_east(t_env *e, int sq);
 int				get_west(t_env *e, int sq);
 
 char			*look(t_env *e, t_bot *bot);
+
+t_bot			*connect_bot(t_env *e, t_team *team);
+
+void			timer(t_env *e, t_bot *bot);
 
 #endif

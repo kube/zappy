@@ -6,7 +6,7 @@
 /*   By: cfeijoo <cfeijoo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/05/24 17:00:40 by vdefilip          #+#    #+#             */
-/*   Updated: 2014/06/11 17:18:59 by vdefilip         ###   ########.fr       */
+/*   Updated: 2014/06/13 14:48:52 by vdefilip         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ int					main(int ac, char **av)
 
 	t_iterator			iter;
 	t_bot				*bot;
-	int					sq;
+//	int					sq;
 
 	get_opt(ac, av, &e.opt);
 	init_game(&e);
@@ -45,7 +45,13 @@ int					main(int ac, char **av)
 		e.res = select(e.max + 1, &e.fd_read, &e.fd_write, NULL, &t);
 		try_int(e.res, -1, "select");
 		fd_iter_all(&e, fd_check);
+		iter = NULL;
 		while ((bot = (t_bot *)ft_lst_iter_next_content(e.bot_lst, &iter)))
+		{
+			if (bot->life_unit > 0)
+				timer(&e, bot);
+		}
+/*
 		{
 			if (bot->fd == 5)
 			{
@@ -55,6 +61,7 @@ int					main(int ac, char **av)
 				printf("BOT #5 see : [ %s ]\n", look(&e, bot));
 			}
 		}
+*/
 		//print_board(&e);
 
 	}

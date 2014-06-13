@@ -6,7 +6,7 @@
 /*   By: vdefilip <vdefilip@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/06/04 19:29:42 by vdefilip          #+#    #+#             */
-/*   Updated: 2014/06/11 17:24:14 by vdefilip         ###   ########.fr       */
+/*   Updated: 2014/06/13 18:13:33 by vdefilip         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ int			take(t_env *e, t_bot *bot, int type)
 		return (-1);
 	if (type == OBJ_FOOD)
 	{
-		bot->life_unit++;
+		bot->life_unit += FOOD_UNIT;
 		ft_lst_pushend(e->board[sq_rand(e)].obj, obj_new(OBJ_FOOD));
 	}
 	else
