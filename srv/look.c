@@ -6,7 +6,7 @@
 /*   By: vdefilip <vdefilip@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/06/11 16:40:39 by vdefilip          #+#    #+#             */
-/*   Updated: 2014/06/17 16:45:53 by vdefilip         ###   ########.fr       */
+/*   Updated: 2014/06/17 18:21:38 by vdefilip         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,14 +47,14 @@ void		add_sq_content(t_env *e, char **s, t_bot *bot, int sq)
 	iter = NULL;
 	while ((obj = (t_obj*)ft_lst_iter_next_content(e->board[sq].obj, &iter)))
 	{
-		if (*s[0] != '{')
+		if ((*s)[ft_strlen(*s) - 1] != '{' && (*s)[ft_strlen(*s) - 1] != ' ')
 			*s = ft_strjoin(*s, " ", FT_JOIN_FREE1);
 		*s = ft_strjoin(*s, type[obj->type], FT_JOIN_FREE1);
 	}
 	n = (bot->sq != sq ? e->board[sq].bot->len : e->board[sq].bot->len - 1);
 	while (n--)
 	{
-		if (*s[0] != '\0')
+		if ((*s)[ft_strlen(*s) - 1] != '{' && (*s)[ft_strlen(*s) - 1] != ' ')
 			*s = ft_strjoin(*s, " ", FT_JOIN_FREE1);
 		*s = ft_strjoin(*s, "joueur", FT_JOIN_FREE1);
 	}
@@ -77,8 +77,9 @@ void		look(t_env *e, t_bot *bot)
 		j = 0;
 		while (j < (i * 2 + 1))
 		{
-			if (s[0] != '{')
-				s = ft_strjoin(s, ",", FT_JOIN_FREE1);
+			printf("ADD SQ : %s\n", s);
+			if (s[ft_strlen(s) - 1] != '{')
+				s = ft_strjoin(s, ", ", FT_JOIN_FREE1);
 			add_sq_content(e, &s, bot, sq);
 			sq = get_right(e, sq, bot->dir);
 			j++;

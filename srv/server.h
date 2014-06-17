@@ -6,7 +6,7 @@
 /*   By: cfeijoo <cfeijoo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/05/24 17:00:41 by vdefilip          #+#    #+#             */
-/*   Updated: 2014/06/17 16:23:36 by vdefilip         ###   ########.fr       */
+/*   Updated: 2014/06/17 17:48:33 by vdefilip         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,8 @@
 # define WEST  4
 
 # define FOOD_UNIT 126
+
+# define STEP_TIME 7
 
 typedef struct rlimit	t_rlimit;
 typedef struct timeval	t_tv;

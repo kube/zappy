@@ -6,7 +6,7 @@
 /*   By: vdefilip <vdefilip@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/06/11 11:07:55 by vdefilip          #+#    #+#             */
-/*   Updated: 2014/06/17 16:18:41 by vdefilip         ###   ########.fr       */
+/*   Updated: 2014/06/17 17:48:18 by vdefilip         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,8 @@ void			step(t_env *e, t_bot *bot)
 	else
 		sq = get_south(e, bot->sq);
 	move(e, bot, sq);
+	bot->action_timer = STEP_TIME;
 	printf("Bot client #%d step\n", bot->fd);
 	ft_strcat(e->fds[bot->fd].buf_write, "ok\n");
+	//ft_strcat(bot->buf_action, "ok\n");
 }

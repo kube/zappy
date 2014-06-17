@@ -6,7 +6,7 @@
 /*   By: cfeijoo <cfeijoo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/05/28 02:26:49 by cfeijoo           #+#    #+#             */
-/*   Updated: 2014/06/17 17:35:47 by vdefilip         ###   ########.fr       */
+/*   Updated: 2014/06/17 17:57:56 by vdefilip         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ void			bot_association(t_env *e, int fd, char ***req)
 			move(e, bot, bot->sq);
 			gettimeofday(&bot->time, NULL);
 		}
-		printf("Bot client #%d connected to bot #%d", fd, bot->id);
+		printf("Bot client #%d connected to bot #%d\n", fd, bot->id);
 		send_nbr(e, fd);
 		send_dimension(e, fd);
 	}
