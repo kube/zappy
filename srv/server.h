@@ -6,7 +6,7 @@
 /*   By: cfeijoo <cfeijoo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/05/24 17:00:41 by vdefilip          #+#    #+#             */
-/*   Updated: 2014/06/17 17:48:33 by vdefilip         ###   ########.fr       */
+/*   Updated: 2014/06/17 19:12:58 by vdefilip         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,6 +83,16 @@
 # define FOOD_UNIT 126
 
 # define STEP_TIME 7
+# define TURN_RIGHT_TIME 7
+# define TURN_LEFT_TIME 7
+# define LOOK_TIME 7
+# define INVENTORY_TIME 1
+# define TAKE_TIME 7
+# define PUT_TIME 7
+# define EXPULSE_TIME 7
+# define BROADCAST_TIME 7
+# define INCANTATION_TIME 300
+# define FORK_TIME 42
 
 typedef struct rlimit	t_rlimit;
 typedef struct timeval	t_tv;
@@ -136,9 +146,9 @@ typedef struct	s_bot
 	t_list		*inventory;
 	int			level;
 	t_tv		time;
-	t_ulong		timer;
-	t_ulong		food_timer;
-	t_ulong		action_timer;
+	long		timer;
+	long		food_timer;
+	long		action_timer;
 	char		buf_action[BUF_SIZE + 1];
 }				t_bot;
 

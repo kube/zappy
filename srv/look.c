@@ -6,7 +6,7 @@
 /*   By: vdefilip <vdefilip@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/06/11 16:40:39 by vdefilip          #+#    #+#             */
-/*   Updated: 2014/06/17 18:21:38 by vdefilip         ###   ########.fr       */
+/*   Updated: 2014/06/17 19:08:44 by vdefilip         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,6 @@ void		look(t_env *e, t_bot *bot)
 		j = 0;
 		while (j < (i * 2 + 1))
 		{
-			printf("ADD SQ : %s\n", s);
 			if (s[ft_strlen(s) - 1] != '{')
 				s = ft_strjoin(s, ", ", FT_JOIN_FREE1);
 			add_sq_content(e, &s, bot, sq);
@@ -88,7 +87,8 @@ void		look(t_env *e, t_bot *bot)
 		i++;
 	}
 	s = ft_strjoin(s, "}\n", FT_JOIN_FREE1);
+	bot->action_timer = LOOK_TIME;
 	printf("Bot client #%d see : %s\n", bot->fd, s);
-	ft_strcat(e->fds[bot->fd].buf_write, s);
+	ft_strcat(bot->buf_action, s);
 	free(s);
 }

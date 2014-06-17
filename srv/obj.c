@@ -6,7 +6,7 @@
 /*   By: vdefilip <vdefilip@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/06/04 19:29:42 by vdefilip          #+#    #+#             */
-/*   Updated: 2014/06/17 17:28:59 by vdefilip         ###   ########.fr       */
+/*   Updated: 2014/06/17 19:11:35 by vdefilip         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,8 +104,9 @@ int			take(t_env *e, t_bot *bot, char *obj_name)
 	}
 	else
 		ft_lst_pushend(bot->inventory, obj);
+	bot->action_timer = TAKE_TIME;
 	printf("Bot client #%d take object\n", bot->fd);
-	ft_strcat(e->fds[bot->fd].buf_write, "ok\n");
+	ft_strcat(bot->buf_action, "ok\n");
 	return (0);
 }
 
@@ -128,8 +129,9 @@ int			put(t_env *e, t_bot *bot, char *obj_name)
 		{
 			ft_lst_del_atom(bot->inventory, iter, NULL);
 			ft_lst_pushend(e->board[bot->sq].obj, obj);
+			bot->action_timer = PUT_TIME;
 			printf("Bot client #%d put object\n", bot->fd);
-			ft_strcat(e->fds[bot->fd].buf_write, "ok\n");
+			ft_strcat(bot->buf_action, "ok\n");
 			return (0);
 		}
 	}
@@ -154,6 +156,7 @@ void		get_inventory(t_env *e, t_bot *bot)
 	sprintf(str, "{%s %d, %s %d, %s %d, %s %d, %s %d, %s %d, %s %d}",
 	FOOD, obj[0], ROCK1, obj[1], ROCK2, obj[2], ROCK3,
 	obj[3], ROCK4, obj[4], ROCK5, obj[5], ROCK6, obj[6]);
+	bot->action_timer = INVENTORY_TIME;
 	printf("Bot client #%d inventory : %s\n", bot->fd, str);
-	ft_strcat(e->fds[bot->fd].buf_write, str);
+	ft_strcat(bot->buf_action, str);
 }

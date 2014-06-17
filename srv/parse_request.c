@@ -6,7 +6,7 @@
 /*   By: cfeijoo <cfeijoo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/05/28 02:26:49 by cfeijoo           #+#    #+#             */
-/*   Updated: 2014/06/17 17:57:56 by vdefilip         ###   ########.fr       */
+/*   Updated: 2014/06/17 19:12:40 by vdefilip         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,5 +126,7 @@ void			bot_parse_request(t_env *e, int fd, char *str)
 		ft_strcat(e->fds[fd].buf_write, "ko\n");
 	else if (ft_strequ(req[0], "fork"))
 		ft_strcat(e->fds[fd].buf_write, "ko\n");
+	else if (ft_strequ(req[0], "connect_nbr"))
+		send_nbr(e, fd);
 	ft_free_strtab(req);
 }
