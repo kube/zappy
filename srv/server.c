@@ -6,7 +6,7 @@
 /*   By: cfeijoo <cfeijoo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/05/24 17:00:40 by vdefilip          #+#    #+#             */
-/*   Updated: 2014/06/13 14:48:52 by vdefilip         ###   ########.fr       */
+/*   Updated: 2014/06/17 13:13:37 by vdefilip         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,10 +27,6 @@ int					main(int ac, char **av)
 	t_env				e;
 	struct timeval		t;
 
-	t_iterator			iter;
-	t_bot				*bot;
-//	int					sq;
-
 	get_opt(ac, av, &e.opt);
 	init_game(&e);
 	init_connection(&e);
@@ -45,25 +41,7 @@ int					main(int ac, char **av)
 		e.res = select(e.max + 1, &e.fd_read, &e.fd_write, NULL, &t);
 		try_int(e.res, -1, "select");
 		fd_iter_all(&e, fd_check);
-		iter = NULL;
-		while ((bot = (t_bot *)ft_lst_iter_next_content(e.bot_lst, &iter)))
-		{
-			if (bot->life_unit > 0)
-				timer(&e, bot);
-		}
-/*
-		{
-			if (bot->fd == 5)
-			{
-				sq = bot->sq;
-				step(&e, bot);
-				printf("BOT #5 step from %d to %d (%d)\n", sq, bot->sq, bot->dir);
-				printf("BOT #5 see : [ %s ]\n", look(&e, bot));
-			}
-		}
-*/
-		//print_board(&e);
-
+		bot_iter_all_connected_and_queued(&e, timer);
 	}
 	return (EXIT_SUCCESS);
 }

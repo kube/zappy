@@ -6,7 +6,7 @@
 /*   By: cfeijoo <cfeijoo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/05/24 17:00:41 by vdefilip          #+#    #+#             */
-/*   Updated: 2014/06/13 18:15:35 by vdefilip         ###   ########.fr       */
+/*   Updated: 2014/06/17 16:23:36 by vdefilip         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,6 +120,7 @@ typedef struct	s_team
 	int			limit;
 	t_list		*connected;
 	t_list*		unconnected;
+	t_list*		queue;
 }				t_team;
 
 typedef struct	s_bot
@@ -168,7 +169,7 @@ typedef struct	s_env
 
 	int			n_sq;
 	t_list		*team;
-	t_list		*bot_lst;
+	t_list		*bot_fd_lst;
 	t_sq		*board;
 }				t_env;
 
@@ -188,6 +189,8 @@ void			fd_iter_all(t_env *e, void (*fct)());
 
 t_obj			*obj_new(int type);
 t_bot			*bot_new(t_team *team);
+void			bot_iter_all_connected_and_queued(t_env *e, void (*fct)());
+t_bot			*get_bot_by_fd(t_env *e, int fd);
 void			bot_destroy(t_env *e, int fd, char *msg);
 t_gfx			*gfx_new(int fd);
 void			gfx_destroy(t_env *e, int fd, char *msg);
@@ -199,7 +202,7 @@ void			init_connection(t_env *e);
 void			init_game(t_env *e);
 void 			print_board(t_env *e);
 
-void			parse_request(char *str, t_env *e, int cs);
+void			bot_parse_request(t_env *e, int cs, char *str);
 
 void			turn_left(t_env *e, t_bot *bot);
 void			turn_right(t_env *e, t_bot *bot);
@@ -211,7 +214,10 @@ int				get_south(t_env *e, int sq);
 int				get_east(t_env *e, int sq);
 int				get_west(t_env *e, int sq);
 
-char			*look(t_env *e, t_bot *bot);
+void			look(t_env *e, t_bot *bot);
+void			get_inventory(t_env *e, t_bot *bot);
+int				take(t_env *e, t_bot *bot, char *obj_name);
+int				put(t_env *e, t_bot *bot, char *obj_name);
 
 t_bot			*connect_bot(t_env *e, t_team *team);
 

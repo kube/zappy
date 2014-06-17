@@ -6,13 +6,52 @@
 /*   By: vdefilip <vdefilip@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/06/04 19:29:42 by vdefilip          #+#    #+#             */
-/*   Updated: 2014/06/13 18:13:33 by vdefilip         ###   ########.fr       */
+/*   Updated: 2014/06/17 17:28:59 by vdefilip         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <stdio.h>
 #include <stdlib.h>
 #include "libft.h"
 #include "server.h"
+
+int			get_obj_type(char *obj_name)
+{
+	if (ft_strequ(obj_name, FOOD))
+		return (OBJ_FOOD);
+	if (ft_strequ(obj_name, ROCK1))
+		return (OBJ_ROCK1);
+	if (ft_strequ(obj_name, ROCK2))
+		return (OBJ_ROCK2);
+	if (ft_strequ(obj_name, ROCK3))
+		return (OBJ_ROCK3);
+	if (ft_strequ(obj_name, ROCK4))
+		return (OBJ_ROCK4);
+	if (ft_strequ(obj_name, ROCK5))
+		return (OBJ_ROCK5);
+	if (ft_strequ(obj_name, ROCK6))
+		return (OBJ_ROCK6);
+	return (-1);
+}
+
+char		*get_obj_name(int type)
+{
+	if (type == OBJ_FOOD)
+		return (FOOD);
+	if (type == OBJ_ROCK1)
+		return (ROCK1);
+	if (type == OBJ_ROCK2)
+		return (ROCK2);
+	if (type == OBJ_ROCK3)
+		return (ROCK3);
+	if (type == OBJ_ROCK4)
+		return (ROCK4);
+	if (type == OBJ_ROCK5)
+		return (ROCK5);
+	if (type == OBJ_ROCK6)
+		return (ROCK6);
+	return (NULL);
+}
 
 t_obj		*obj_new(int type)
 {
@@ -41,12 +80,23 @@ t_obj		*get_obj(t_env *e, int sq, int type)
 	return (NULL);
 }
 
-int			take(t_env *e, t_bot *bot, int type)
+int			take(t_env *e, t_bot *bot, char *obj_name)
 {
 	t_obj			*obj;
+	int				type;
 
-	if ((obj = get_obj(e, bot->sq, type)) == NULL)
+	if ((type = get_obj_type(obj_name)) == -1)
+	{
+		printf("Bot client #%d : Invalid object\n", bot->fd);
+		ft_strcat(e->fds[bot->fd].buf_write, "ko\n");
 		return (-1);
+	}
+	if ((obj = get_obj(e, bot->sq, type)) == NULL)
+	{
+		printf("Bot client #%d : Object not found\n", bot->fd);
+		ft_strcat(e->fds[bot->fd].buf_write, "ko\n");
+		return (-1);
+	}
 	if (type == OBJ_FOOD)
 	{
 		bot->life_unit += FOOD_UNIT;
@@ -54,14 +104,23 @@ int			take(t_env *e, t_bot *bot, int type)
 	}
 	else
 		ft_lst_pushend(bot->inventory, obj);
+	printf("Bot client #%d take object\n", bot->fd);
+	ft_strcat(e->fds[bot->fd].buf_write, "ok\n");
 	return (0);
 }
 
-int			put(t_env *e, t_bot *bot, int type)
+int			put(t_env *e, t_bot *bot, char *obj_name)
 {
 	t_iterator		iter;
 	t_obj			*obj;
+	int				type;
 
+	if ((type = get_obj_type(obj_name)) == -1)
+	{
+		printf("Bot client #%d : Invalid object\n", bot->fd);
+		ft_strcat(e->fds[bot->fd].buf_write, "ko\n");
+		return (-1);
+	}
 	iter = NULL;
 	while ((obj = (t_obj *)ft_lst_iter_next_content(bot->inventory, &iter)))
 	{
@@ -69,31 +128,32 @@ int			put(t_env *e, t_bot *bot, int type)
 		{
 			ft_lst_del_atom(bot->inventory, iter, NULL);
 			ft_lst_pushend(e->board[bot->sq].obj, obj);
+			printf("Bot client #%d put object\n", bot->fd);
+			ft_strcat(e->fds[bot->fd].buf_write, "ok\n");
 			return (0);
 		}
 	}
+	printf("Bot client #%d : Object not found\n", bot->fd);
+	ft_strcat(e->fds[bot->fd].buf_write, "ko\n");
 	return (-1);
 }
 
-char		*get_inventory(t_env *e, t_bot *bot)
+void		get_inventory(t_env *e, t_bot *bot)
 {
 	t_iterator		iter;
 	t_obj			*o;
-	int				obj[6];
-	char			*str;
+	int				obj[7];
+	char			str[128];
 
 	(void)e;
-	ft_bzero(obj, sizeof(int) * 6);
+	ft_bzero(obj, sizeof(int) * 7);
+	obj[0] = bot->life_unit / FOOD_UNIT;
 	iter = NULL;
 	while ((o = (t_obj *)ft_lst_iter_next_content(bot->inventory, &iter)))
-		obj[o->type - 1]++;
-	str = ft_strdup("{");
-	str = ft_strmjoin(0x5, str, "linemate ", ft_itoa(obj[0]));
-	str = ft_strmjoin(0x5, str, ", deraumere ", ft_itoa(obj[1]));
-	str = ft_strmjoin(0x5, str, ", sibur ", ft_itoa(obj[2]));
-	str = ft_strmjoin(0x5, str, ", mendiane ", ft_itoa(obj[3]));
-	str = ft_strmjoin(0x5, str, ", phiras ", ft_itoa(obj[4]));
-	str = ft_strmjoin(0x5, str, ", thystame", ft_itoa(obj[5]));
-	str = ft_strjoin(str, "}", FT_JOIN_FREE1);
-	return (str);
+		obj[o->type]++;
+	sprintf(str, "{%s %d, %s %d, %s %d, %s %d, %s %d, %s %d, %s %d}",
+	FOOD, obj[0], ROCK1, obj[1], ROCK2, obj[2], ROCK3,
+	obj[3], ROCK4, obj[4], ROCK5, obj[5], ROCK6, obj[6]);
+	printf("Bot client #%d inventory : %s\n", bot->fd, str);
+	ft_strcat(e->fds[bot->fd].buf_write, str);
 }

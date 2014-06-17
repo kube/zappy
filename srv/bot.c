@@ -6,7 +6,7 @@
 /*   By: vdefilip <vdefilip@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/06/03 12:23:13 by vdefilip          #+#    #+#             */
-/*   Updated: 2014/06/13 18:15:33 by vdefilip         ###   ########.fr       */
+/*   Updated: 2014/06/17 13:55:18 by vdefilip         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,13 +41,23 @@ t_bot			*bot_new(t_team *team)
 
 t_bot			*connect_bot(t_env *e, t_team *team)
 {
-	t_atom			*atom;
+	t_iterator		iter;
+	t_bot			*bot;
 
-	if ((atom = ft_lst_pop(team->unconnected)))
+	(void)e;
+	iter = NULL;
+	while ((bot = (t_bot *)ft_lst_iter_next_content(team->queue, &iter)))
 	{
-		ft_lst_pushend(team->connected, atom->content);
-		ft_lst_pushend(e->bot_lst, atom->content);
-		return (atom->content);
+		ft_lst_del_atom(team->queue, iter, NULL);
+		ft_lst_pushend(team->connected, bot);
+		return (bot);
+	}
+	iter = NULL;
+	while ((bot = (t_bot *)ft_lst_iter_next_content(team->unconnected, &iter)))
+	{
+		ft_lst_del_atom(team->unconnected, iter, NULL);
+		ft_lst_pushend(team->connected, bot);
+		return (bot);
 	}
 	return (NULL);
 }
@@ -58,6 +68,7 @@ void			unconnect_bot(t_env *e, t_bot *bot)
 	t_iterator		iter;
 	t_bot			*b;
 
+	(void)e;
 	connected = bot->team->connected;
 	iter = NULL;
 	while ((b = (t_bot *)ft_lst_iter_next_content(connected, &iter)))
@@ -65,38 +76,75 @@ void			unconnect_bot(t_env *e, t_bot *bot)
 		if (b == bot)
 		{
 			ft_lst_del_atom(connected, iter, NULL);
-			ft_lst_push(bot->team->unconnected, b);
+			ft_lst_pushend(bot->team->queue, b);
 			break ;
 		}
 	}
-	iter = NULL;
-	while ((bot = (t_bot *)ft_lst_iter_next_content(e->bot_lst, &iter)))
+}
+
+void			bot_iter_all_connected_and_queued(t_env *e, void (*fct)())
+{
+	t_iterator		iter_t;
+	t_iterator		iter_b;
+	t_team			*t;
+	t_bot			*b;
+
+	iter_t = NULL;
+	while ((t = (t_team *)ft_lst_iter_next_content(e->team, &iter_t)))
 	{
-		if (b == bot)
+		iter_b = NULL;
+		while ((b = (t_bot *)ft_lst_iter_next_content(t->connected, &iter_b)))
+			fct(e, b);
+		iter_b = NULL;
+		while ((b = (t_bot *)ft_lst_iter_next_content(t->queue, &iter_b)))
+			fct(e, b);
+	}
+}
+
+t_bot			*get_bot_by_fd(t_env *e, int fd)
+{
+	t_iterator		iter_t;
+	t_iterator		iter_b;
+	t_team			*t;
+	t_bot			*b;
+
+	iter_t = NULL;
+	while ((t = (t_team *)ft_lst_iter_next_content(e->team, &iter_t)))
+	{
+		iter_b = NULL;
+		while ((b = (t_bot *)ft_lst_iter_next_content(t->connected, &iter_b)))
 		{
-			ft_lst_del_atom(e->bot_lst, iter, NULL);
-			break ;
+			if (b->fd == fd)
+				return (b);
 		}
 	}
+	return (NULL);
 }
 
 void			bot_destroy(t_env *e, int fd, char *msg)
 {
 	t_bot			*bot;
 	t_iterator		iter;
+	int				*f;
 
+	if ((bot = get_bot_by_fd(e, fd)) != NULL)
+		unconnect_bot(e, bot);
 	iter = NULL;
-	while ((bot = (t_bot *)ft_lst_iter_next_content(e->bot_lst, &iter)))
+	while ((f = (int *)ft_lst_iter_next_content(e->bot_fd_lst, &iter)))
 	{
-		if (bot->fd == fd)
+		if (*f == fd)
 		{
-			printf("Client #%d (BOT #%d) gone away", fd, bot->id);
-			if (msg)
-				printf(": %s", msg);
-			printf("\n");
-			unconnect_bot(e, bot);
+			ft_lst_del_atom(e->bot_fd_lst, iter, free);
+			break ;
 		}
 	}
+	printf("Client #%d", fd);
+	if (bot)
+		printf(" (BOT #%d)", bot->id);
+	printf("gone away");
+	if (msg)
+		printf(": %s", msg);
+	printf("\n");
 	fd_clean(&e->fds[fd]);
 	close(fd);
 }

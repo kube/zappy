@@ -6,7 +6,7 @@
 /*   By: vdefilip <vdefilip@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/06/04 13:20:00 by vdefilip          #+#    #+#             */
-/*   Updated: 2014/06/13 18:15:31 by vdefilip         ###   ########.fr       */
+/*   Updated: 2014/06/17 13:19:12 by vdefilip         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,6 @@ static void			bot_srv_accept(t_env *e)
 	int					*cs;
 	struct sockaddr_in	csin;
 	socklen_t			csin_len;
-	t_bot				*bot;
-	int					sq;
 
 	csin_len = sizeof(csin);
 	cs = (int *)try_void(malloc(sizeof(*cs)), NULL, "malloc");
@@ -40,14 +38,10 @@ static void			bot_srv_accept(t_env *e)
 	e->fds[*cs].fct_write = client_write;
 	e->fds[*cs].addr = inet_ntoa(csin.sin_addr);
 	e->fds[*cs].port = ntohs(csin.sin_port);
-	bot = connect_bot(e, e->team->first->content);
-	bot->fd = *cs;
-	sq = (bot->sq == -1 ? sq_rand(e) : bot->sq);
-	if (bot->sq == -1)
-		move(e, bot, sq);
-	gettimeofday(&bot->time, NULL);
-	printf("New client #%d (BOT #%d) @ %d ", *cs, bot->id, sq);
+	ft_lst_pushend(e->bot_fd_lst, cs);
+	printf("New bot client #%d ", *cs);
 	printf("from %s:%d\n", e->fds[*cs].addr, e->fds[*cs].port);
+	ft_strcpy(e->fds[*cs].buf_write, "BIENVENUE");
 }
 
 static void			gfx_srv_accept(t_env *e)

@@ -6,7 +6,7 @@
 /*   By: cfeijoo <cfeijoo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/05/24 17:00:40 by vdefilip          #+#    #+#             */
-/*   Updated: 2014/06/13 15:11:04 by vdefilip         ###   ########.fr       */
+/*   Updated: 2014/06/17 17:33:23 by vdefilip         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,15 +54,16 @@ void			client_read(t_env *e, int cs)
 	{
 		if (type == FD_BOT_CLIENT)
 		{
-			printf("BOT #%d says [%s]\n", cs, e->fds[cs].buf_read);
-			ft_strcpy(e->fds[cs].buf_write, "Thanks BOT !");
-//			parse_request(e->fds[cs].buf_read, e, cs);
+			printf("%s", PURPLE);
+			printf("Bot client #%d says [%s]\n", cs, e->fds[cs].buf_read);
+			printf("%s", DEFAULT);
+			bot_parse_request(e, cs, e->fds[cs].buf_read);
 		}
 		else
 		{
-			printf("GFX #%d says [%s]\n", cs, e->fds[cs].buf_read);
+			printf("Gfx client #%d says [%s]\n", cs, e->fds[cs].buf_read);
 			ft_strcpy(e->fds[cs].buf_write, "Thanks GFX !");
-//			parse_request(e->fds[cs].buf_read, e, cs);
+//			gfx_parse_request(e->fds[cs].buf_read, e, cs);
 		}
 		ft_bzero(e->fds[cs].buf_read, BUF_SIZE);
 	}
@@ -71,8 +72,11 @@ void			client_read(t_env *e, int cs)
 void			client_write(t_env *e, int cs)
 {
 	int		ret;
+	int		len;
 
-	ft_strcat(e->fds[cs].buf_write, "\n");
+	len = ft_strlen(e->fds[cs].buf_write);
+	if (e->fds[cs].buf_write[len - 1] != '\n')
+		ft_strcat(e->fds[cs].buf_write, "\n");
 	ret = send(cs, e->fds[cs].buf_write, strlen(e->fds[cs].buf_write), 0);
 	if (ret == -1)
 	{

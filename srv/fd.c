@@ -6,7 +6,7 @@
 /*   By: vdefilip <vdefilip@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/05/24 17:00:40 by vdefilip          #+#    #+#             */
-/*   Updated: 2014/06/13 12:33:30 by vdefilip         ###   ########.fr       */
+/*   Updated: 2014/06/17 14:50:58 by vdefilip         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,14 +51,14 @@ void			fd_check(t_env *e, int fd)
 void			fd_iter_all(t_env *e, void (*fct)())
 {
 	t_iterator	iter;
-	t_bot		*bot;
+	int			*fd;
 	t_gfx		*gfx;
 
 	fct(e, e->bot_srv);
 	fct(e, e->gfx_srv);
 	iter = NULL;
-	while ((bot = (t_bot *)ft_lst_iter_next_content(e->bot_lst, &iter)))
-		fct(e, bot->fd);
+	while ((fd = (int *)ft_lst_iter_next_content(e->bot_fd_lst, &iter)))
+		fct(e, *fd);
 	iter = NULL;
 	while ((gfx = (t_gfx *)ft_lst_iter_next_content(e->gfx_lst, &iter)))
 		fct(e, gfx->fd);

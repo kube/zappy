@@ -6,10 +6,12 @@
 /*   By: vdefilip <vdefilip@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/06/11 16:40:39 by vdefilip          #+#    #+#             */
-/*   Updated: 2014/06/13 11:05:00 by vdefilip         ###   ########.fr       */
+/*   Updated: 2014/06/17 16:45:53 by vdefilip         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <stdio.h>
+#include <stdlib.h>
 #include "libft.h"
 #include "server.h"
 
@@ -45,7 +47,7 @@ void		add_sq_content(t_env *e, char **s, t_bot *bot, int sq)
 	iter = NULL;
 	while ((obj = (t_obj*)ft_lst_iter_next_content(e->board[sq].obj, &iter)))
 	{
-		if (*s[0] != '\0')
+		if (*s[0] != '{')
 			*s = ft_strjoin(*s, " ", FT_JOIN_FREE1);
 		*s = ft_strjoin(*s, type[obj->type], FT_JOIN_FREE1);
 	}
@@ -58,7 +60,7 @@ void		add_sq_content(t_env *e, char **s, t_bot *bot, int sq)
 	}
 }
 
-char		*look(t_env *e, t_bot *bot)
+void		look(t_env *e, t_bot *bot)
 {
 	char		*s;
 	int			i;
@@ -84,6 +86,8 @@ char		*look(t_env *e, t_bot *bot)
 		first_sq = get_top_left(e, first_sq, bot->dir);
 		i++;
 	}
-	s = ft_strjoin(s, "}", FT_JOIN_FREE1);
-	return (s);
+	s = ft_strjoin(s, "}\n", FT_JOIN_FREE1);
+	printf("Bot client #%d see : %s\n", bot->fd, s);
+	ft_strcat(e->fds[bot->fd].buf_write, s);
+	free(s);
 }
