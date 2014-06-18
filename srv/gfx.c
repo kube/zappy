@@ -6,7 +6,7 @@
 /*   By: vdefilip <vdefilip@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/06/03 12:28:53 by vdefilip          #+#    #+#             */
-/*   Updated: 2014/06/03 15:02:01 by vdefilip         ###   ########.fr       */
+/*   Updated: 2014/06/18 16:30:52 by vdefilip         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,11 +25,6 @@ t_gfx			*gfx_new(int fd)
 	return (new);
 }
 
-static void		gfx_free(t_gfx *gfx)
-{
-	free(gfx);
-}
-
 void			gfx_destroy(t_env *e, int fd, char *msg)
 {
 	t_gfx			*gfx;
@@ -44,7 +39,7 @@ void			gfx_destroy(t_env *e, int fd, char *msg)
 	{
 		if (gfx->fd == fd)
 		{
-			ft_lst_del_atom(e->gfx_lst, iter, gfx_free);
+			ft_lst_del_atom(e->gfx_lst, iter, free);
 			break ;
 		}
 	}

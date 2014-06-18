@@ -6,7 +6,7 @@
 /*   By: cfeijoo <cfeijoo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/05/24 17:00:41 by vdefilip          #+#    #+#             */
-/*   Updated: 2014/06/17 19:12:58 by vdefilip         ###   ########.fr       */
+/*   Updated: 2014/06/18 17:17:37 by vdefilip         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -215,6 +215,7 @@ void			init_game(t_env *e);
 void 			print_board(t_env *e);
 
 void			bot_parse_request(t_env *e, int cs, char *str);
+void			gfx_parse_request(t_env *e, int fd, char *str);
 
 void			turn_left(t_env *e, t_bot *bot);
 void			turn_right(t_env *e, t_bot *bot);
@@ -234,5 +235,8 @@ int				put(t_env *e, t_bot *bot, char *obj_name);
 t_bot			*connect_bot(t_env *e, t_team *team);
 
 void			timer(t_env *e, t_bot *bot);
+
+void			msz(t_env *e, int fd);
+void			bct(t_env *e, int fd, char **req);
 
 #endif

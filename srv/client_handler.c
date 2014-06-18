@@ -6,7 +6,7 @@
 /*   By: cfeijoo <cfeijoo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/05/24 17:00:40 by vdefilip          #+#    #+#             */
-/*   Updated: 2014/06/17 17:33:23 by vdefilip         ###   ########.fr       */
+/*   Updated: 2014/06/18 14:14:14 by vdefilip         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,9 +61,10 @@ void			client_read(t_env *e, int cs)
 		}
 		else
 		{
+			printf("%s", CYAN);
 			printf("Gfx client #%d says [%s]\n", cs, e->fds[cs].buf_read);
-			ft_strcpy(e->fds[cs].buf_write, "Thanks GFX !");
-//			gfx_parse_request(e->fds[cs].buf_read, e, cs);
+			printf("%s", DEFAULT);
+			gfx_parse_request(e, cs, e->fds[cs].buf_read);
 		}
 		ft_bzero(e->fds[cs].buf_read, BUF_SIZE);
 	}

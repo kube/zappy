@@ -6,7 +6,7 @@
 /*   By: cfeijoo <cfeijoo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/05/28 02:26:49 by cfeijoo           #+#    #+#             */
-/*   Updated: 2014/06/17 19:12:40 by vdefilip         ###   ########.fr       */
+/*   Updated: 2014/06/18 17:17:07 by vdefilip         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,7 @@ void			bot_parse_request(t_env *e, int fd, char *str)
 	req = (char **)try_void(ft_strsplit(str, ' '), NULL, "malloc");
 	if (!req[0] || ((ft_strequ(req[0], "prend") || ft_strequ(req[0], "pose")
 		|| ft_strequ(req[0], "broadcast")) && !req[1]))
-		printf("Bot client #%d : Invalid request (too few arguments)", fd);
+		printf("Bot client #%d : Invalid request (too few arguments)\n", fd);
 	else if ((bot = get_bot_by_fd(e, fd)) == NULL)
 		bot_association(e, fd, &req);
 	else if (bot->life_unit <= 0)
@@ -128,5 +128,22 @@ void			bot_parse_request(t_env *e, int fd, char *str)
 		ft_strcat(e->fds[fd].buf_write, "ko\n");
 	else if (ft_strequ(req[0], "connect_nbr"))
 		send_nbr(e, fd);
+	ft_free_strtab(req);
+}
+
+void			gfx_parse_request(t_env *e, int fd, char *str)
+{
+//	t_gfx		*gfx;
+	char		**req;
+
+	req = (char **)try_void(ft_strsplit(str, ' '), NULL, "malloc");
+	if (!req[0])
+		printf("Gfx client #%d : Invalid request (too few arguments)\n", fd);
+//	else if ((gfx = get_gfx_by_fd(e, fd)) == NULL)
+//		gfx_association(e, fd, &req);
+	else if (ft_strequ(req[0], "msz"))
+		msz(e, fd);
+	else if (ft_strequ(req[0], "bct"))
+		bct(e, fd, req);
 	ft_free_strtab(req);
 }

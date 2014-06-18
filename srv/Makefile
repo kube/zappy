@@ -5,13 +5,13 @@
 #                                                     +:+ +:+         +:+      #
 #    By: vdefilip <vdefilip@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2014/06/13 14:46:57 by vdefilip          #+#    #+#              #
-#    Updated: 2014/06/13 14:46:57 by vdefilip         ###   ########.fr        #
+#    Created: 2014/06/18 17:17:50 by vdefilip          #+#    #+#              #
+#    Updated: 2014/06/18 17:17:50 by vdefilip         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME=serveur
-VERSION=1.1.6
+VERSION=1.1.7
 CFLAGS=-Wall -Werror -Wextra -g
 INCLUDES=-I ../libft/includes
 LIBS=-L ../libft -l ft
@@ -23,6 +23,7 @@ SRC=bot.c \
 	fd.c \
 	game.c \
 	gfx.c \
+	gfx_msg.c \
 	look.c \
 	move.c \
 	obj.c \
