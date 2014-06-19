@@ -6,7 +6,7 @@
 /*   By: vdefilip <vdefilip@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/05/28 15:19:39 by vdefilip          #+#    #+#             */
-/*   Updated: 2014/06/19 11:27:03 by vdefilip         ###   ########.fr       */
+/*   Updated: 2014/06/19 13:01:21 by vdefilip         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,9 @@ static int		opt_error(char *str, int val, char *arg)
 
 static int		check_opt(t_opt *opt)
 {
-	int		ret;
+	int				ret;
+	t_iterator		iter;
+	char			*team;
 
 	ret = 0;
 	if (opt->width < MIN_W || opt->width > MAX_W)
@@ -69,6 +71,12 @@ static int		check_opt(t_opt *opt)
 	{
 		fprintf(stderr, "ERROR [ options ] : Missing team.\n");
 		ret = -1;
+	}
+	iter = NULL;
+	while ((team = (char *)ft_lst_iter_next_content(opt->team_name, &iter)))
+	{
+		if (ft_strequ(team, "GRAPHIC"))
+			ret = opt_error("Invalid team name", 0, team);
 	}
 	if (opt->limit <= 0 || opt->limit > MAX_LIMIT)
 		ret = opt_error("Invalid client limit", opt->limit, NULL);

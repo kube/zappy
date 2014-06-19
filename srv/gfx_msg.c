@@ -6,7 +6,7 @@
 /*   By: vdefilip <vdefilip@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/06/18 16:49:50 by vdefilip          #+#    #+#             */
-/*   Updated: 2014/06/19 12:26:44 by vdefilip         ###   ########.fr       */
+/*   Updated: 2014/06/19 16:28:46 by vdefilip         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,24 @@ void			msz(t_env *e, int fd)
 	ft_strcat(e->fds[fd].buf_write, buf);
 }
 
-void			bct(t_env *e, int fd, char **req)
+static int		get_sq_arg(t_env *e, int fd, char **req)
+{
+	int		sq;
+
+	if (req[1] == NULL || req[2] == NULL)
+	{
+		printf("Client #%d (GFX): Invalid request (too few arguments)\n", fd);
+		return (-1);
+	}
+	if ((sq = (ft_atoi(req[2]) * e->opt.width) + ft_atoi(req[1])) >= e->n_sq)
+	{
+		printf("Client #%d (GFX): Invalid request (invalid arguments)\n", fd);
+		return (-1);
+	}
+	return (sq);
+}
+
+void			bct(t_env *e, int fd, char **req, int square)
 {
 	t_iterator		iter;
 	t_obj			*o;
@@ -38,22 +55,19 @@ void			bct(t_env *e, int fd, char **req)
 	int				sq;
 
 	(void)e;
-	if (req[1] == NULL || req[2] == NULL)
+	if (req != NULL)
 	{
-		printf("Gfx client #%d :  Invalid request (too few arguments)\n", fd);
-		return ;
+		if ((sq = get_sq_arg(e, fd, req)) == -1)
+			return ;
 	}
-	if ((sq = (ft_atoi(req[2]) * e->opt.width) + ft_atoi(req[1])) >= e->n_sq)
-	{
-		printf("Gfx client #%d :  Invalid request (invalid arguments)\n", fd);
-		return ;
-	}
+	else
+		sq = square;
 	ft_bzero(obj, sizeof(int) * 7);
 	iter = NULL;
 	while ((o = (t_obj *)ft_lst_iter_next_content(e->board[sq].obj, &iter)))
 		obj[o->type]++;
-	sprintf(buf, "bct %s %s %d %d %d %d %d %d %d\n",
-		req[1], req[2],
+	sprintf(buf, "bct %d %d %d %d %d %d %d %d %d\n",
+		sq / e->opt.width, sq % e->opt.width,
 		obj[0], obj[1], obj[2], obj[3], obj[4], obj[5], obj[6]);
 	ft_strcat(e->fds[fd].buf_write, buf);
 }
@@ -101,29 +115,34 @@ static t_bot	*get_bot_by_id_arg(t_env *e, int fd, char **req)
 
 	if (req[1] == NULL)
 	{
-		printf("Gfx client #%d :  Invalid request (too few arguments)\n", fd);
+		printf("Client #%d (GFX): Invalid request (too few arguments)\n", fd);
 		return (NULL);
 	}
 	if (req[1][0] != '#')
 	{
-		printf("Gfx client #%d :  Invalid request (invalid arguments)\n", fd);
+		printf("Client #%d (GFX): Invalid request (invalid arguments)\n", fd);
 		return (NULL);
 	}
 	if ((bot = get_bot_by_id(e, ft_atoi(&req[1][1]))) == NULL)
 	{
-		printf("Gfx client #%d :  Invalid request (invalid bot id)\n", fd);
+		printf("Client #%d (GFX): Invalid request (invalid bot id)\n", fd);
 		return (NULL);
 	}
 	return (bot);
 }
 
-void			ppo(t_env *e, int fd, char **req)
+void			ppo(t_env *e, int fd, char **req, t_bot *b)
 {
 	char			buf[128];
 	t_bot			*bot;
 
-	if ((bot = get_bot_by_id_arg(e, fd, req)) == NULL)
-		return ;
+	if (req != NULL)
+	{
+		if ((bot = get_bot_by_id_arg(e, fd, req)) == NULL)
+			return ;
+	}
+	else
+		bot = b;
 	sprintf(buf, "ppo #%d %d %d %d\n",
 		bot->id,
 		bot->sq % e->opt.width, bot->sq / e->opt.width,
@@ -131,20 +150,25 @@ void			ppo(t_env *e, int fd, char **req)
 	ft_strcat(e->fds[fd].buf_write, buf);
 }
 
-void			plv(t_env *e, int fd, char **req)
+void			plv(t_env *e, int fd, char **req, t_bot *b)
 {
 	char			buf[128];
 	t_bot			*bot;
 
-	if ((bot = get_bot_by_id_arg(e, fd, req)) == NULL)
-		return ;
+	if (req != NULL)
+	{
+		if ((bot = get_bot_by_id_arg(e, fd, req)) == NULL)
+			return ;
+	}
+	else
+		bot = b;
 	sprintf(buf, "plv #%d %d\n",
 		bot->id,
 		bot->level);
 	ft_strcat(e->fds[fd].buf_write, buf);
 }
 
-void			pin(t_env *e, int fd, char **req)
+void			pin(t_env *e, int fd, char **req, t_bot *b)
 {
 	t_iterator		iter;
 	t_bot			*bot;
@@ -152,8 +176,13 @@ void			pin(t_env *e, int fd, char **req)
 	int				obj[7];
 	char			buf[128];
 
-	if ((bot = get_bot_by_id_arg(e, fd, req)) == NULL)
-		return ;
+	if (req != NULL)
+	{
+		if ((bot = get_bot_by_id_arg(e, fd, req)) == NULL)
+			return ;
+	}
+	else
+		bot = b;
 	ft_bzero(obj, sizeof(int) * 7);
 	obj[0] = bot->life_unit / FOOD_UNIT;
 	iter = NULL;
@@ -162,13 +191,7 @@ void			pin(t_env *e, int fd, char **req)
 	sprintf(buf, "pin #%d %d %d %d %d %d %d %d %d %d\n",
 		bot->id,
 		bot->sq % e->opt.width, bot->sq / e->opt.width,
-		obj[0],
-		obj[1],
-		obj[2],
-		obj[3],
-		obj[4],
-		obj[5],
-		obj[6]);
+		obj[0], obj[1], obj[2], obj[3], obj[4], obj[5], obj[6]);
 	ft_strcat(e->fds[fd].buf_write, buf);
 }
 
@@ -186,13 +209,13 @@ void			sst(t_env *e, int fd, char **req)
 
 	if (req[1] == NULL)
 	{
-		printf("Gfx client #%d :  Invalid request (too few arguments)\n", fd);
+		printf("Client #%d (GFX): Invalid request (too few arguments)\n", fd);
 		return ;
 	}
 	t = ft_atoi(req[1]);
 	if (t < 1 || t > MAX_T)
 	{
-		printf("Gfx client #%d :  Invalid request (1 <= t <= %d\n", fd, MAX_T);
+		printf("Client #%d (GFX): Invalid request (1 <= t <= %d\n", fd, MAX_T);
 		return ;
 	}
 	e->opt.t = t;
@@ -355,4 +378,62 @@ void			sbp(t_env *e, int fd)
 
 	sprintf(buf, "sbp\n");
 	ft_strcat(e->fds[fd].buf_write, buf);
+}
+
+void			notify_all_gfx_pnw(t_env *e, t_bot *bot)
+{
+	t_iterator		iter;
+	t_gfx			*gfx;
+
+	iter = NULL;
+	while ((gfx = (t_gfx *)ft_lst_iter_next_content(e->gfx_lst, &iter)))
+		pnw(e, gfx->fd, bot);
+}
+
+void			notify_all_gfx_ppo(t_env *e, t_bot *bot)
+{
+	t_iterator		iter;
+	t_gfx			*gfx;
+
+	iter = NULL;
+	while ((gfx = (t_gfx *)ft_lst_iter_next_content(e->gfx_lst, &iter)))
+		ppo(e, gfx->fd, NULL, bot);
+}
+
+void		notify_all_gfx_take(t_env *e, t_bot *bot, int type)
+{
+	t_iterator		iter;
+	t_gfx			*gfx;
+
+	iter = NULL;
+	while ((gfx = (t_gfx *)ft_lst_iter_next_content(e->gfx_lst, &iter)))
+	{
+		pgt(e, gfx->fd, bot, type);
+		pin(e, gfx->fd, NULL, bot);
+		bct(e, gfx->fd, NULL, bot->sq);
+	}
+}
+
+void		notify_all_gfx_put(t_env *e, t_bot *bot, int type)
+{
+	t_iterator		iter;
+	t_gfx			*gfx;
+
+	iter = NULL;
+	while ((gfx = (t_gfx *)ft_lst_iter_next_content(e->gfx_lst, &iter)))
+	{
+		pdr(e, gfx->fd, bot, type);
+		pin(e, gfx->fd, NULL, bot);
+		bct(e, gfx->fd, NULL, bot->sq);
+	}
+}
+
+void		notify_all_gfx_pdi(t_env *e, t_bot *bot)
+{
+	t_iterator		iter;
+	t_gfx			*gfx;
+
+	iter = NULL;
+	while ((gfx = (t_gfx *)ft_lst_iter_next_content(e->gfx_lst, &iter)))
+		pdi(e, gfx->fd, bot);
 }

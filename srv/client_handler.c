@@ -6,7 +6,7 @@
 /*   By: cfeijoo <cfeijoo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/05/24 17:00:40 by vdefilip          #+#    #+#             */
-/*   Updated: 2014/06/18 14:14:14 by vdefilip         ###   ########.fr       */
+/*   Updated: 2014/06/19 14:31:14 by vdefilip         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,9 @@ static int		check_buf_read(t_env *e, int cs, int type)
 	{
 		if (type == FD_BOT_CLIENT)
 			bot_destroy(e, cs, "Connection closed");
-		else
+		else if (type == FD_GFX_CLIENT)
 			gfx_destroy(e, cs, "Connection closed");
+		fd_destroy(e, cs, "Connection closed");
 	}
 	else
 	{
@@ -55,16 +56,26 @@ void			client_read(t_env *e, int cs)
 		if (type == FD_BOT_CLIENT)
 		{
 			printf("%s", PURPLE);
-			printf("Bot client #%d says [%s]\n", cs, e->fds[cs].buf_read);
+			printf("Client #%d (BOT) [%s]\n", cs, e->fds[cs].buf_read);
 			printf("%s", DEFAULT);
 			bot_parse_request(e, cs, e->fds[cs].buf_read);
 		}
-		else
+		else if (type == FD_GFX_CLIENT)
 		{
 			printf("%s", CYAN);
-			printf("Gfx client #%d says [%s]\n", cs, e->fds[cs].buf_read);
+			printf("Client #%d (GFX) [%s]\n", cs, e->fds[cs].buf_read);
 			printf("%s", DEFAULT);
 			gfx_parse_request(e, cs, e->fds[cs].buf_read);
+		}
+		else
+		{
+			printf("%s", GREEN);
+			printf("Client #%d [%s]\n", cs, e->fds[cs].buf_read);
+			printf("%s", DEFAULT);
+			if (ft_strequ(e->fds[cs].buf_read, "GRAPHIC"))
+				gfx_connection(e, cs);
+			else
+				bot_connection(e, cs, e->fds[cs].buf_read);
 		}
 		ft_bzero(e->fds[cs].buf_read, BUF_SIZE);
 	}

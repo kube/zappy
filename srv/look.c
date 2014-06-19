@@ -6,7 +6,7 @@
 /*   By: vdefilip <vdefilip@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/06/11 16:40:39 by vdefilip          #+#    #+#             */
-/*   Updated: 2014/06/17 19:08:44 by vdefilip         ###   ########.fr       */
+/*   Updated: 2014/06/19 15:31:55 by vdefilip         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,7 @@ void		look(t_env *e, t_bot *bot)
 	}
 	s = ft_strjoin(s, "}\n", FT_JOIN_FREE1);
 	bot->action_timer = LOOK_TIME;
-	printf("Bot client #%d see : %s\n", bot->fd, s);
+	printf("BOT #%d see %s\n", bot->id, s);
 	ft_strcat(bot->buf_action, s);
 	free(s);
 }

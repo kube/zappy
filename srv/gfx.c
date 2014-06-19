@@ -6,7 +6,7 @@
 /*   By: vdefilip <vdefilip@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/06/03 12:28:53 by vdefilip          #+#    #+#             */
-/*   Updated: 2014/06/18 16:30:52 by vdefilip         ###   ########.fr       */
+/*   Updated: 2014/06/19 15:57:21 by vdefilip         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,10 +18,12 @@
 
 t_gfx			*gfx_new(int fd)
 {
-	t_gfx	*new;
+	static int		id = 1;
+	t_gfx			*new;
 
 	new = (t_gfx *)try_void(ft_memalloc(sizeof(*new)), NULL, "malloc");
 	new->fd = fd;
+	new->id = id++;
 	return (new);
 }
 
@@ -43,6 +45,4 @@ void			gfx_destroy(t_env *e, int fd, char *msg)
 			break ;
 		}
 	}
-	fd_clean(&e->fds[fd]);
-	close(fd);
 }

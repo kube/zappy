@@ -6,7 +6,7 @@
 /*   By: vdefilip <vdefilip@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/06/04 19:29:42 by vdefilip          #+#    #+#             */
-/*   Updated: 2014/06/19 11:07:10 by vdefilip         ###   ########.fr       */
+/*   Updated: 2014/06/19 16:14:45 by vdefilip         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,13 +87,13 @@ int			take(t_env *e, t_bot *bot, char *obj_name)
 
 	if ((type = get_obj_type(obj_name)) == -1)
 	{
-		printf("Bot client #%d : Invalid object\n", bot->fd);
+		printf("Client #%d (BOT): Invalid object\n", bot->fd);
 		ft_strcat(e->fds[bot->fd].buf_write, "ko\n");
 		return (-1);
 	}
 	if ((obj = get_obj(e, bot->sq, type)) == NULL)
 	{
-		printf("Bot client #%d : Object not found\n", bot->fd);
+		printf("Client #%d (BOT): Object not found\n", bot->fd);
 		ft_strcat(e->fds[bot->fd].buf_write, "ko\n");
 		return (-1);
 	}
@@ -105,7 +105,8 @@ int			take(t_env *e, t_bot *bot, char *obj_name)
 	else
 		ft_lst_pushend(bot->inventory, obj);
 	bot->action_timer = TAKE_TIME;
-	printf("Bot client #%d take object\n", bot->fd);
+	printf("BOT #%d take %s\n", bot->id, obj_name);
+	notify_all_gfx_take(e, bot, type);
 	ft_strcat(bot->buf_action, "ok\n");
 	return (0);
 }
@@ -118,7 +119,7 @@ int			put(t_env *e, t_bot *bot, char *obj_name)
 
 	if ((type = get_obj_type(obj_name)) == -1)
 	{
-		printf("Bot client #%d : Invalid object\n", bot->fd);
+		printf("Client #%d (BOT): Invalid object\n", bot->fd);
 		ft_strcat(e->fds[bot->fd].buf_write, "ko\n");
 		return (-1);
 	}
@@ -130,12 +131,13 @@ int			put(t_env *e, t_bot *bot, char *obj_name)
 			ft_lst_del_atom(bot->inventory, iter, NULL);
 			ft_lst_pushend(e->board[bot->sq].obj, obj);
 			bot->action_timer = PUT_TIME;
-			printf("Bot client #%d put object\n", bot->fd);
+			printf("BOT #%d put %s\n", bot->id, obj_name);
+			notify_all_gfx_put(e, bot, type);
 			ft_strcat(bot->buf_action, "ok\n");
 			return (0);
 		}
 	}
-	printf("Bot client #%d : Object not found\n", bot->fd);
+	printf("Client #%d (BOT): Object not found\n", bot->fd);
 	ft_strcat(e->fds[bot->fd].buf_write, "ko\n");
 	return (-1);
 }
@@ -162,6 +164,6 @@ void		get_inventory(t_env *e, t_bot *bot)
 		ROCK5, obj[5],
 		ROCK6, obj[6]);
 	bot->action_timer = INVENTORY_TIME;
-	printf("Bot client #%d inventory : %s\n", bot->fd, str);
+	printf("BOT #%d has %s\n", bot->id, str);
 	ft_strcat(bot->buf_action, str);
 }

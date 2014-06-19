@@ -6,7 +6,7 @@
 /*   By: vdefilip <vdefilip@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/06/03 12:23:13 by vdefilip          #+#    #+#             */
-/*   Updated: 2014/06/19 10:53:30 by vdefilip         ###   ########.fr       */
+/*   Updated: 2014/06/19 16:06:15 by vdefilip         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -144,20 +144,9 @@ t_bot			*get_bot_by_id(t_env *e, int id)
 void			bot_destroy(t_env *e, int fd, char *msg)
 {
 	t_bot			*bot;
-	t_iterator		iter;
-	int				*f;
 
 	if ((bot = get_bot_by_fd(e, fd)) != NULL)
 		unconnect_bot(e, bot);
-	iter = NULL;
-	while ((f = (int *)ft_lst_iter_next_content(e->bot_fd_lst, &iter)))
-	{
-		if (*f == fd)
-		{
-			ft_lst_del_atom(e->bot_fd_lst, iter, free);
-			break ;
-		}
-	}
 	printf("Client #%d", fd);
 	if (bot)
 		printf(" (BOT #%d)", bot->id);
@@ -165,7 +154,5 @@ void			bot_destroy(t_env *e, int fd, char *msg)
 	if (msg)
 		printf(": %s", msg);
 	printf("\n");
-	fd_clean(&e->fds[fd]);
-	close(fd);
 }
 

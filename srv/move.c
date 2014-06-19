@@ -6,7 +6,7 @@
 /*   By: vdefilip <vdefilip@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/06/11 11:07:55 by vdefilip          #+#    #+#             */
-/*   Updated: 2014/06/17 19:06:57 by vdefilip         ###   ########.fr       */
+/*   Updated: 2014/06/19 16:09:46 by vdefilip         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,8 @@ void			turn_left(t_env *e, t_bot *bot)
 	if (bot->dir == 0)
 		bot->dir = 4;
 	bot->action_timer = TURN_LEFT_TIME;
-	printf("Bot client #%d turn left\n", bot->fd);
+	printf("BOT #%d turn left\n", bot->id);
+	notify_all_gfx_ppo(e, bot);
 	ft_strcat(bot->buf_action, "ok\n");
 }
 
@@ -52,7 +53,8 @@ void			turn_right(t_env *e, t_bot *bot)
 	if (bot->dir == 5)
 		bot->dir = 1;
 	bot->action_timer = TURN_RIGHT_TIME;
-	printf("Bot client #%d turn right\n", bot->fd);
+	printf("BOT #%d turn right\n", bot->id);
+	notify_all_gfx_ppo(e, bot);
 	ft_strcat(bot->buf_action, "ok\n");
 }
 
@@ -70,6 +72,7 @@ void			step(t_env *e, t_bot *bot)
 		sq = get_south(e, bot->sq);
 	move(e, bot, sq);
 	bot->action_timer = STEP_TIME;
-	printf("Bot client #%d step\n", bot->fd);
+	printf("BOT #%d step\n", bot->id);
+	notify_all_gfx_ppo(e, bot);
 	ft_strcat(bot->buf_action, "ok\n");
 }

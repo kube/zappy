@@ -6,7 +6,7 @@
 /*   By: cfeijoo <cfeijoo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/05/24 17:00:41 by vdefilip          #+#    #+#             */
-/*   Updated: 2014/06/19 12:27:21 by vdefilip         ###   ########.fr       */
+/*   Updated: 2014/06/19 16:28:45 by vdefilip         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,15 +19,14 @@
 #define CONNEXION_QUEUE   42
 
 # define FD_FREE          0
-# define FD_BOT_SERVER    1
-# define FD_GFX_SERVER    2
-# define FD_BOT_CLIENT    3
-# define FD_GFX_CLIENT    4
+# define FD_SRV           1
+# define FD_BOT_SRV       2
+# define FD_GFX_SRV       3
+# define FD_CLIENT        4
+# define FD_BOT_CLIENT    5
+# define FD_GFX_CLIENT    6
 
-# define FD_SERVER        1
-# define FD_CLIENT        3
-
-# define DEFAULT_BOT_PORT 1942
+# define DEFAULT_BOT_PORT 1984
 # define DEFAULT_GFX_PORT 1984
 # define DEFAULT_W        30
 # define DEFAULT_H        20
@@ -41,7 +40,7 @@
 # define MAX_LIMIT  20
 # define MAX_T      100
 
-# define BUF_SIZE   4096
+# define BUF_SIZE   65536
 
 # define DEFAULT   "\033[0m"
 # define HIGHLIGHT "\033[1m"
@@ -114,6 +113,7 @@ typedef struct	s_opt
 
 typedef struct	s_gfx
 {
+	int			id;
 	int			fd;
 }				t_gfx;
 
@@ -175,19 +175,17 @@ typedef struct	s_env
 	int			res;
 	fd_set		fd_read;
 	fd_set		fd_write;
+	t_fd		*fds;
+	int			srv;
 	int			gfx_srv;
 	int			bot_srv;
-	t_fd		*fds;
-
+	t_list		*client_lst;
 	t_list		*gfx_lst;
-
 	int			n_sq;
 	t_list		*team;
 	t_list		*bot_fd_lst;
 	t_sq		*board;
 }				t_env;
-
-typedef void (*t_accept)(t_env *);
 
 int				try_int(int res, int err, char *str);
 void			*try_void(void *res, void *err, char *str);
@@ -196,6 +194,7 @@ int				dir_rand();
 
 void			get_opt(int ac, char **av, t_opt *opt);
 
+void			fd_destroy(t_env *e, int fd, char *msg);
 void			fd_clean(t_fd *fd);
 void			fd_watch(t_env *e, int fd);
 void			fd_check(t_env *e, int fd);
@@ -209,6 +208,9 @@ t_bot			*get_bot_by_id(t_env *e, int id);
 void			bot_destroy(t_env *e, int fd, char *msg);
 t_gfx			*gfx_new(int fd);
 void			gfx_destroy(t_env *e, int fd, char *msg);
+
+void			gfx_connection(t_env *e, int fd);
+void			bot_connection(t_env *e, int fd, char *team_name);
 
 void			client_read(t_env *e, int cs);
 void			client_write(t_env *e, int cs);
@@ -240,12 +242,12 @@ t_bot			*connect_bot(t_env *e, t_team *team);
 void			timer(t_env *e, t_bot *bot);
 
 void			msz(t_env *e, int fd);
-void			bct(t_env *e, int fd, char **req);
+void			bct(t_env *e, int fd, char **req, int square);
 void			mct(t_env *e, int fd);
 void			tna(t_env *e, int fd);
-void			ppo(t_env *e, int fd, char **req);
-void			plv(t_env *e, int fd, char **req);
-void			pin(t_env *e, int fd, char **req);
+void			ppo(t_env *e, int fd, char **req, t_bot *b);
+void			plv(t_env *e, int fd, char **req, t_bot *b);
+void			pin(t_env *e, int fd, char **req, t_bot *b);
 void			sgt(t_env *e, int fd);
 void			sst(t_env *e, int fd, char **req);
 
@@ -266,5 +268,11 @@ void			seg(t_env *e, int fd, t_team *team);
 void			smg(t_env *e, int fd, char *msg);
 void			suc(t_env *e, int fd);
 void			sbp(t_env *e, int fd);
+
+void			notify_all_gfx_pnw(t_env *e, t_bot *bot);
+void			notify_all_gfx_ppo(t_env *e, t_bot *bot);
+void			notify_all_gfx_take(t_env *e, t_bot *bot, int type);
+void			notify_all_gfx_put(t_env *e, t_bot *bot, int type);
+void			notify_all_gfx_pdi(t_env *e, t_bot *bot);
 
 #endif

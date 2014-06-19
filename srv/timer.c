@@ -6,7 +6,7 @@
 /*   By: vdefilip <vdefilip@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/06/13 11:02:20 by vdefilip          #+#    #+#             */
-/*   Updated: 2014/06/17 19:01:34 by vdefilip         ###   ########.fr       */
+/*   Updated: 2014/06/19 16:18:44 by vdefilip         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ void			timer(t_env *e, t_bot *bot)
 	if ((bot->life_unit -= unit) <= 0)
 	{
 		printf("Bot client #%d is dead\n", bot->fd);
+		notify_all_gfx_pdi(e, bot);
 		ft_strcat(e->fds[bot->fd].buf_write, "mort\n");
 	}
 	if (bot->action_timer > 0 && (bot->action_timer -= unit) <= 0)
