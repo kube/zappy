@@ -6,7 +6,7 @@
 /*   By: cfeijoo <cfeijoo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/05/28 02:26:49 by cfeijoo           #+#    #+#             */
-/*   Updated: 2014/06/18 17:17:07 by vdefilip         ###   ########.fr       */
+/*   Updated: 2014/06/19 11:03:38 by vdefilip         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -145,5 +145,19 @@ void			gfx_parse_request(t_env *e, int fd, char *str)
 		msz(e, fd);
 	else if (ft_strequ(req[0], "bct"))
 		bct(e, fd, req);
+	else if (ft_strequ(req[0], "mct"))
+		mct(e, fd);
+	else if (ft_strequ(req[0], "tna"))
+		tna(e, fd);
+	else if (ft_strequ(req[0], "ppo"))
+		ppo(e, fd, req);
+	else if (ft_strequ(req[0], "plv"))
+		plv(e, fd, req);
+	else if (ft_strequ(req[0], "pin"))
+		pin(e, fd, req);
+	else if (ft_strequ(req[0], "sgt"))
+		sgt(e, fd);
+	else if (ft_strequ(req[0], "sst"))
+		sst(e, fd, req);
 	ft_free_strtab(req);
 }

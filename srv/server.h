@@ -6,7 +6,7 @@
 /*   By: cfeijoo <cfeijoo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/05/24 17:00:41 by vdefilip          #+#    #+#             */
-/*   Updated: 2014/06/18 17:17:37 by vdefilip         ###   ########.fr       */
+/*   Updated: 2014/06/19 12:27:21 by vdefilip         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,13 +29,15 @@
 
 # define DEFAULT_BOT_PORT 1942
 # define DEFAULT_GFX_PORT 1984
-# define DEFAULT_WIDTH    30
-# define DEFAULT_HEIGHT   20
+# define DEFAULT_W        30
+# define DEFAULT_H        20
 # define DEFAULT_LIMIT    10
 # define DEFAULT_T        100
 
-# define MAX_WIDTH  100
-# define MAX_HEIGHT 100
+# define MIN_W      10
+# define MIN_H      10
+# define MAX_W      100
+# define MAX_H      100
 # define MAX_LIMIT  20
 # define MAX_T      100
 
@@ -203,6 +205,7 @@ t_obj			*obj_new(int type);
 t_bot			*bot_new(t_team *team);
 void			bot_iter_all_connected_and_queued(t_env *e, void (*fct)());
 t_bot			*get_bot_by_fd(t_env *e, int fd);
+t_bot			*get_bot_by_id(t_env *e, int id);
 void			bot_destroy(t_env *e, int fd, char *msg);
 t_gfx			*gfx_new(int fd);
 void			gfx_destroy(t_env *e, int fd, char *msg);
@@ -238,5 +241,30 @@ void			timer(t_env *e, t_bot *bot);
 
 void			msz(t_env *e, int fd);
 void			bct(t_env *e, int fd, char **req);
+void			mct(t_env *e, int fd);
+void			tna(t_env *e, int fd);
+void			ppo(t_env *e, int fd, char **req);
+void			plv(t_env *e, int fd, char **req);
+void			pin(t_env *e, int fd, char **req);
+void			sgt(t_env *e, int fd);
+void			sst(t_env *e, int fd, char **req);
+
+void			pnw(t_env *e, int fd, t_bot *bot);
+void			pex(t_env *e, int fd, t_bot *bot);
+void			pbc(t_env *e, int fd, t_bot *bot, char *msg);
+void			pic(t_env *e, int fd, t_bot *bot, int *ids);
+void			pie(t_env *e, int fd, t_bot *bot, int res);
+void			pfk(t_env *e, int fd, t_bot *bot);
+void			pdr(t_env *e, int fd, t_bot *bot, int type);
+void			pgt(t_env *e, int fd, t_bot *bot, int type);
+void			pdi(t_env *e, int fd, t_bot *bot);
+void			enw(t_env *e, int fd, t_bot *bot, t_bot *new_bot);
+void			eht(t_env *e, int fd, t_bot *bot);
+void			ebo(t_env *e, int fd, t_bot *bot);
+void			edi(t_env *e, int fd, t_bot *bot);
+void			seg(t_env *e, int fd, t_team *team);
+void			smg(t_env *e, int fd, char *msg);
+void			suc(t_env *e, int fd);
+void			sbp(t_env *e, int fd);
 
 #endif

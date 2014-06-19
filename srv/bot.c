@@ -6,7 +6,7 @@
 /*   By: vdefilip <vdefilip@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/06/03 12:23:13 by vdefilip          #+#    #+#             */
-/*   Updated: 2014/06/17 13:55:18 by vdefilip         ###   ########.fr       */
+/*   Updated: 2014/06/19 10:53:30 by vdefilip         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,6 +115,26 @@ t_bot			*get_bot_by_fd(t_env *e, int fd)
 		while ((b = (t_bot *)ft_lst_iter_next_content(t->connected, &iter_b)))
 		{
 			if (b->fd == fd)
+				return (b);
+		}
+	}
+	return (NULL);
+}
+
+t_bot			*get_bot_by_id(t_env *e, int id)
+{
+	t_iterator		iter_t;
+	t_iterator		iter_b;
+	t_team			*t;
+	t_bot			*b;
+
+	iter_t = NULL;
+	while ((t = (t_team *)ft_lst_iter_next_content(e->team, &iter_t)))
+	{
+		iter_b = NULL;
+		while ((b = (t_bot *)ft_lst_iter_next_content(t->connected, &iter_b)))
+		{
+			if (b->id == id)
 				return (b);
 		}
 	}

@@ -6,7 +6,7 @@
 /*   By: vdefilip <vdefilip@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/06/04 19:29:42 by vdefilip          #+#    #+#             */
-/*   Updated: 2014/06/18 17:25:56 by vdefilip         ###   ########.fr       */
+/*   Updated: 2014/06/19 11:07:10 by vdefilip         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -154,8 +154,13 @@ void		get_inventory(t_env *e, t_bot *bot)
 	while ((o = (t_obj *)ft_lst_iter_next_content(bot->inventory, &iter)))
 		obj[o->type]++;
 	sprintf(str, "{%s %d, %s %d, %s %d, %s %d, %s %d, %s %d, %s %d}",
-	FOOD, obj[0], ROCK1, obj[1], ROCK2, obj[2], ROCK3,
-	obj[3], ROCK4, obj[4], ROCK5, obj[5], ROCK6, obj[6]);
+		FOOD, obj[0],
+		ROCK1, obj[1],
+		ROCK2, obj[2],
+		ROCK3, obj[3],
+		ROCK4, obj[4],
+		ROCK5, obj[5],
+		ROCK6, obj[6]);
 	bot->action_timer = INVENTORY_TIME;
 	printf("Bot client #%d inventory : %s\n", bot->fd, str);
 	ft_strcat(bot->buf_action, str);

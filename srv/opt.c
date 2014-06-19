@@ -6,7 +6,7 @@
 /*   By: vdefilip <vdefilip@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/05/28 15:19:39 by vdefilip          #+#    #+#             */
-/*   Updated: 2014/06/03 15:02:56 by vdefilip         ###   ########.fr       */
+/*   Updated: 2014/06/19 11:27:03 by vdefilip         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,9 +35,9 @@ static void		usage(t_opt *opt)
 	fprintf(stderr, "\t-g gfx's client port ");
 	fprintf(stderr, "(default:%d)\n", DEFAULT_GFX_PORT);
 	fprintf(stderr, "\t-x map width ");
-	fprintf(stderr, "(default:%d, max:%d)\n", DEFAULT_WIDTH, MAX_WIDTH);
+	fprintf(stderr, "(default:%d, min:%d, max:%d)\n", DEFAULT_W, MIN_W, MAX_W);
 	fprintf(stderr, "\t-y map height ");
-	fprintf(stderr, "(default:%d, max:%d)\n", DEFAULT_HEIGHT, MAX_HEIGHT);
+	fprintf(stderr, "(default:%d, min:%d, max:%d)\n", DEFAULT_H, MIN_H, MAX_H);
 	fprintf(stderr, "\t-c bot's client limitation ");
 	fprintf(stderr, "(default:%d, max:%d)\n", DEFAULT_LIMIT, MAX_LIMIT);
 	fprintf(stderr, "\t-h display this help\n\t-t time unit ");
@@ -61,9 +61,9 @@ static int		check_opt(t_opt *opt)
 	int		ret;
 
 	ret = 0;
-	if (opt->width <= 0 || opt->width > MAX_WIDTH)
+	if (opt->width < MIN_W || opt->width > MAX_W)
 		ret = opt_error("Invalid width", opt->width, NULL);
-	if (opt->height <= 0 || opt->height > MAX_HEIGHT)
+	if (opt->height < MIN_H || opt->height > MAX_H)
 		ret = opt_error("Invalid height", opt->height, NULL);
 	if (opt->team_name->len == 0)
 	{
@@ -72,7 +72,7 @@ static int		check_opt(t_opt *opt)
 	}
 	if (opt->limit <= 0 || opt->limit > MAX_LIMIT)
 		ret = opt_error("Invalid client limit", opt->limit, NULL);
-	if (opt->t <= 0 || opt->t > MAX_T)
+	if (opt->t < 1 || opt->t > MAX_T)
 		ret = opt_error("Invalid time", opt->t, NULL);
 	return (ret);
 }
@@ -113,8 +113,8 @@ void			get_opt(int ac, char **av, t_opt *opt)
 	opt->prog_name = av[0];
 	opt->bot_port = DEFAULT_BOT_PORT;
 	opt->gfx_port = DEFAULT_GFX_PORT;
-	opt->width = DEFAULT_WIDTH;
-	opt->height = DEFAULT_HEIGHT;
+	opt->width = DEFAULT_W;
+	opt->height = DEFAULT_H;
 	opt->team_name = ft_lst_new(NULL);
 	opt->limit = DEFAULT_LIMIT;
 	opt->t = DEFAULT_T;
