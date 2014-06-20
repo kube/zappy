@@ -6,7 +6,7 @@
 /*   By: cfeijoo <cfeijoo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/05/24 17:00:41 by vdefilip          #+#    #+#             */
-/*   Updated: 2014/06/20 14:44:13 by vdefilip         ###   ########.fr       */
+/*   Updated: 2014/06/20 15:13:55 by vdefilip         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,8 +97,8 @@
 # define EXPULSE_TIME 7
 # define BROADCAST_TIME 7
 # define INCANTATION_TIME 300
-# define FORK_TIME 42
-# define EGG_TIME 600
+# define FORK_TIME 10		// TO RESTAURE 42
+# define EGG_TIME 10		// TO RESTAURE 600
 
 # define STATUS_NONE        0
 # define STATUS_FORK        1
