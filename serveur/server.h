@@ -6,7 +6,7 @@
 /*   By: cfeijoo <cfeijoo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/05/24 17:00:41 by vdefilip          #+#    #+#             */
-/*   Updated: 2014/06/20 12:19:24 by vdefilip         ###   ########.fr       */
+/*   Updated: 2014/06/20 14:44:13 by vdefilip         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,6 +98,7 @@
 # define BROADCAST_TIME 7
 # define INCANTATION_TIME 300
 # define FORK_TIME 42
+# define EGG_TIME 600
 
 # define STATUS_NONE        0
 # define STATUS_FORK        1
@@ -142,11 +143,14 @@ typedef struct	s_team
 	char		*name;
 	int			limit;
 	t_list		*connected;
-	t_list*		unconnected;
-	t_list*		queue;
+	t_list		*unconnected;
+	t_list		*queue;
+	t_list		*egg;
 }				t_team;
 
-typedef struct	s_bot
+typedef struct	s_bot	t_bot;
+
+struct			s_bot
 {
 	int			id;
 	t_team		*team;
@@ -157,12 +161,13 @@ typedef struct	s_bot
 	int			life_unit;
 	t_list		*inventory;
 	int			level;
+	t_bot		*parent;
 	t_tv		time;
 	long		timer;
 	long		food_timer;
 	long		action_timer;
 	char		buf_action[BUF_SIZE + 1];
-}				t_bot;
+};
 
 typedef struct	s_obj
 {
@@ -212,7 +217,7 @@ void			fd_iter_all(t_env *e, void (*fct)());
 
 t_obj			*obj_new(int type);
 t_bot			*bot_new(t_team *team);
-void			bot_iter_all_connected_and_queued(t_env *e, void (*fct)());
+void			bot_iter_all_connected_queued_egg(t_env *e, void (*fct)());
 t_bot			*get_bot_by_fd(t_env *e, int fd);
 t_bot			*get_bot_by_id(t_env *e, int id);
 void			bot_destroy(t_env *e, int fd, char *msg);
@@ -285,5 +290,12 @@ void			notify_all_gfx_take(t_env *e, t_bot *bot, int type);
 void			notify_all_gfx_put(t_env *e, t_bot *bot, int type);
 void			notify_all_gfx_pdi(t_env *e, t_bot *bot);
 void			notify_all_gfx_pex(t_env *e, t_bot *bot);
+void			notify_all_gfx_pbc(t_env *e, t_bot *bot, char *msg);
+void			notify_all_gfx_pfk(t_env *e, t_bot *bot);
+void			notify_all_gfx_enw(t_env *e, t_bot *bot, t_bot *egg);
+void			notify_all_gfx_eht(t_env *e, t_bot *bot);
+void			notify_all_gfx_edi(t_env *e, t_bot *bot);
+void			notify_all_gfx_ebo(t_env *e, t_bot *bot);
+
 
 #endif

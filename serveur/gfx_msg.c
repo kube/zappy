@@ -6,7 +6,7 @@
 /*   By: vdefilip <vdefilip@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/06/18 16:49:50 by vdefilip          #+#    #+#             */
-/*   Updated: 2014/06/20 10:52:17 by vdefilip         ###   ########.fr       */
+/*   Updated: 2014/06/20 14:38:19 by vdefilip         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -446,5 +446,65 @@ void		notify_all_gfx_pex(t_env *e, t_bot *bot)
 	iter = NULL;
 	while ((gfx = (t_gfx *)ft_lst_iter_next_content(e->gfx_lst, &iter)))
 		pex(e, gfx->fd, bot);
+}
+
+void		notify_all_gfx_pbc(t_env *e, t_bot *bot, char *msg)
+{
+	t_iterator		iter;
+	t_gfx			*gfx;
+
+	iter = NULL;
+	while ((gfx = (t_gfx *)ft_lst_iter_next_content(e->gfx_lst, &iter)))
+		pbc(e, gfx->fd, bot, msg);
+}
+
+void		notify_all_gfx_pfk(t_env *e, t_bot *bot)
+{
+	t_iterator		iter;
+	t_gfx			*gfx;
+
+	iter = NULL;
+	while ((gfx = (t_gfx *)ft_lst_iter_next_content(e->gfx_lst, &iter)))
+		pfk(e, gfx->fd, bot);
+}
+
+void		notify_all_gfx_enw(t_env *e, t_bot *bot, t_bot *egg)
+{
+	t_iterator		iter;
+	t_gfx			*gfx;
+
+	iter = NULL;
+	while ((gfx = (t_gfx *)ft_lst_iter_next_content(e->gfx_lst, &iter)))
+		enw(e, gfx->fd, bot, egg);
+}
+
+void		notify_all_gfx_eht(t_env *e, t_bot *bot)
+{
+	t_iterator		iter;
+	t_gfx			*gfx;
+
+	iter = NULL;
+	while ((gfx = (t_gfx *)ft_lst_iter_next_content(e->gfx_lst, &iter)))
+		eht(e, gfx->fd, bot);
+}
+
+void		notify_all_gfx_edi(t_env *e, t_bot *bot)
+{
+	t_iterator		iter;
+	t_gfx			*gfx;
+
+	iter = NULL;
+	while ((gfx = (t_gfx *)ft_lst_iter_next_content(e->gfx_lst, &iter)))
+		edi(e, gfx->fd, bot);
+}
+
+void		notify_all_gfx_ebo(t_env *e, t_bot *bot)
+{
+	t_iterator		iter;
+	t_gfx			*gfx;
+
+	iter = NULL;
+	while ((gfx = (t_gfx *)ft_lst_iter_next_content(e->gfx_lst, &iter)))
+		ebo(e, gfx->fd, bot);
 }
 

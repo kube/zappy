@@ -6,7 +6,7 @@
 /*   By: cfeijoo <cfeijoo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/05/24 17:00:40 by vdefilip          #+#    #+#             */
-/*   Updated: 2014/06/17 18:21:41 by vdefilip         ###   ########.fr       */
+/*   Updated: 2014/06/20 14:42:50 by vdefilip         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ int					main(int ac, char **av)
 		e.res = select(e.max + 1, &e.fd_read, &e.fd_write, NULL, &t);
 		try_int(e.res, -1, "select");
 		fd_iter_all(&e, fd_check);
-		bot_iter_all_connected_and_queued(&e, timer);
+		bot_iter_all_connected_queued_egg(&e, timer);
 	}
 	return (EXIT_SUCCESS);
 }

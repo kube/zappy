@@ -6,7 +6,7 @@
 /*   By: vdefilip <vdefilip@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/06/04 13:05:23 by vdefilip          #+#    #+#             */
-/*   Updated: 2014/06/19 15:00:37 by vdefilip         ###   ########.fr       */
+/*   Updated: 2014/06/20 13:51:56 by vdefilip         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,6 +112,7 @@ void				init_game(t_env *e)
 		team->unconnected = ft_lst_new(NULL);
 		team->connected = ft_lst_new(NULL);
 		team->queue = ft_lst_new(NULL);
+		team->egg = ft_lst_new(NULL);
 		i = 0;
 		while (i < team->limit)
 		{
