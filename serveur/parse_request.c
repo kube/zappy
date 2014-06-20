@@ -6,7 +6,7 @@
 /*   By: cfeijoo <cfeijoo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/05/28 02:26:49 by cfeijoo           #+#    #+#             */
-/*   Updated: 2014/06/20 15:22:46 by vdefilip         ###   ########.fr       */
+/*   Updated: 2014/06/20 15:58:09 by vdefilip         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ void			gfx_connection(t_env *e, int fd)
 
 	e->fds[fd].type = FD_GFX_CLIENT;
 	ft_lst_pushend(e->gfx_lst, gfx_new(fd));
-	printf("Client #%d: connected as GFX\n", fd);
+	printf("Client #%d: Connected as GFX\n", fd);
 	msz(e, fd);
 	sgt(e, fd);
 	mct(e, fd);
@@ -140,7 +140,7 @@ void			bot_connection(t_env *e, int fd, char *team_name)
 			notify_all_gfx_ebo(e, bot);
 			notify_all_gfx_pnw(e, bot);
 		}
-		printf("Client #%d: connected to BOT #%d\n", fd, bot->id);
+		printf("Client #%d: Connected to BOT #%d\n", fd, bot->id);
 		send_nbr(e, fd);
 		send_dimension(e, fd);
 	}
@@ -327,7 +327,7 @@ void			gfx_parse_request(t_env *e, int fd, char *str)
 
 	req = (char **)try_void(ft_strsplit(str, ' '), NULL, "malloc");
 	if (!req[0])
-		printf("Gfx client #%d : Invalid request (too few arguments)\n", fd);
+		printf("Client #%d (GFX): Invalid request (too few arguments)\n", fd);
 	else if (ft_strequ(req[0], "msz"))
 		msz(e, fd);
 	else if (ft_strequ(req[0], "bct"))
@@ -346,5 +346,7 @@ void			gfx_parse_request(t_env *e, int fd, char *str)
 		sgt(e, fd);
 	else if (ft_strequ(req[0], "sst"))
 		sst(e, fd, req);
+	else
+		suc(e, fd);
 	ft_free_strtab(req);
 }
