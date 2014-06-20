@@ -56,6 +56,8 @@ static int			srv_create(t_env *e, int port, int type)
 	sin.sin_family = AF_INET;
 	sin.sin_addr.s_addr = INADDR_ANY;
 	sin.sin_port = htons(port);
+	try_int(setsockopt(s, SOL_SOCKET, SO_REUSEADDR, &sin, sizeof(sin)), -1,
+		"setsockopt");
 	try_int(bind(s, (struct sockaddr *)&sin, sizeof(sin)), -1, "bind");
 	try_int(listen(s, CONNEXION_QUEUE), -1, "listen");
 	e->fds[s].type = type;
