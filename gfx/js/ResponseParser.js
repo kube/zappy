@@ -43,11 +43,14 @@ var ResponseParser = function(client, game) {
 
 			case 'bct':
 				console.log(a);
-				for (var i = 3; i < 10; i++)
+				for (var i = 3; i < 10; i++) {
 					game.map.blocks[a.i(1)][a.i(2)].ressources[i - 3].update(a.i(i));
+				}
 				break;
 
 			case 'pnw':
+				console.log('PNW');
+				console.log(a);
 				var player = parseInt(a[1].replace('#', ''));
 				game.createBot(player, a.i(2), a.i(3), a.i(3), a.i(4), a[5]);
 				break;

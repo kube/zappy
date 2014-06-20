@@ -1,6 +1,6 @@
 var Bot = function(game, number, x, y, orientation, level, team) {
 	var self = this;
-
+ 
 	this.name = number;
 	this.x;
 	this.y;
@@ -27,23 +27,22 @@ var Bot = function(game, number, x, y, orientation, level, team) {
 		// Mesh position update
 		self.mesh.position.set(block.position.x, 0.3, block.position.y);
 		self.mesh.updateMatrix();
+
+		self.mesh.rotation.set(Math.PI/2, 0, Math.PI/2 * (4 + (o - 3)));
 	}
 
 	function createMesh() {
 
 		self.mesh = new THREE.Mesh(
-			new THREE.CylinderGeometry(0, 0.5, 0.5, 4),
+			new THREE.CylinderGeometry(0, 0.4, 0.4, 4),
 			game.materials.basic);
 
-		self.mesh.position.set(self.position.x, 0.3, self.position.y);
-		self.mesh.updateMatrix();
-		// self.mesh.matrixAutoUpdate = false;
+		self.mesh.scale.x = 0.4;
+		self.mesh.scale.z = 0.1;
 
-		// self.mesh = BABYLON.Mesh.CreateBox("Box", 0.94, game.scene);
-		// self.mesh.position = new BABYLON.Vector3(self.position.x, -0.1, self.position.y);
-		// self.mesh.scaling.y = 0.2;
 		game.scene.add(self.mesh);
 
+		self.setPosition(block.position.x, block.position.y, orientation);
 		self.mesh.onclick = function(e, pick) {
 			// var pickedMesh = pick.pickedMesh;
 			console.log(self);
