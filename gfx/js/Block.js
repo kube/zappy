@@ -26,10 +26,12 @@ var Block = function(map, x, y) {
 	}
 	game.scene.add(this.mesh);
 
-
 	this.displayRessource = function(type) {
 		for (var i in self.ressources)
-			self.ressources[i].mesh.visible = (i == type || type == -1);
+			if (i == type || type == -1)
+				self.ressources[i].display();
+			else
+				self.ressources[i].hide();
 	}
 }
 

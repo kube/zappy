@@ -48,6 +48,16 @@ var Ressource = function(block, x, y, type) {
 		self.quantity -= quantity;
 		refresh();
 	}
+
+	this.display = function() {
+		self.hide();
+		if (self.quantity)
+			self.mesh.visible = true;
+	}
+
+	this.hide = function() {
+		self.mesh.visible = false;
+	}
 }
 
 module.exports = Ressource;
