@@ -72,7 +72,8 @@ var Game = function(options) {
 
 	canvas.addEventListener('click', function(e) {
 		var pick = pickMesh(e.x, e.y);
-		if (pick.object && typeof pick.object.onclick == 'function')
+		if (pick && pick.object
+			&& typeof pick.object.onclick == 'function')
 			pick.object.onclick(e);
 	});
 
