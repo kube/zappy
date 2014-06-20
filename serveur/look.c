@@ -78,16 +78,15 @@ void		look(t_env *e, t_bot *bot)
 		j = 0;
 		while (j < (i * 2 + 1))
 		{
-			if (s[ft_strlen(s) - 1] != '{')
-				s = ft_strjoin(s, ", ", FT_JOIN_FREE1);
 			add_sq_content(e, &s, bot, sq);
+			s = ft_strjoin(s, ", ", FT_JOIN_FREE1);
 			sq = get_right(e, sq, bot->dir);
 			j++;
 		}
 		first_sq = get_top_left(e, first_sq, bot->dir);
 		i++;
 	}
-	s = ft_strjoin(s, "}\n", FT_JOIN_FREE1);
+	ft_strcpy(s + ft_strlen(s) - 2, "}\n");
 	printf("BOT #%d see %s\n", bot->id, s);
 	ft_strcat(bot->buf_action, s);
 	free(s);
