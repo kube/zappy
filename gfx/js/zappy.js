@@ -1,9 +1,9 @@
+global.THREE = THREE;
 var	net = require('net'),
 	gui = require('nw.gui'),
-	Game = require('./Game.js');
-	ResponseParser = require('./ResponseParser.js');
+	Game = require('./js/Game.js');
+	ResponseParser = require('./js/ResponseParser.js');
 
-global.THREE = THREE;
 
 process.on('uncaughtException', function(e) {
 	// console.log(e);

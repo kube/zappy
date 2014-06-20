@@ -59,9 +59,7 @@ var Game = function(options) {
 			})]
 	};
 
-
 	this.bots = [];
-
 
 	pickMesh = function(x, y) {
 		var projector = new THREE.Projector();
@@ -83,8 +81,15 @@ var Game = function(options) {
 
 	window.addEventListener('keydown', function(e) {
 
-		currentDisplayedRessource = (currentDisplayedRessource + 2) % 8 - 1;
-		self.map.displayRessource(currentDisplayedRessource);
+		switch (e.keyCode) {
+
+			case 32:
+				currentDisplayedRessource = (currentDisplayedRessource + 2) % 8 - 1;
+				self.map.displayRessource(currentDisplayedRessource);
+				break;
+
+		}
+
 	});
 
 	function runRenderLoop() {
