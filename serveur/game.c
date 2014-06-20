@@ -63,14 +63,14 @@ static void			board_fill(t_env *e)
 		ft_lst_pushend(e->board[sq_rand(e)].obj, obj_new(OBJ_FOOD));
 		i++;
 	}
-	i = 1;
-	while (i < OBJ_NB)
+	i = 6;
+	while (i > 0)
 	{
 		nb_rock = (i == 1 ? 5 : nb_rock * 2);
 		tmp = nb_rock;
 		while (tmp--)
 			ft_lst_pushend(e->board[sq_rand(e)].obj, obj_new(i));
-		i++;
+		i--;
 	}
 }
 
