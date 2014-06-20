@@ -17,20 +17,25 @@ OBJ=$(SRC:.c=.o)
 
 all: $(NAME)
 
-$(NAME): serveur
+$(NAME): serveur gfx client
+
+gfx:
+	@cd gfx && npm install
+
+client:
+	@cd client && npm install
 
 serveur:
-	@($(MAKE) -C ./srv)
+	make -C ./serveur
 
 clean:
-	@($(MAKE) -C ./srv clean)
+	@($(MAKE) -C ./serveur clean)
 
 fclean:
-	@($(MAKE) -C ./srv fclean)
-	@(rm -rf serveur)
+	make -C ./serveur fclean
+	@cd client && npm run clean
+	@cd gfx && npm run clean
 
 re: fclean all
 
-
-.PHONY: all build clean fclean re v
-
+.PHONY: all build clean serveur client gfx fclean re

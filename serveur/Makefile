@@ -13,8 +13,8 @@
 NAME=serveur
 VERSION=1.1.7
 CFLAGS=-Wall -Werror -Wextra -g
-INCLUDES=-I ../libft/includes
-LIBS=-L ../libft -l ft
+INCLUDES=-I libft/includes
+LIBS=-L libft -l ft
 
 SRC=bot.c \
 	client_handler.c \
@@ -41,12 +41,12 @@ OBJ=$(SRC:.c=.o)
 all: build $(NAME) finish
 
 build:
-	@($(MAKE) -C ../libft)
+	@($(MAKE) -C libft)
 
-$(NAME): $(OBJ) ../libft/libft.a
+$(NAME): $(OBJ) libft/libft.a
 	gcc $(CFLAGS) $(INCLUDES) -o $(NAME) $(OBJ) $(LIBS)
 
-%.o: %.c requests.h server.h ../libft/includes
+%.o: %.c requests.h server.h libft/includes
 	gcc $(CFLAGS) $(INCLUDES) -o $@ -c $<
 
 clean:
@@ -54,7 +54,7 @@ clean:
 
 fclean: clean
 	@(rm -rf $(NAME))
-	@($(MAKE) -C ../libft fclean)
+	@($(MAKE) -C libft fclean)
 
 re: fclean all
 
