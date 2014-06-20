@@ -6,7 +6,7 @@
 /*   By: cfeijoo <cfeijoo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/05/24 17:00:41 by vdefilip          #+#    #+#             */
-/*   Updated: 2014/06/19 16:28:45 by vdefilip         ###   ########.fr       */
+/*   Updated: 2014/06/20 12:19:24 by vdefilip         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,8 +56,12 @@
 # define CYAN      "\033[36m"
 # define WHITE     "\033[37m"
 
+# define X 0
+# define Y 1
+
 # define MAX(a, b) (a > b ? a : b);
 # define MIN(a, b) (a < b ? a : b);
+# define ABS(a) (a < 0 ? -a : a)
 
 # define OBJ_NB    7
 # define OBJ_FOOD  0
@@ -94,6 +98,11 @@
 # define BROADCAST_TIME 7
 # define INCANTATION_TIME 300
 # define FORK_TIME 42
+
+# define STATUS_NONE        0
+# define STATUS_FORK        1
+# define STATUS_EGG         2
+# define STATUS_INCANTATION 3
 
 typedef struct rlimit	t_rlimit;
 typedef struct timeval	t_tv;
@@ -144,6 +153,7 @@ typedef struct	s_bot
 	int			fd;
 	int			sq;
 	int			dir;
+	int			status;
 	int			life_unit;
 	t_list		*inventory;
 	int			level;
@@ -274,5 +284,6 @@ void			notify_all_gfx_ppo(t_env *e, t_bot *bot);
 void			notify_all_gfx_take(t_env *e, t_bot *bot, int type);
 void			notify_all_gfx_put(t_env *e, t_bot *bot, int type);
 void			notify_all_gfx_pdi(t_env *e, t_bot *bot);
+void			notify_all_gfx_pex(t_env *e, t_bot *bot);
 
 #endif

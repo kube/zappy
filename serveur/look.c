@@ -6,7 +6,7 @@
 /*   By: vdefilip <vdefilip@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/06/11 16:40:39 by vdefilip          #+#    #+#             */
-/*   Updated: 2014/06/19 15:31:55 by vdefilip         ###   ########.fr       */
+/*   Updated: 2014/06/20 12:21:15 by vdefilip         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,7 @@ void		look(t_env *e, t_bot *bot)
 	int			first_sq;
 	int			sq;
 
+	bot->action_timer = LOOK_TIME;
 	s = ft_strdup("{");
 	first_sq = bot->sq;
 	i = 0;
@@ -77,17 +78,15 @@ void		look(t_env *e, t_bot *bot)
 		j = 0;
 		while (j < (i * 2 + 1))
 		{
-			if (s[ft_strlen(s) - 1] != '{')
-				s = ft_strjoin(s, ", ", FT_JOIN_FREE1);
 			add_sq_content(e, &s, bot, sq);
+			s = ft_strjoin(s, ", ", FT_JOIN_FREE1);
 			sq = get_right(e, sq, bot->dir);
 			j++;
 		}
 		first_sq = get_top_left(e, first_sq, bot->dir);
 		i++;
 	}
-	s = ft_strjoin(s, "}\n", FT_JOIN_FREE1);
-	bot->action_timer = LOOK_TIME;
+	ft_strcpy(s + ft_strlen(s) - 2, "}\n");
 	printf("BOT #%d see %s\n", bot->id, s);
 	ft_strcat(bot->buf_action, s);
 	free(s);

@@ -6,7 +6,7 @@
 /*   By: cfeijoo <cfeijoo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/05/28 02:26:49 by cfeijoo           #+#    #+#             */
-/*   Updated: 2014/06/19 16:37:49 by vdefilip         ###   ########.fr       */
+/*   Updated: 2014/06/20 12:20:44 by vdefilip         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,6 +123,112 @@ void			bot_connection(t_env *e, int fd, char *team_name)
 	}
 }
 
+int				get_step_sq(t_env *e, t_bot *bot)
+{
+	if (bot->dir == EAST)
+		return (get_east(e, bot->sq));
+	else if (bot->dir == WEST)
+		return (get_west(e, bot->sq));
+	else if (bot->dir == NORTH)
+		return (get_north(e, bot->sq));
+	else
+		return (get_south(e, bot->sq));
+}
+
+void			expulse(t_env *e, t_bot *bot)
+{
+	t_iterator		itr;
+	t_bot			*b;
+	char			buf[128];
+	int				ret;
+
+	bot->action_timer = EXPULSE_TIME;
+	notify_all_gfx_pex(e, bot);
+	ret = 0;
+	itr = NULL;
+	while ((b = (t_bot *)ft_lst_iter_next_content(e->board[bot->sq].bot, &itr)))
+	{
+		if (b != bot && b->status == STATUS_NONE)
+		{
+			ret = 1;
+			move(e, b, get_step_sq(e, bot));
+			notify_all_gfx_ppo(e, bot);
+			sprintf(buf, "deplacement %d\n", (bot->dir + 2) % 4);
+			ft_strcat(e->fds[b->fd].buf_write, buf);
+		}
+	}
+	if (ret == 0)
+		ft_strcat(bot->buf_action, "ko\n");
+	else
+		ft_strcat(bot->buf_action, "ok\n");
+}
+
+int				get_sound_dir(t_env *e, t_bot *bot_dst, t_bot *bot_src)
+{
+	int		dst[2];
+	int		src[2];
+	int		diff[2];
+
+	dst[X] = bot_dst->sq % e->opt.width;
+	dst[Y] = bot_dst->sq / e->opt.width;
+	src[X] = bot_src->sq % e->opt.width;
+	src[Y] = bot_src->sq / e->opt.width;
+	diff[X] = src[X] - dst[X];
+	if (ABS(diff[X]) > e->opt.width / 2)
+		diff[X] = (e->opt.width - diff[X]) * -1;
+	diff[Y] = src[Y] - dst[Y];
+	if (ABS(diff[Y]) > e->opt.height / 2)
+		diff[Y] = (e->opt.height - diff[Y]) * -1;
+	if (diff[X] == 0 && diff[Y] == 0)
+		return (0);
+	if (ABS(diff[X]) > ABS(diff[Y]) * 2)
+	{
+		if (diff[X] < 0)
+			return (3);
+		return (7);
+	}
+	else if (ABS(diff[Y]) > ABS(diff[X]) * 2)
+	{
+		if (diff[Y] < 0)
+			return (1);
+		return (5);
+	}
+	else if (diff[X] < 0)
+	{
+		if (diff[Y] < 0)
+			return (2);
+		return (4);
+	}
+	if (diff[Y] < 0)
+		return (8);
+	return (6);
+}
+
+void			broadcast(t_env *e, t_bot *bot, char *msg)
+{
+	t_iterator		iter_t;
+	t_iterator		iter_b;
+	t_team			*t;
+	t_bot			*b;
+	char		buf[128];
+
+	bot->action_timer = BROADCAST_TIME;
+	iter_t = NULL;
+	while ((t = (t_team *)ft_lst_iter_next_content(e->team, &iter_t)))
+	{
+		iter_b = NULL;
+		while ((b = (t_bot *)ft_lst_iter_next_content(t->connected, &iter_b)))
+		{
+			if (b != bot)
+			{
+				sprintf(buf, "message %d,%s\n", get_sound_dir(e, b, bot), msg);
+				ft_strcat(bot->buf_action, buf);
+			}
+		}
+	}
+	ft_strcat(bot->buf_action, "ok\n");
+}
+
 void			bot_parse_request(t_env *e, int fd, char *str)
 {
 	t_bot		*bot;
@@ -132,7 +238,7 @@ void			bot_parse_request(t_env *e, int fd, char *str)
 	req = (char **)try_void(ft_strsplit(str, ' '), NULL, "malloc");
 	if (!req[0] || ((ft_strequ(req[0], "prend") || ft_strequ(req[0], "pose")
 		|| ft_strequ(req[0], "broadcast")) && !req[1]))
-		printf("Bot client #%d : Invalid request (too few arguments)\n", fd);
+		printf("Client #%d (BOT): Invalid request (too few arguments)\n", fd);
 	else if (bot->life_unit <= 0)
 	{
 		printf("Bot client #%d is dead\n", fd);
@@ -155,9 +261,9 @@ void			bot_parse_request(t_env *e, int fd, char *str)
 	else if (ft_strequ(req[0], "inventaire"))
 		get_inventory(e, bot);
 	else if (ft_strequ(req[0], "expulse"))
-		ft_strcat(e->fds[fd].buf_write, "ko\n");
+		expulse(e, bot);
 	else if (ft_strequ(req[0], "broadcast"))
-		ft_strcat(e->fds[fd].buf_write, "ko\n");
+		broadcast(e, bot, req[1]);
 	else if (ft_strequ(req[0], "incantation"))
 		ft_strcat(e->fds[fd].buf_write, "ko\n");
 	else if (ft_strequ(req[0], "fork"))
