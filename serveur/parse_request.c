@@ -6,7 +6,7 @@
 /*   By: cfeijoo <cfeijoo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/05/28 02:26:49 by cfeijoo           #+#    #+#             */
-/*   Updated: 2014/06/19 16:37:49 by vdefilip         ###   ########.fr       */
+/*   Updated: 2014/06/20 10:53:00 by vdefilip         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,6 +123,46 @@ void			bot_connection(t_env *e, int fd, char *team_name)
 	}
 }
 
+int				get_step_sq(t_env *e, t_bot *bot)
+{
+	if (bot->dir == EAST)
+		return (get_east(e, bot->sq));
+	else if (bot->dir == WEST)
+		return (get_west(e, bot->sq));
+	else if (bot->dir == NORTH)
+		return (get_north(e, bot->sq));
+	else
+		return (get_south(e, bot->sq));
+}
+
+void			expulse(t_env *e, t_bot *bot)
+{
+	t_iterator		itr;
+	t_bot			*b;
+	char			buf[128];
+	int				ret;
+
+	bot->action_timer = EXPULSE_TIME;
+	notify_all_gfx_pex(e, bot);
+	ret = 0;
+	itr = NULL;
+	while ((b = (t_bot *)ft_lst_iter_next_content(e->board[bot->sq].bot, &itr)))
+	{
+		if (b != bot && b->status == STATUS_NONE)
+		{
+			ret = 1;
+			move(e, b, get_step_sq(e, bot));
+			notify_all_gfx_ppo(e, bot);
+			sprintf(buf, "deplacement %d\n", (bot->dir + 2) % 4);
+			ft_strcat(e->fds[b->fd].buf_write, buf);
+		}
+	}
+	if (ret == 0)
+		ft_strcat(bot->buf_action, "ko\n");
+	else
+		ft_strcat(bot->buf_action, "ok\n");
+}
+
 void			bot_parse_request(t_env *e, int fd, char *str)
 {
 	t_bot		*bot;
@@ -155,7 +195,7 @@ void			bot_parse_request(t_env *e, int fd, char *str)
 	else if (ft_strequ(req[0], "inventaire"))
 		get_inventory(e, bot);
 	else if (ft_strequ(req[0], "expulse"))
-		ft_strcat(e->fds[fd].buf_write, "ko\n");
+		expulse(e, bot);
 	else if (ft_strequ(req[0], "broadcast"))
 		ft_strcat(e->fds[fd].buf_write, "ko\n");
 	else if (ft_strequ(req[0], "incantation"))

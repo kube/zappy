@@ -6,7 +6,7 @@
 /*   By: vdefilip <vdefilip@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/06/03 12:23:13 by vdefilip          #+#    #+#             */
-/*   Updated: 2014/06/19 16:06:15 by vdefilip         ###   ########.fr       */
+/*   Updated: 2014/06/20 10:36:35 by vdefilip         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ t_bot			*bot_new(t_team *team)
 	new->fd = -1;
 	new->sq = -1;
 	new->dir = dir_rand();
+	new->status = STATUS_NONE;
 	new->life_unit = 10 * FOOD_UNIT;
 	new->inventory = ft_lst_new(NULL);
 	new->level = 1;

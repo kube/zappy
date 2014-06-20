@@ -6,7 +6,7 @@
 /*   By: vdefilip <vdefilip@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/06/18 16:49:50 by vdefilip          #+#    #+#             */
-/*   Updated: 2014/06/19 16:28:46 by vdefilip         ###   ########.fr       */
+/*   Updated: 2014/06/20 10:52:17 by vdefilip         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -437,3 +437,14 @@ void		notify_all_gfx_pdi(t_env *e, t_bot *bot)
 	while ((gfx = (t_gfx *)ft_lst_iter_next_content(e->gfx_lst, &iter)))
 		pdi(e, gfx->fd, bot);
 }
+
+void		notify_all_gfx_pex(t_env *e, t_bot *bot)
+{
+	t_iterator		iter;
+	t_gfx			*gfx;
+
+	iter = NULL;
+	while ((gfx = (t_gfx *)ft_lst_iter_next_content(e->gfx_lst, &iter)))
+		pex(e, gfx->fd, bot);
+}
+

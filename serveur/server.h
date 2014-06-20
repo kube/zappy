@@ -6,7 +6,7 @@
 /*   By: cfeijoo <cfeijoo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/05/24 17:00:41 by vdefilip          #+#    #+#             */
-/*   Updated: 2014/06/19 16:28:45 by vdefilip         ###   ########.fr       */
+/*   Updated: 2014/06/20 10:52:25 by vdefilip         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,6 +95,11 @@
 # define INCANTATION_TIME 300
 # define FORK_TIME 42
 
+# define STATUS_NONE        0
+# define STATUS_FORK        1
+# define STATUS_EGG         2
+# define STATUS_INCANTATION 3
+
 typedef struct rlimit	t_rlimit;
 typedef struct timeval	t_tv;
 typedef unsigned long	t_ulong;
@@ -144,6 +149,7 @@ typedef struct	s_bot
 	int			fd;
 	int			sq;
 	int			dir;
+	int			status;
 	int			life_unit;
 	t_list		*inventory;
 	int			level;
@@ -274,5 +280,6 @@ void			notify_all_gfx_ppo(t_env *e, t_bot *bot);
 void			notify_all_gfx_take(t_env *e, t_bot *bot, int type);
 void			notify_all_gfx_put(t_env *e, t_bot *bot, int type);
 void			notify_all_gfx_pdi(t_env *e, t_bot *bot);
+void			notify_all_gfx_pex(t_env *e, t_bot *bot);
 
 #endif
