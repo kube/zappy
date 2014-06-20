@@ -6,7 +6,7 @@
 /*   By: vdefilip <vdefilip@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/06/18 16:49:50 by vdefilip          #+#    #+#             */
-/*   Updated: 2014/06/20 14:38:19 by vdefilip         ###   ########.fr       */
+/*   Updated: 2014/06/20 15:34:22 by vdefilip         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -506,5 +506,15 @@ void		notify_all_gfx_ebo(t_env *e, t_bot *bot)
 	iter = NULL;
 	while ((gfx = (t_gfx *)ft_lst_iter_next_content(e->gfx_lst, &iter)))
 		ebo(e, gfx->fd, bot);
+}
+
+void		notify_all_gfx_bct(t_env *e, int sq)
+{
+	t_iterator		iter;
+	t_gfx			*gfx;
+
+	iter = NULL;
+	while ((gfx = (t_gfx *)ft_lst_iter_next_content(e->gfx_lst, &iter)))
+		bct(e, gfx->fd, NULL, sq);
 }
 

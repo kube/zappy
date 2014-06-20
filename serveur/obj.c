@@ -6,7 +6,7 @@
 /*   By: vdefilip <vdefilip@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/06/04 19:29:42 by vdefilip          #+#    #+#             */
-/*   Updated: 2014/06/20 10:49:22 by vdefilip         ###   ########.fr       */
+/*   Updated: 2014/06/20 15:35:10 by vdefilip         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,6 +82,7 @@ t_obj		*get_obj(t_env *e, int sq, int type)
 
 int			take(t_env *e, t_bot *bot, char *obj_name)
 {
+	int				sq;
 	t_obj			*obj;
 	int				type;
 
@@ -101,7 +102,9 @@ int			take(t_env *e, t_bot *bot, char *obj_name)
 	if (type == OBJ_FOOD)
 	{
 		bot->life_unit += FOOD_UNIT;
-		ft_lst_pushend(e->board[sq_rand(e)].obj, obj_new(OBJ_FOOD));
+		sq = sq_rand(e);
+		ft_lst_pushend(e->board[sq].obj, obj_new(OBJ_FOOD));
+		notify_all_gfx_bct(e, sq);
 	}
 	else
 		ft_lst_pushend(bot->inventory, obj);
