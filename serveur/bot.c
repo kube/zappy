@@ -6,7 +6,7 @@
 /*   By: vdefilip <vdefilip@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/06/03 12:23:13 by vdefilip          #+#    #+#             */
-/*   Updated: 2014/06/20 10:36:35 by vdefilip         ###   ########.fr       */
+/*   Updated: 2014/06/20 11:02:30 by vdefilip         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,22 @@ void			unconnect_bot(t_env *e, t_bot *bot)
 			ft_lst_pushend(bot->team->queue, b);
 			break ;
 		}
+	}
+}
+
+void			bot_iter_all_connected(t_env *e, void (*fct)())
+{
+	t_iterator		iter_t;
+	t_iterator		iter_b;
+	t_team			*t;
+	t_bot			*b;
+
+	iter_t = NULL;
+	while ((t = (t_team *)ft_lst_iter_next_content(e->team, &iter_t)))
+	{
+		iter_b = NULL;
+		while ((b = (t_bot *)ft_lst_iter_next_content(t->connected, &iter_b)))
+			fct(e, b);
 	}
 }
 

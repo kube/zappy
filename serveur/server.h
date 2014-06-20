@@ -6,7 +6,7 @@
 /*   By: cfeijoo <cfeijoo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/05/24 17:00:41 by vdefilip          #+#    #+#             */
-/*   Updated: 2014/06/20 10:52:25 by vdefilip         ###   ########.fr       */
+/*   Updated: 2014/06/20 12:19:24 by vdefilip         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,8 +56,12 @@
 # define CYAN      "\033[36m"
 # define WHITE     "\033[37m"
 
+# define X 0
+# define Y 1
+
 # define MAX(a, b) (a > b ? a : b);
 # define MIN(a, b) (a < b ? a : b);
+# define ABS(a) (a < 0 ? -a : a)
 
 # define OBJ_NB    7
 # define OBJ_FOOD  0
