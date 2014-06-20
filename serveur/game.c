@@ -6,7 +6,7 @@
 /*   By: vdefilip <vdefilip@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/06/04 13:05:23 by vdefilip          #+#    #+#             */
-/*   Updated: 2014/06/19 15:00:37 by vdefilip         ###   ########.fr       */
+/*   Updated: 2014/06/20 13:51:56 by vdefilip         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,14 +63,14 @@ static void			board_fill(t_env *e)
 		ft_lst_pushend(e->board[sq_rand(e)].obj, obj_new(OBJ_FOOD));
 		i++;
 	}
-	i = 1;
-	while (i < OBJ_NB)
+	i = 6;
+	while (i > 0)
 	{
-		nb_rock = (i == 1 ? 5 : nb_rock * 2);
+		nb_rock = (i == 6 ? 5 : nb_rock * 2);
 		tmp = nb_rock;
 		while (tmp--)
 			ft_lst_pushend(e->board[sq_rand(e)].obj, obj_new(i));
-		i++;
+		i--;
 	}
 }
 
@@ -112,6 +112,7 @@ void				init_game(t_env *e)
 		team->unconnected = ft_lst_new(NULL);
 		team->connected = ft_lst_new(NULL);
 		team->queue = ft_lst_new(NULL);
+		team->egg = ft_lst_new(NULL);
 		i = 0;
 		while (i < team->limit)
 		{

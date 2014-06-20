@@ -6,7 +6,7 @@
 /*   By: vdefilip <vdefilip@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/06/03 12:23:13 by vdefilip          #+#    #+#             */
-/*   Updated: 2014/06/20 11:02:30 by vdefilip         ###   ########.fr       */
+/*   Updated: 2014/06/20 14:42:23 by vdefilip         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ t_bot			*bot_new(t_team *team)
 	new->life_unit = 10 * FOOD_UNIT;
 	new->inventory = ft_lst_new(NULL);
 	new->level = 1;
+	new->parent = NULL;
 	gettimeofday(&new->time, NULL);
 	new->timer = 0;
 	new->food_timer = 0;
@@ -50,6 +51,13 @@ t_bot			*connect_bot(t_env *e, t_team *team)
 	while ((bot = (t_bot *)ft_lst_iter_next_content(team->queue, &iter)))
 	{
 		ft_lst_del_atom(team->queue, iter, NULL);
+		ft_lst_pushend(team->connected, bot);
+		return (bot);
+	}
+	iter = NULL;
+	while ((bot = (t_bot *)ft_lst_iter_next_content(team->egg, &iter)))
+	{
+		ft_lst_del_atom(team->egg, iter, NULL);
 		ft_lst_pushend(team->connected, bot);
 		return (bot);
 	}
@@ -99,7 +107,7 @@ void			bot_iter_all_connected(t_env *e, void (*fct)())
 	}
 }
 
-void			bot_iter_all_connected_and_queued(t_env *e, void (*fct)())
+void			bot_iter_all_connected_queued_egg(t_env *e, void (*fct)())
 {
 	t_iterator		iter_t;
 	t_iterator		iter_b;
@@ -114,6 +122,9 @@ void			bot_iter_all_connected_and_queued(t_env *e, void (*fct)())
 			fct(e, b);
 		iter_b = NULL;
 		while ((b = (t_bot *)ft_lst_iter_next_content(t->queue, &iter_b)))
+			fct(e, b);
+		iter_b = NULL;
+		while ((b = (t_bot *)ft_lst_iter_next_content(t->egg, &iter_b)))
 			fct(e, b);
 	}
 }

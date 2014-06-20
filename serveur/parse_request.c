@@ -6,7 +6,7 @@
 /*   By: cfeijoo <cfeijoo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/05/28 02:26:49 by cfeijoo           #+#    #+#             */
-/*   Updated: 2014/06/20 12:20:44 by vdefilip         ###   ########.fr       */
+/*   Updated: 2014/06/20 15:22:46 by vdefilip         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,11 +37,21 @@ t_team			*get_team_by_name(t_env *e, char *name)
 
 void			send_nbr(t_env *e, int fd)
 {
-	t_bot		*bot;
-	char		*nbr;
+	t_bot			*bot;
+	int				n;
+	char			*nbr;
+	t_iterator		iter;
+	t_bot			*egg;
 
 	bot = get_bot_by_fd(e, fd);
-	nbr = ft_itoa(bot->team->unconnected->len + bot->team->queue->len);
+	n = bot->team->unconnected->len + bot->team->queue->len;
+	iter = NULL;
+	while ((egg = (t_bot *)ft_lst_iter_next_content(bot->team->egg, &iter)))
+	{
+		if (bot->status == STATUS_NONE)
+			n++;
+	}
+	nbr = ft_itoa(n);
 	ft_strcat(e->fds[fd].buf_write, nbr);
 	ft_strcat(e->fds[fd].buf_write, "\n");
 	free(nbr);
@@ -93,8 +103,14 @@ void			gfx_connection(t_env *e, int fd)
 			if (b->life_unit <= 0)
 				pdi(e, fd, b);
 		}
+		iter_b = NULL;
+		while ((b = (t_bot *)ft_lst_iter_next_content(t->queue, &iter_b)))
+		{
+			enw(e, fd, b->parent, b);
+			if (b->life_unit <= 0)
+				edi(e, fd, b);
+		}
 	}
-	//enw...
 }
 
 void			bot_connection(t_env *e, int fd, char *team_name)
@@ -115,6 +131,13 @@ void			bot_connection(t_env *e, int fd, char *team_name)
 			bot->sq = sq_rand(e);
 			move(e, bot, bot->sq);
 			gettimeofday(&bot->time, NULL);
+			notify_all_gfx_pnw(e, bot);
+		}
+		else if (bot->parent)
+		{
+			if (bot->life_unit < 0)
+				bot->parent = NULL;
+			notify_all_gfx_ebo(e, bot);
 			notify_all_gfx_pnw(e, bot);
 		}
 		printf("Client #%d: connected to BOT #%d\n", fd, bot->id);
@@ -163,22 +186,8 @@ void			expulse(t_env *e, t_bot *bot)
 		ft_strcat(bot->buf_action, "ok\n");
 }
 
-int				get_sound_dir(t_env *e, t_bot *bot_dst, t_bot *bot_src)
+int				calcul_north_dir(int *diff)
 {
-	int		dst[2];
-	int		src[2];
-	int		diff[2];
-
-	dst[X] = bot_dst->sq % e->opt.width;
-	dst[Y] = bot_dst->sq / e->opt.width;
-	src[X] = bot_src->sq % e->opt.width;
-	src[Y] = bot_src->sq / e->opt.width;
-	diff[X] = src[X] - dst[X];
-	if (ABS(diff[X]) > e->opt.width / 2)
-		diff[X] = (e->opt.width - diff[X]) * -1;
-	diff[Y] = src[Y] - dst[Y];
-	if (ABS(diff[Y]) > e->opt.height / 2)
-		diff[Y] = (e->opt.height - diff[Y]) * -1;
 	if (diff[X] == 0 && diff[Y] == 0)
 		return (0);
 	if (ABS(diff[X]) > ABS(diff[Y]) * 2)
@@ -204,13 +213,41 @@ int				get_sound_dir(t_env *e, t_bot *bot_dst, t_bot *bot_src)
 	return (6);
 }
 
+int				get_sound_dir(t_env *e, t_bot *bot_dst, t_bot *bot_src)
+{
+	int		dst[2];
+	int		src[2];
+	int		diff[2];
+	int		dir;
+
+	dst[X] = bot_dst->sq % e->opt.width;
+	dst[Y] = bot_dst->sq / e->opt.width;
+	src[X] = bot_src->sq % e->opt.width;
+	src[Y] = bot_src->sq / e->opt.width;
+	diff[X] = src[X] - dst[X];
+	if (ABS(diff[X]) > e->opt.width / 2)
+		diff[X] = (e->opt.width - diff[X]) * -1;
+	diff[Y] = src[Y] - dst[Y];
+	if (ABS(diff[Y]) > e->opt.height / 2)
+		diff[Y] = (e->opt.height - diff[Y]) * -1;
+	if ((dir = calcul_north_dir(diff)) == 0)
+		return (0);
+	if (bot_dst->dir == WEST)
+		dir = (dir + 2 <= 8 ? dir + 2 : dir - 6);
+	else if (bot_dst->dir == SOUTH)
+		dir = (dir + 4 <= 8 ? dir + 2 : dir - 4);
+	else if (bot_dst->dir == EAST)
+		dir = (dir + 6 <= 8 ? dir + 6 : dir - 2);
+	return (dir);
+}
+
 void			broadcast(t_env *e, t_bot *bot, char *msg)
 {
 	t_iterator		iter_t;
 	t_iterator		iter_b;
 	t_team			*t;
 	t_bot			*b;
-	char		buf[128];
+	char			buf[128];
 
 	bot->action_timer = BROADCAST_TIME;
 	iter_t = NULL;
@@ -222,10 +259,18 @@ void			broadcast(t_env *e, t_bot *bot, char *msg)
 			if (b != bot)
 			{
 				sprintf(buf, "message %d,%s\n", get_sound_dir(e, b, bot), msg);
-				ft_strcat(bot->buf_action, buf);
+				ft_strcat(b->buf_action, buf);
 			}
 		}
 	}
+	ft_strcat(bot->buf_action, "ok\n");
+}
+
+void			fork_egg(t_env *e, t_bot *bot)
+{
+	bot->action_timer = FORK_TIME;
+	bot->status = STATUS_FORK;
+	notify_all_gfx_pfk(e, bot);
 	ft_strcat(bot->buf_action, "ok\n");
 }
 
@@ -241,7 +286,10 @@ void			bot_parse_request(t_env *e, int fd, char *str)
 		printf("Client #%d (BOT): Invalid request (too few arguments)\n", fd);
 	else if (bot->life_unit <= 0)
 	{
-		printf("Bot client #%d is dead\n", fd);
+		if (bot->parent == NULL)
+			printf("BOT #%d is dead\n", bot->id);
+		else
+			printf("EGG #%d is dead\n", bot->id);
 		ft_strcat(e->fds[fd].buf_write, "mort\n");
 	}
 	else if (ft_strequ(req[0], "avance"))
@@ -267,7 +315,7 @@ void			bot_parse_request(t_env *e, int fd, char *str)
 	else if (ft_strequ(req[0], "incantation"))
 		ft_strcat(e->fds[fd].buf_write, "ko\n");
 	else if (ft_strequ(req[0], "fork"))
-		ft_strcat(e->fds[fd].buf_write, "ko\n");
+		fork_egg(e, bot);
 	else if (ft_strequ(req[0], "connect_nbr"))
 		send_nbr(e, fd);
 	ft_free_strtab(req);
