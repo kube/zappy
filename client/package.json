@@ -1,0 +1,12 @@
+{
+	"name": "client",
+	"description": "zappy client",
+	"dependencies": {
+		"coffee-script": "*",
+		"keypress": "*"
+	},
+	"scripts": {
+		"install": "./node_modules/coffee-script/bin/coffee -bc client.coffee trantorien.coffee && echo '#!/usr/bin/env node' | cat - client.js > client && chmod +x client",
+		"clean": "rm -f trantorien.js client.js"
+	}
+}
