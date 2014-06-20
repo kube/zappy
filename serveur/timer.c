@@ -6,7 +6,7 @@
 /*   By: vdefilip <vdefilip@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/06/13 11:02:20 by vdefilip          #+#    #+#             */
-/*   Updated: 2014/06/20 15:02:00 by vdefilip         ###   ########.fr       */
+/*   Updated: 2014/06/20 16:44:35 by vdefilip         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,25 @@
 #include <sys/time.h>
 #include "server.h"
 
-void			timer(t_env *e, t_bot *bot)
+static void			check_life(t_env *e, t_bot *bot, int unit)
+{
+	if (bot->status != STATUS_EGG && (bot->life_unit -= unit) <= 0)
+	{
+		if (bot->parent == NULL)
+		{
+			printf("BOT #%d is dead\n", bot->id);
+			notify_all_gfx_pdi(e, bot);
+		}
+		else
+		{
+			printf("EGG #%d is dead\n", bot->id);
+			notify_all_gfx_edi(e, bot);
+		}
+		ft_strcat(e->fds[bot->fd].buf_write, "mort\n");
+	}
+}
+
+void				timer(t_env *e, t_bot *bot)
 {
 	struct timeval			cur;
 	t_ulong					diff;
@@ -30,20 +48,7 @@ void			timer(t_env *e, t_bot *bot)
 	bot->timer += diff;
 	unit = ((bot->timer * e->opt.t) / 1000000UL);
 	bot->timer = bot->timer - (unit * 1000000UL / e->opt.t);
-	if (bot->status != STATUS_EGG && (bot->life_unit -= unit) <= 0)
-	{
-		if (bot->parent == NULL)
-		{
-			printf("BOT #%d is dead\n", bot->id);
-			notify_all_gfx_pdi(e, bot);
-		}
-		else
-		{
-			printf("EGG #%d is dead\n", bot->id);
-			notify_all_gfx_edi(e, bot);
-		}
-		ft_strcat(e->fds[bot->fd].buf_write, "mort\n");
-	}
+	check_life(e, bot, unit);
 	if (bot->action_timer > 0 && (bot->action_timer -= unit) <= 0)
 	{
 		if (bot->status == STATUS_FORK)

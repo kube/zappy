@@ -6,7 +6,7 @@
 /*   By: cfeijoo <cfeijoo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/05/28 02:26:49 by cfeijoo           #+#    #+#             */
-/*   Updated: 2014/06/20 15:58:09 by vdefilip         ###   ########.fr       */
+/*   Updated: 2014/06/20 17:46:56 by vdefilip         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -274,6 +274,55 @@ void			fork_egg(t_env *e, t_bot *bot)
 	ft_strcat(bot->buf_action, "ok\n");
 }
 
+int				check_requirements(int level, int *tab)
+{
+	static int		req[7][7] = {{1, 1, 0, 0, 0, 0, 0},
+								{2, 1, 1, 1, 0, 0, 0},
+								{2, 2, 0, 1, 0, 2, 0},
+								{4, 1, 1, 2, 0, 1, 0},
+								{4, 1, 2, 1, 3, 0, 0},
+								{6, 1, 2, 3, 0, 1, 0},
+								{6, 2, 2, 2, 2, 2, 1}};
+	int				i;
+
+	i = 0;
+	while (i < 7)
+	{
+		if (tab[i] < req[level][i])
+			return (-1);
+		i++;
+	}
+	return (0);
+}
+
+void			incantation(t_env *e, t_bot *bot)
+{
+	t_iterator		itr;
+	t_obj			*o;
+	t_bot			*b;
+	int				tab[7];
+
+	ft_bzero(tab, sizeof(int) * 7);
+	itr = NULL;
+	while ((o = (t_obj *)ft_lst_iter_next_content(e->board[bot->sq].obj, &itr)))
+		tab[o->type]++;
+	tab[0] = 0;
+	itr = NULL;
+	while ((b = (t_bot *)ft_lst_iter_next_content(e->board[bot->sq].bot, &itr)))
+	{
+		if (b->level == bot->level)
+			tab[0]++;
+	}
+	if (check_requirements(bot->level, tab) == -1)
+	{
+		bot->action_timer = INCANTATION_TIME;
+		ft_strcat(bot->buf_action, "ko\n");
+		return ;
+	}
+	bot->action_timer = INCANTATION_TIME;
+	ft_strcat(bot->buf_action, "ok\n");
+}
+
 void			bot_parse_request(t_env *e, int fd, char *str)
 {
 	t_bot		*bot;
@@ -313,7 +362,7 @@ void			bot_parse_request(t_env *e, int fd, char *str)
 	else if (ft_strequ(req[0], "broadcast"))
 		broadcast(e, bot, req[1]);
 	else if (ft_strequ(req[0], "incantation"))
-		ft_strcat(e->fds[fd].buf_write, "ko\n");
+		incantation(e, bot);
 	else if (ft_strequ(req[0], "fork"))
 		fork_egg(e, bot);
 	else if (ft_strequ(req[0], "connect_nbr"))
