@@ -6,7 +6,7 @@
 /*   By: vdefilip <vdefilip@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/06/18 16:49:50 by vdefilip          #+#    #+#             */
-/*   Updated: 2014/06/20 15:57:19 by vdefilip         ###   ########.fr       */
+/*   Updated: 2014/06/20 17:26:34 by vdefilip         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,6 @@ void			bct(t_env *e, int fd, char **req, int square)
 	char			buf[128];
 	int				sq;
 
-	(void)e;
 	if (req != NULL)
 	{
 		if ((sq = get_sq_arg(e, fd, req)) == -1)
