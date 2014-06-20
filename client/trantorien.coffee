@@ -179,6 +179,13 @@ class Trantorien
       when 7 then @path = ['droite', 'avance']
       when 8 then @path = ['avance', 'droite', 'avance']
 
+  get_random_move: ->
+    n = Math.floor(Math.random() * 5)
+    switch n
+      when 0 then return 'gauche'
+      when 1 then return 'droite'
+    return 'avance'
+
   live: ->
     if ++@queries % 10 is 0 then return "connect_nbr"
     if @path.length > 0 then return this.next_move()
@@ -203,6 +210,6 @@ class Trantorien
       this.init_path i
       return this.next_move()
     @around = false
-    return "avance"
+    return this.get_random_move()
 
 module.exports = Trantorien
