@@ -6,7 +6,7 @@
 /*   By: cfeijoo <cfeijoo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/05/28 02:26:49 by cfeijoo           #+#    #+#             */
-/*   Updated: 2014/06/20 14:38:12 by vdefilip         ###   ########.fr       */
+/*   Updated: 2014/06/20 14:59:26 by vdefilip         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,8 @@ void			send_nbr(t_env *e, int fd)
 	char		*nbr;
 
 	bot = get_bot_by_fd(e, fd);
-	nbr = ft_itoa(bot->team->unconnected->len + bot->team->queue->len);
+	nbr = ft_itoa(bot->team->unconnected->len + bot->team->queue->len
+		+ bot->team->egg->len);
 	ft_strcat(e->fds[fd].buf_write, nbr);
 	ft_strcat(e->fds[fd].buf_write, "\n");
 	free(nbr);
