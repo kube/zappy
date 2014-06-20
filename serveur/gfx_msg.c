@@ -6,7 +6,7 @@
 /*   By: vdefilip <vdefilip@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/06/18 16:49:50 by vdefilip          #+#    #+#             */
-/*   Updated: 2014/06/20 15:34:22 by vdefilip         ###   ########.fr       */
+/*   Updated: 2014/06/20 15:57:19 by vdefilip         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,11 +36,13 @@ static int		get_sq_arg(t_env *e, int fd, char **req)
 	if (req[1] == NULL || req[2] == NULL)
 	{
 		printf("Client #%d (GFX): Invalid request (too few arguments)\n", fd);
+		sbp(e, fd);
 		return (-1);
 	}
 	if ((sq = (ft_atoi(req[2]) * e->opt.width) + ft_atoi(req[1])) >= e->n_sq)
 	{
 		printf("Client #%d (GFX): Invalid request (invalid arguments)\n", fd);
+		sbp(e, fd);
 		return (-1);
 	}
 	return (sq);
@@ -116,16 +118,19 @@ static t_bot	*get_bot_by_id_arg(t_env *e, int fd, char **req)
 	if (req[1] == NULL)
 	{
 		printf("Client #%d (GFX): Invalid request (too few arguments)\n", fd);
+		sbp(e, fd);
 		return (NULL);
 	}
 	if (req[1][0] != '#')
 	{
 		printf("Client #%d (GFX): Invalid request (invalid arguments)\n", fd);
+		sbp(e, fd);
 		return (NULL);
 	}
 	if ((bot = get_bot_by_id(e, ft_atoi(&req[1][1]))) == NULL)
 	{
 		printf("Client #%d (GFX): Invalid request (invalid bot id)\n", fd);
+		sbp(e, fd);
 		return (NULL);
 	}
 	return (bot);
@@ -210,12 +215,14 @@ void			sst(t_env *e, int fd, char **req)
 	if (req[1] == NULL)
 	{
 		printf("Client #%d (GFX): Invalid request (too few arguments)\n", fd);
+		sbp(e, fd);
 		return ;
 	}
 	t = ft_atoi(req[1]);
 	if (t < 1 || t > MAX_T)
 	{
 		printf("Client #%d (GFX): Invalid request (1 <= t <= %d\n", fd, MAX_T);
+		sbp(e, fd);
 		return ;
 	}
 	e->opt.t = t;
