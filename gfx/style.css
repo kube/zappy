@@ -1,0 +1,192 @@
+.nodrag {
+	-webkit-app-region: no-drag;
+}
+
+.drag {
+	-webkit-app-region: drag;
+}
+
+#dragger
+{
+	z-index: 100;
+	position: absolute;
+	top: 1px;
+	left: 1px;
+	right: 1px;
+	height: 54px;
+	opacity: 0.6;
+	background:
+		-webkit-gradient(
+			linear,
+			left top,
+			left 25,
+			from(rgba(0, 0, 0, 0.2)),
+			to(rgba(0, 0, 0, 0.0))
+		);
+	-webkit-transition-property: all;
+	-webkit-transition-duration: 0.3s;
+}#39db80
+
+#dragger:hover
+{
+	background:
+		-webkit-gradient(
+			linear,
+			left top,
+			left 25,
+			from(rgba(0, 0, 0, 0.4)),
+			to(rgba(0, 0, 0, 0.0))
+		);
+	opacity: 1.0;
+	-webkit-transition-property: all;
+	-webkit-transition-duration: 0.3s;
+}
+
+#dragger a
+{
+	z-index: 2000;
+	content: '';
+	border: 0px solid #000;
+	background: #AAA;
+	padding: 0;
+	width: 14px;
+	height: 14px; line-height: 3px;
+	top: 8px; right: 8px;
+	font-size: xx-small;
+	overflow: hidden;
+	position: absolute;
+	border-radius: 7px;
+	-webkit-transition-property: all;
+	-webkit-transition-duration: 0.3s;
+	-webkit-app-region: no-drag;
+	color: #CCC;
+	opacity: 1.0;
+}
+
+#dragger a:hover
+{
+	opacity: 1.0;
+}
+
+#dragger .back
+{
+	z-index: 2000;
+	content: '';
+	border: 0px solid #000;
+	background: #AAA;
+	padding: 0;
+	width: 22px;
+	height: 22px; line-height: 3px;
+	top: 8px; left: 8px;
+	font-size: xx-small;
+	overflow: hidden;
+	position: absolute;
+	border-radius: 7px;
+	-webkit-transition-property: all;
+	-webkit-transition-duration: 0.3s;
+	-webkit-app-region: no-drag;
+	color: #CCC;
+	opacity: 1.0;
+}
+
+#dragger .resize {right: 28px;}
+#dragger .hide	{right: 48px;}
+
+#dragger .close:hover {background: #b00f0f;}
+#dragger .resize:hover {background: #0fb00f;}
+#dragger .hide:hover {background: #d0a00f;}
+
+html, body {
+	background-color: #000000;
+	user-select: none;
+}
+
+html, body, div, canvas {
+	width: 100%;
+	height: 100%;
+	padding: 0;
+	margin: 0;
+	overflow: hidden;
+}
+
+html {
+	-webkit-box-sizing: border-box;
+	border: 1px solid #444;
+}
+
+body {
+	background: #000;
+	-webkit-user-select: none;
+}
+
+#loginForm {
+	width: 100%;
+	position: absolute;
+	top: 30%; left: 0; right: 0; bottom: 0;
+	text-align: center;
+}
+
+input[type="text"],
+input[type="password"]{
+	border: solid 1px #E5E5E5;
+	background: #FFFFFF;
+	text-align: center;
+	margin: 5px auto;
+	padding: 9px;
+	display:block;
+	font-size:16px;
+	width:30%;
+	min-width: 250px;
+	background:
+	-webkit-gradient(
+		linear,
+		left top,
+		left 25,
+		from(#FFFFFF),
+		color-stop(4%, #EEEEEE),
+		to(#FFFFFF)
+	);
+	background:
+	-moz-linear-gradient(
+		top,
+		#FFFFFF,
+		#EEEEEE 1px,
+		#FFFFFF 25px
+	);
+}
+
+input[type="text"]:focus,
+input[type="password"]:focus{
+	background:#FFF;
+	box-shadow: none;
+}
+
+label {
+	font-family: "Trebuchet MS", "Myriad Pro", sans-serif;
+	font-size: 16px;
+	color: #AAA;
+}
+
+button[type="submit"] {
+	background: #d9d9d9;
+	border: 1px solid #ccc;
+	color: #333;
+	font-family: "Trebuchet MS", "Myriad Pro", sans-serif;
+	font-size: 14px;
+	font-weight: bold;
+	padding: 8px 0 9px;
+	text-align: center;
+	width: 150px;
+	cursor:pointer;
+	margin: 5px auto;
+	border-radius: 4px;
+}
+
+button[type="submit"]:hover {
+	background: #e6e6e6;
+	color: #222;
+}
+
+#renderCanvas {
+	display: none;
+}

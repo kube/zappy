@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<script type="text/javascript" src="vendor/jquery.js"></script>
+<script type="text/javascript" src="vendor/three.min.js"></script>
+<script type="text/javascript" src="vendor/OrbitControl.js"></script>
+<script type="text/javascript" src="zappy.js"></script>
+<link rel="stylesheet" href="./style.css">
+<body>
+	<div id="dragger" style="-webkit-app-region: drag">
+		<a id="btnBack" class="back nodrag"></a>
+
+		<a class="hide nodrag" onclick="javascript:win.minimize();"></a>
+		<a class="resize nodrag" onclick="javascript:win.toggleFullscreen();"></a>
+		<a class="close nodrag" onclick="javascript:gui.App.quit();"></a>
+	</div>
+	<form id='loginForm' class="nodrag" action='javascript:validateConnectionForm();'>
+		<label for='host'>Host</label>
+		<input id='hostField' name='host' type='text' placeholder='host' value='localhost'>
+		<label for='port'>Port</label>
+		<input id='portField' name='port' type='text' placeholder='port' value='1337'>
+		<button type='submit'>Login</button>
+	</form>
+	<canvas id="renderCanvas"></canvas>
+</body>
+</html>
