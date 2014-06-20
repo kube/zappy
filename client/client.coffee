@@ -98,6 +98,7 @@ fork_player = ->
   args = ['-n', team, '-p', port]
   if host? then args = args.concat ['-h', host]
   child = cp.fork './client', args
+  child.disconnect()
   child.on 'exit', (code) ->
     console.log 'child exited'
 

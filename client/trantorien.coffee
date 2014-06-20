@@ -162,7 +162,7 @@ class Trantorien
     return @elevation.shift()
 
   will_try_to_fork: ->
-    if Math.floor(Math.random() * 30) is 1
+    if Math.floor(Math.random() * 10) is 1
       return true
     return false
 
@@ -197,13 +197,13 @@ class Trantorien
         @elevation = ['incantation']
         return "broadcast #{@level}"
       if not @inventory then return "inventaire"
-      if this.will_try_to_fork() then return "fork"
       switch this.can_elevate()
         when 1
           this.prepare_elevation()
           return this.next_action()
         when 0
           return "broadcast #{@level}"
+      if this.will_try_to_fork() then return "fork"
     i = this.seek_place()
     if i isnt -1
       if i is 0 then return "prend #{@to_take}"
