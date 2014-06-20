@@ -42,23 +42,19 @@ var ResponseParser = function(client, game) {
 				break;
 
 			case 'bct':
+				console.log(a);
 				for (var i = 3; i < 10; i++)
 					game.map.blocks[a.i(1)][a.i(2)].ressources[i - 3].update(a.i(i));
 				break;
 
-			//pnw #n X Y O L N
 			case 'pnw':
 				var player = parseInt(a[1].replace('#', ''));
 				game.createBot(player, a.i(2), a.i(3), a.i(3), a.i(4), a[5]);
 				break;
 
-			//ppo #n X Y O
 			case 'ppo':
-				// console.log(a);
+				console.log(a);
 				var player = parseInt(a[1].replace('#', ''));
-
-				// console.log(game.bots[player]);
-				
 				game.bots[player].setPosition(a.i(2), a.i(3), a.i(4));
 				break;
 		}
