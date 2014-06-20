@@ -144,7 +144,7 @@ connect_nbr = (msg) ->
   if isNaN msg
     return false
   n = parseInt(msg)
-  if n > 0 then fork_player()
+  if n? and n > 0 then fork_player()
   return true
 
 world_size = (msg) ->
