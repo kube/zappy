@@ -6,7 +6,7 @@
 /*   By: vdefilip <vdefilip@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/06/13 11:02:20 by vdefilip          #+#    #+#             */
-/*   Updated: 2014/06/20 14:45:32 by vdefilip         ###   ########.fr       */
+/*   Updated: 2014/06/20 15:02:00 by vdefilip         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,6 @@ void			timer(t_env *e, t_bot *bot)
 		else if (bot->status == STATUS_EGG)
 		{
 			bot->status = STATUS_NONE;
-			bot->team->limit++;
 			notify_all_gfx_eht(e, bot);
 		}
 		bot->action_timer = -1;
