@@ -9,8 +9,8 @@ var Block = function(map, x, y) {
 	this.map = map;
 	this.mesh = null;
 	this.position = {
-		x: self.x - map.width / 2,
-		y: self.y - map.height / 2
+		x: self.x - map.width / 2 + 0.5,
+		y: self.y - map.height / 2 + 0.5
 	};
 
 	this.ressources = [];

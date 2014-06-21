@@ -1,5 +1,5 @@
-var Map = require('./Map.js');
-var Bot = require('./Bot.js');
+var	Map = require('./Map.js'),
+	Bot = require('./Bot.js');
 
 var Game = function(options) {
 	var self = this;
@@ -9,8 +9,8 @@ var Game = function(options) {
 
 	var canvas = document.getElementById("renderCanvas");
 	var scene = new THREE.Scene();
-	var camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-	camera.position.z = 5;
+	var	camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+			camera.position.z = 5;
 	var controls = new THREE.OrbitControls(camera);
 	var renderer = new THREE.WebGLRenderer({
 		canvas: canvas,
@@ -61,7 +61,22 @@ var Game = function(options) {
 
 	this.bots = [];
 
-	pickMesh = function(x, y) {
+
+	function enableInfoBar() {
+
+		var	items = document.getElementById('infoBar')
+			.getElementsByTagName('ul')[0].getElementsByTagName('li');
+
+		for (var i = 0; i < 7; i++) {
+			items[i].addEventListener('click',
+				(function (i) {
+					return function() {
+						self.map.displayRessource(i);
+					}})(i));
+		}
+	}
+
+	function pickMesh(x, y) {
 		var projector = new THREE.Projector();
 		var vector = new THREE.Vector3(( x / window.innerWidth ) * 2 - 1, -( y / window.innerHeight ) * 2 + 1, 0.5);
 		projector.unprojectVector(vector, camera);
@@ -127,6 +142,8 @@ var Game = function(options) {
 		// scene.dispose();
 		// engine.clear(new BABYLON.Color3(0, 0, 0), true, true);
 	}
+
+	enableInfoBar();
 }
 
 module.exports = Game;

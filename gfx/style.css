@@ -190,3 +190,72 @@ button[type="submit"]:hover {
 #renderCanvas {
 	display: none;
 }
+
+
+
+#infoBar {
+	position: absolute;
+	z-index: 99999999;
+	font-family: "Helvetica", "Arial", sans-serif;
+	font-size: 16px;
+	color: #999999;
+	bottom: 0px;
+	height: 70px;
+	background-color: rgba(0, 0, 0, 0.5);
+}
+
+#infoBar ul {
+	display: inline-block;
+}
+
+#infoBar ul li {
+	display: inline-block;
+	margin: 7px;
+}
+
+#infoBar ul li a {
+	content: '';
+	display: inline-block;
+	border: 0px solid #000;
+	background: #AAA;
+	padding: 0;
+	margin-right: 7px;
+	width: 18px;
+	height: 18px; line-height: 13px;
+	font-size: xx-small;
+	overflow: hidden;
+	border-radius: 9px;
+	-webkit-transition-property: all;
+	-webkit-transition-duration: 0.3s;
+	-webkit-app-region: no-drag;
+	color: #CCC;
+	opacity: 1.0;
+}
+
+#infoBar ul li a.t0{
+	background: #dacd60;
+}
+
+#infoBar ul li a.t1{
+	background: #da428c;
+}
+
+#infoBar ul li a.t2{
+	background: #8046db;
+}
+
+#infoBar ul li a.t3{
+	background: #40abdb;
+}
+
+#infoBar ul li a.t4{
+	background: #47dc37;
+}
+
+#infoBar ul li a.t5{
+	background: #dc6a28;
+}
+
+#infoBar ul li a.t6{
+	background: #b1dc41;
+}

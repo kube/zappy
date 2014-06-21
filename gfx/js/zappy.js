@@ -1,4 +1,6 @@
 global.THREE = THREE;
+global.$ = $;
+
 var	net = require('net'),
 	gui = require('nw.gui'),
 	Game = require('./js/Game.js');
