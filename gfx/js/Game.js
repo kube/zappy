@@ -24,6 +24,10 @@ var Game = function(options) {
 	scene.add(ambientLight);
 	scene.add(directionalLight);
 
+
+
+
+
 	this.scene = scene;
 	this.renderer = renderer;
 	this.materials = {
@@ -33,6 +37,10 @@ var Game = function(options) {
 		}),
 		block: new THREE.MeshPhongMaterial({
 			color: 0x04020a
+		}),
+		character: new THREE.MeshNormalMaterial({
+			// color: 0xe68680
+			color: 0x7880e6
 		}),
 
 		ressources: [
@@ -60,6 +68,42 @@ var Game = function(options) {
 	};
 
 	this.bots = [];
+
+
+
+	function createStickmanGeometry() {
+
+		var	a = new THREE.Mesh(
+			new THREE.BoxGeometry(0.8, 1.5, 1),
+			self.materials.character),
+
+			b = new THREE.Mesh(
+			new THREE.BoxGeometry(0.8, 1.5, 1),
+			self.materials.character),
+
+			c = new THREE.Mesh(
+			new THREE.BoxGeometry(2, 2.5, 1),
+			self.materials.character),
+
+			s = new THREE.Mesh(
+			new THREE.SphereGeometry(1, 20, 20),
+			self.materials.character);
+
+		a.position.set(0.6, 0.75, 0);
+		b.position.set(-0.6, 0.75, 0);
+		c.position.set(0, 2.75, 0);
+		s.position.set(0, 4.85, 0);
+
+		var geometry = new THREE.Geometry();
+		THREE.GeometryUtils.merge(geometry, a);
+		THREE.GeometryUtils.merge(geometry, b);
+		THREE.GeometryUtils.merge(geometry, c);
+		THREE.GeometryUtils.merge(geometry, s);
+
+		return geometry;
+	}
+	this.stickmanGeometry = createStickmanGeometry();
+
 
 
 	function enableInfoBar() {

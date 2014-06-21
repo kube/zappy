@@ -48,14 +48,12 @@ var ResponseParser = function(client, game) {
 				break;
 
 			case 'pnw':
-				// console.log(a);
 				var player = parseInt(a[1].replace('#', ''));
 				game.createBot(player, a.i(2), a.i(3), a.i(3), a.i(4), a[5]);
 				break;
 
 			case 'ppo':
 				var player = parseInt(a[1].replace('#', ''));
-				// console.log('Setting position')
 				if (game.bots[player])
 					console.log(game.bots[player])
 				game.bots[player].setPosition(a.i(2), a.i(3), a.i(4));

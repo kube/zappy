@@ -10,7 +10,7 @@
 		"nodewebkit": "*"
 	},
 	"window":{
-		"frame": true,
-		"toolbar": true
+		"frame": false,
+		"toolbar": false
 	}
 }
