@@ -7,10 +7,13 @@
 		"start": "./node_modules/nodewebkit/bin/nodewebkit"
 	},
 	"dependencies": {
-		"nodewebkit": "*"
+		"nodewebkit": "*",
+		"tween.js": "*",
+		"jquery": "*",
+		"three": "*"
 	},
 	"window":{
-		"frame": false,
-		"toolbar": false
+		"frame": true,
+		"toolbar": true
 	}
 }

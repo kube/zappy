@@ -1,5 +1,6 @@
-global.THREE = THREE;
-global.$ = $;
+global.THREE = THREE,
+global.$ = $,
+global.TWEEN = require('tween.js');
 
 var	net = require('net'),
 	gui = require('nw.gui'),

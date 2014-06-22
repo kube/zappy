@@ -10,7 +10,7 @@ var Game = function(options) {
 	var canvas = document.getElementById("renderCanvas");
 	var scene = new THREE.Scene();
 	var	camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-			camera.position.z = 5;
+	camera.position.z = 5;
 	var controls = new THREE.OrbitControls(camera);
 	var renderer = new THREE.WebGLRenderer({
 		canvas: canvas,
@@ -24,10 +24,6 @@ var Game = function(options) {
 	scene.add(ambientLight);
 	scene.add(directionalLight);
 
-
-
-
-
 	this.scene = scene;
 	this.renderer = renderer;
 	this.materials = {
@@ -36,7 +32,7 @@ var Game = function(options) {
 			color: 0xada1e6
 		}),
 		block: new THREE.MeshPhongMaterial({
-			color: 0x04020a
+			color: 0x272831
 		}),
 		character: new THREE.MeshNormalMaterial({
 			// color: 0xe68680
@@ -74,31 +70,43 @@ var Game = function(options) {
 	function createStickmanGeometry() {
 
 		var	a = new THREE.Mesh(
-			new THREE.BoxGeometry(0.8, 1.5, 1),
-			self.materials.character),
+				new THREE.BoxGeometry(0.8, 1.5, 1),
+				self.materials.character),
 
 			b = new THREE.Mesh(
-			new THREE.BoxGeometry(0.8, 1.5, 1),
-			self.materials.character),
+				new THREE.BoxGeometry(0.8, 1.5, 1),
+				self.materials.character),
 
 			c = new THREE.Mesh(
-			new THREE.BoxGeometry(2, 2.5, 1),
-			self.materials.character),
+				new THREE.BoxGeometry(2, 2.5, 1),
+				self.materials.character),
 
 			s = new THREE.Mesh(
-			new THREE.SphereGeometry(1, 20, 20),
-			self.materials.character);
+				new THREE.SphereGeometry(1, 20, 20),
+				self.materials.character),
+
+			f = new THREE.Mesh(
+				new THREE.CylinderGeometry(0, 1, 1, 4),
+				self.materials.character);
+
 
 		a.position.set(0.6, 0.75, 0);
 		b.position.set(-0.6, 0.75, 0);
 		c.position.set(0, 2.75, 0);
 		s.position.set(0, 4.85, 0);
 
+		f.scale.x = 1;
+		f.scale.y = 2.7;
+		f.scale.z = 0.3;
+		f.position.z = 2.5;
+		f.rotation.set(Math.PI/2, 0, 0);
+
 		var geometry = new THREE.Geometry();
 		THREE.GeometryUtils.merge(geometry, a);
 		THREE.GeometryUtils.merge(geometry, b);
 		THREE.GeometryUtils.merge(geometry, c);
 		THREE.GeometryUtils.merge(geometry, s);
+		THREE.GeometryUtils.merge(geometry, f);
 
 		return geometry;
 	}
@@ -152,8 +160,9 @@ var Game = function(options) {
 
 	});
 
-	function runRenderLoop() {
+	function runRenderLoop(time) {
 		window.requestAnimationFrame(runRenderLoop);
+		TWEEN.update(time);
 		renderer.render(scene, camera);
 	};
 
