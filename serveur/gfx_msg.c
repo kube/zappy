@@ -6,7 +6,7 @@
 /*   By: vdefilip <vdefilip@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/06/18 16:49:50 by vdefilip          #+#    #+#             */
-/*   Updated: 2014/06/23 12:47:43 by vdefilip         ###   ########.fr       */
+/*   Updated: 2014/06/23 15:55:23 by vdefilip         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -533,7 +533,7 @@ void		notify_all_gfx_pic(t_env *e, t_bot *bot)
 		pic(e, gfx->fd, bot);
 }
 
-void		notify_all_gfx_incant(t_env *e, t_bot *bot, int res, t_list *new_sq)
+void		notify_all_gfx_incant(t_env *e, t_bot *bot, int res)
 {
 	t_iterator		it_gfx;
 	t_gfx			*gfx;
@@ -548,7 +548,15 @@ void		notify_all_gfx_incant(t_env *e, t_bot *bot, int res, t_list *new_sq)
 		it = NULL;
 		while ((b = (t_bot *)ft_lst_iter_next_content(bot->incant.req[0], &it)))
 			plv(e, gfx->fd, NULL, b);
-		(void)new_sq;
 	}
 }
 
+void		notify_all_gfx_seg(t_env *e, t_team *team)
+{
+	t_iterator		iter;
+	t_gfx			*gfx;
+
+	iter = NULL;
+	while ((gfx = (t_gfx *)ft_lst_iter_next_content(e->gfx_lst, &iter)))
+		seg(e, gfx->fd, team);
+}

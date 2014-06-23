@@ -6,7 +6,7 @@
 /*   By: vdefilip <vdefilip@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/06/13 11:02:20 by vdefilip          #+#    #+#             */
-/*   Updated: 2014/06/23 12:57:07 by vdefilip         ###   ########.fr       */
+/*   Updated: 2014/06/23 15:56:42 by vdefilip         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #include <sys/time.h>
 #include "server.h"
 
-static void			check_life(t_env *e, t_bot *bot, int unit)
+static int			check_life(t_env *e, t_bot *bot, int unit)
 {
 	if (bot->status != STATUS_EGG && (bot->life_unit -= unit) <= 0)
 	{
@@ -29,10 +29,33 @@ static void			check_life(t_env *e, t_bot *bot, int unit)
 			notify_all_gfx_edi(e, bot);
 		}
 		ft_strcat(e->fds[bot->fd].buf_write, "mort\n");
+		return (-1);
+	}
+	return (0);
+}
+
+void				move_obj(t_env *e, t_obj *obj, int sq)
+{
+	t_iterator			iter;
+	t_obj				*o;
+	int					new_sq;
+
+	new_sq = sq_rand(e);
+	iter = NULL;
+	while ((o = (t_obj *)ft_lst_iter_next_content(e->board[sq].obj, &iter)))
+	{
+		if (o == obj)
+		{
+			ft_lst_del_atom(e->board[sq].obj, iter, NULL);
+			ft_lst_pushend(e->board[new_sq].obj, obj);
+			notify_all_gfx_bct(e, sq);
+			notify_all_gfx_bct(e, new_sq);
+			return ;
+		}
 	}
 }
 
-void				unlock_incant_rocks(t_bot *bot)
+void				move_rocks(t_env *e, t_bot *bot)
 {
 	t_iterator		it;
 	t_obj			*o;
@@ -43,7 +66,10 @@ void				unlock_incant_rocks(t_bot *bot)
 	{
 		it = NULL;
 		while ((o = (t_obj *)ft_lst_iter_next_content(bot->incant.req[i], &it)))
+		{
 			o->lock = OBJ_UNLOCKED;
+			move_obj(e, o, bot->sq);
+		}
 		i++;
 	}
 }
@@ -94,8 +120,8 @@ void				timer(t_env *e, t_bot *bot)
 				bot->incant.parent = NULL;
 			else
 			{
-				notify_all_gfx_incant(e, bot, 1, NULL);
-				unlock_incant_rocks(bot);
+				notify_all_gfx_incant(e, bot, 1);
+				move_rocks(e, bot);
 				i = 0;
 				while (i < 7)
 					ft_lst_del(bot->incant.req[i++], NULL);

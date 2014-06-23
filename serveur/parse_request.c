@@ -6,7 +6,7 @@
 /*   By: cfeijoo <cfeijoo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/05/28 02:26:49 by cfeijoo           #+#    #+#             */
-/*   Updated: 2014/06/23 12:54:00 by vdefilip         ###   ########.fr       */
+/*   Updated: 2014/06/23 16:16:31 by vdefilip         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -362,10 +362,11 @@ void			incantation(t_env *e, t_bot *bot)
 	itr = NULL;
 	while ((b = (t_bot *)ft_lst_iter_next_content(e->board[bot->sq].bot, &itr)))
 	{
-		if (b != bot && b->level == bot->level && b->status == STATUS_NONE)
+		if (b != bot && b->life_unit > 0 && b->level == bot->level
+			&& b->status == STATUS_NONE)
 			ft_lst_pushend(bot->incant.req[0], b);
 	}
-	if (check_and_block_requirements(e, bot) == -1)
+	if (check_and_block_requirements(e, bot) == -1 || bot->level == 8)
 	{
 		i = 0;
 		while (i < 7)

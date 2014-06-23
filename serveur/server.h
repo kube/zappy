@@ -6,7 +6,7 @@
 /*   By: cfeijoo <cfeijoo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/05/24 17:00:41 by vdefilip          #+#    #+#             */
-/*   Updated: 2014/06/23 12:45:58 by vdefilip         ###   ########.fr       */
+/*   Updated: 2014/06/23 15:53:10 by vdefilip         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -308,6 +308,7 @@ void			notify_all_gfx_edi(t_env *e, t_bot *bot);
 void			notify_all_gfx_ebo(t_env *e, t_bot *bot);
 void			notify_all_gfx_bct(t_env *e, int sq);
 void			notify_all_gfx_pic(t_env *e, t_bot *bot);
-void			notify_all_gfx_incant(t_env *e, t_bot *bot, int res, t_list *s);
+void			notify_all_gfx_incant(t_env *e, t_bot *bot, int res);
+void			notify_all_gfx_seg(t_env *e, t_team *team);
 
 #endif
