@@ -332,12 +332,12 @@ int				check_and_block_requirements(t_env *e, t_bot *bot)
 	i = 0;
 	while (i < 7)
 	{
-		if ((int)bot->incant.req[i]->len < req[bot->level][i])
+		if ((int)bot->incant.req[i]->len < req[bot->level - 1][i])
 			return (-1);
 		i++;
 	}
 	mark_bots_for_incantation(e, bot);
-	mark_obj_for_incantation(bot, req[bot->level]);
+	mark_obj_for_incantation(bot, req[bot->level - 1]);
 	return (0);
 }
 

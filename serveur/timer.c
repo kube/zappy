@@ -98,7 +98,7 @@ void				timer(t_env *e, t_bot *bot)
 				unlock_incant_rocks(bot);
 				i = 0;
 				while (i < 7)
-					ft_lst_del(bot->incant.req[i], NULL);
+					ft_lst_del(bot->incant.req[i++], NULL);
 			}
 		}
 		bot->action_timer = -1;
