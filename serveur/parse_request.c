@@ -234,11 +234,11 @@ int				get_sound_dir(t_env *e, t_bot *bot_dst, t_bot *bot_src)
 	if ((dir = calcul_north_dir(diff)) == 0)
 		return (0);
 	if (bot_dst->dir == WEST)
-		dir = (dir + 2 <= 8 ? dir + 2 : dir - 6);
+		dir = (dir <= 2) ? dir + 6 : dir - 2;
 	else if (bot_dst->dir == SOUTH)
-		dir = (dir + 4 <= 8 ? dir + 2 : dir - 4);
+		dir = (dir >= 5) ? dir - 4 : dir + 4;
 	else if (bot_dst->dir == EAST)
-		dir = (dir + 6 <= 8 ? dir + 6 : dir - 2);
+		dir = (dir >= 7) ? dir - 6 : dir + 2;
 	return (dir);
 }
 
