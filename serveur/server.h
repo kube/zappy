@@ -6,7 +6,7 @@
 /*   By: cfeijoo <cfeijoo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/05/24 17:00:41 by vdefilip          #+#    #+#             */
-/*   Updated: 2014/06/20 15:34:34 by vdefilip         ###   ########.fr       */
+/*   Updated: 2014/06/23 12:45:58 by vdefilip         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,6 +105,9 @@
 # define STATUS_EGG         2
 # define STATUS_INCANTATION 3
 
+# define OBJ_UNLOCKED 0
+# define OBJ_LOCKED   1
+
 typedef struct rlimit	t_rlimit;
 typedef struct timeval	t_tv;
 typedef unsigned long	t_ulong;
@@ -150,6 +153,12 @@ typedef struct	s_team
 
 typedef struct	s_bot	t_bot;
 
+typedef struct s_incant
+{
+	t_bot		*parent;
+	t_list		*req[7];
+}				t_incant;
+
 struct			s_bot
 {
 	int			id;
@@ -162,6 +171,7 @@ struct			s_bot
 	t_list		*inventory;
 	int			level;
 	t_bot		*parent;
+	t_incant	incant;
 	t_tv		time;
 	long		timer;
 	long		food_timer;
@@ -269,7 +279,7 @@ void			sst(t_env *e, int fd, char **req);
 void			pnw(t_env *e, int fd, t_bot *bot);
 void			pex(t_env *e, int fd, t_bot *bot);
 void			pbc(t_env *e, int fd, t_bot *bot, char *msg);
-void			pic(t_env *e, int fd, t_bot *bot, int *ids);
+void			pic(t_env *e, int fd, t_bot *bot);
 void			pie(t_env *e, int fd, t_bot *bot, int res);
 void			pfk(t_env *e, int fd, t_bot *bot);
 void			pdr(t_env *e, int fd, t_bot *bot, int type);
@@ -297,5 +307,7 @@ void			notify_all_gfx_eht(t_env *e, t_bot *bot);
 void			notify_all_gfx_edi(t_env *e, t_bot *bot);
 void			notify_all_gfx_ebo(t_env *e, t_bot *bot);
 void			notify_all_gfx_bct(t_env *e, int sq);
+void			notify_all_gfx_pic(t_env *e, t_bot *bot);
+void			notify_all_gfx_incant(t_env *e, t_bot *bot, int res, t_list *s);
 
 #endif

@@ -5,13 +5,13 @@
 #                                                     +:+ +:+         +:+      #
 #    By: vdefilip <vdefilip@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2014/06/20 10:53:12 by vdefilip          #+#    #+#              #
-#    Updated: 2014/06/20 15:17:12 by vdefilip         ###   ########.fr        #
+#    Created: 2014/06/23 12:44:51 by vdefilip          #+#    #+#              #
+#    Updated: 2014/06/23 12:44:51 by vdefilip         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME=serveur
-VERSION=1.1.8
+VERSION=1.1.9
 CFLAGS=-Wall -Werror -Wextra -g
 INCLUDES=-I ./libft/includes
 LIBS=-L ./libft -l ft
@@ -44,7 +44,7 @@ build:
 $(NAME): $(OBJ) ./libft/libft.a
 	gcc $(CFLAGS) $(INCLUDES) -o $(NAME) $(OBJ) $(LIBS)
 
-%.o: %.c requests.h server.h ./libft/includes
+%.o: %.c server.h ./libft/includes
 	gcc $(CFLAGS) $(INCLUDES) -o $@ -c $<
 
 clean:

@@ -6,7 +6,7 @@
 /*   By: vdefilip <vdefilip@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/06/03 12:23:13 by vdefilip          #+#    #+#             */
-/*   Updated: 2014/06/20 14:42:23 by vdefilip         ###   ########.fr       */
+/*   Updated: 2014/06/23 12:43:59 by vdefilip         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ t_bot			*bot_new(t_team *team)
 	new->life_unit = 10 * FOOD_UNIT;
 	new->inventory = ft_lst_new(NULL);
 	new->level = 1;
+	new->incant.parent = NULL;
 	new->parent = NULL;
 	gettimeofday(&new->time, NULL);
 	new->timer = 0;

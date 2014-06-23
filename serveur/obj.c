@@ -6,7 +6,7 @@
 /*   By: vdefilip <vdefilip@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/06/04 19:29:42 by vdefilip          #+#    #+#             */
-/*   Updated: 2014/06/20 15:35:10 by vdefilip         ###   ########.fr       */
+/*   Updated: 2014/06/23 12:48:13 by vdefilip         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ t_obj		*obj_new(int type)
 
 	new = (t_obj *)try_void(malloc(sizeof(t_obj)), NULL, "malloc");
 	new->type = type;
-	new->lock = 0;
+	new->lock = OBJ_UNLOCKED;
 	return (new);
 }
 

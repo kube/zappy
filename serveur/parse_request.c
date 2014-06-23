@@ -6,7 +6,7 @@
 /*   By: cfeijoo <cfeijoo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/05/28 02:26:49 by cfeijoo           #+#    #+#             */
-/*   Updated: 2014/06/20 17:46:56 by vdefilip         ###   ########.fr       */
+/*   Updated: 2014/06/23 12:54:00 by vdefilip         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,6 @@
 #include <string.h>
 #include "libft.h"
 #include "server.h"
-#include "requests.h"
 
 t_team			*get_team_by_name(t_env *e, char *name)
 {
@@ -104,7 +103,7 @@ void			gfx_connection(t_env *e, int fd)
 				pdi(e, fd, b);
 		}
 		iter_b = NULL;
-		while ((b = (t_bot *)ft_lst_iter_next_content(t->queue, &iter_b)))
+		while ((b = (t_bot *)ft_lst_iter_next_content(t->egg, &iter_b)))
 		{
 			enw(e, fd, b->parent, b);
 			if (b->life_unit <= 0)
@@ -274,7 +273,52 @@ void			fork_egg(t_env *e, t_bot *bot)
 	ft_strcat(bot->buf_action, "ok\n");
 }
 
-int				check_requirements(int level, int *tab)
+void			mark_bots_for_incantation(t_env *e, t_bot *bot)
+{
+	t_iterator		itr;
+	t_bot			*b;
+	char			buf[128];
+
+	bot->status = STATUS_INCANTATION;
+	bot->action_timer = INCANTATION_TIME;
+	ft_strcat(e->fds[bot->fd].buf_write, "elevation en cours\n");
+	sprintf(buf, "niveau actuel : %d\n", bot->level + 1);
+	ft_strcat(bot->buf_action, buf);
+	itr = NULL;
+	while ((b = (t_bot *)ft_lst_iter_next_content(bot->incant.req[0], &itr)))
+	{
+		b->status = STATUS_INCANTATION;
+		b->action_timer = INCANTATION_TIME;
+		ft_strcat(e->fds[b->fd].buf_write, "elevation en cours\n");
+		ft_strcat(b->buf_action, buf);
+		b->incant.parent = bot;
+	}
+}
+
+void			mark_obj_for_incantation(t_bot *bot, int req[7])
+{
+	t_iterator		it;
+	t_obj			*o;
+	int				i;
+	int				n;
+
+	i = 1;
+	while (i < 7)
+	{
+		n = 0;
+		it = NULL;
+		while ((o = (t_obj *)ft_lst_iter_next_content(bot->incant.req[i], &it)))
+		{
+			if (n++ < req[i])
+				o->lock = OBJ_LOCKED;
+			else
+				ft_lst_del_atom(bot->incant.req[i], it, NULL);
+		}
+		i++;
+	}
+}
+
+int				check_and_block_requirements(t_env *e, t_bot *bot)
 {
 	static int		req[7][7] = {{1, 1, 0, 0, 0, 0, 0},
 								{2, 1, 1, 1, 0, 0, 0},
@@ -288,10 +332,12 @@ int				check_requirements(int level, int *tab)
 	i = 0;
 	while (i < 7)
 	{
-		if (tab[i] < req[level][i])
+		if ((int)bot->incant.req[i]->len < req[bot->level][i])
 			return (-1);
 		i++;
 	}
+	mark_bots_for_incantation(e, bot);
+	mark_obj_for_incantation(bot, req[bot->level]);
 	return (0);
 }
 
@@ -300,27 +346,33 @@ void			incantation(t_env *e, t_bot *bot)
 	t_iterator		itr;
 	t_obj			*o;
 	t_bot			*b;
-	int				tab[7];
+	int				i;
 
-	ft_bzero(tab, sizeof(int) * 7);
+	i = 0;
+	while (i < 7)
+		bot->incant.req[i++] = ft_lst_new(NULL);
 	itr = NULL;
 	while ((o = (t_obj *)ft_lst_iter_next_content(e->board[bot->sq].obj, &itr)))
-		tab[o->type]++;
-	tab[0] = 0;
+	{
+		if (o->type != 0 && o->lock == OBJ_UNLOCKED)
+			ft_lst_pushend(bot->incant.req[o->type], o);
+	}
 	itr = NULL;
 	while ((b = (t_bot *)ft_lst_iter_next_content(e->board[bot->sq].bot, &itr)))
 	{
-		if (b->level == bot->level)
-			tab[0]++;
+		if (b != bot && b->level == bot->level && b->status == STATUS_NONE)
+			ft_lst_pushend(bot->incant.req[0], b);
 	}
-	if (check_requirements(bot->level, tab) == -1)
+	if (check_and_block_requirements(e, bot) == -1)
 	{
-		bot->action_timer = INCANTATION_TIME;
+		i = 0;
+		while (i < 7)
+			ft_lst_del(bot->incant.req[i], NULL);
+		b->action_timer = INCANTATION_TIME;
 		ft_strcat(bot->buf_action, "ko\n");
 		return ;
 	}
-	bot->action_timer = INCANTATION_TIME;
-	ft_strcat(bot->buf_action, "ok\n");
+	notify_all_gfx_pic(e, bot);
 }
 
 void			bot_parse_request(t_env *e, int fd, char *str)
@@ -329,6 +381,8 @@ void			bot_parse_request(t_env *e, int fd, char *str)
 	char		**req;
 
 	bot = get_bot_by_fd(e, fd);
+	if (bot->status != STATUS_NONE)
+		return ;
 	req = (char **)try_void(ft_strsplit(str, ' '), NULL, "malloc");
 	if (!req[0] || ((ft_strequ(req[0], "prend") || ft_strequ(req[0], "pose")
 		|| ft_strequ(req[0], "broadcast")) && !req[1]))
