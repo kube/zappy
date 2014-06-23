@@ -6,7 +6,7 @@
 /*   By: cfeijoo <cfeijoo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/05/24 17:00:40 by vdefilip          #+#    #+#             */
-/*   Updated: 2014/06/20 14:42:50 by vdefilip         ###   ########.fr       */
+/*   Updated: 2014/06/23 15:59:42 by vdefilip         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,34 @@
 #include <sys/select.h>
 #include "libft.h"
 #include "server.h"
+
+int					check_end(t_env *e)
+{
+	t_iterator		iter_t;
+	t_iterator		iter_b;
+	t_bot			*b;
+	t_team			*t;
+	int				n;
+
+	iter_t = NULL;
+	while ((t = (t_team *)ft_lst_iter_next_content(e->team, &iter_t)))
+	{
+		n = 0;
+		iter_b = NULL;
+		while ((b = (t_bot *)ft_lst_iter_next_content(t->connected, &iter_b)))
+		{
+			if (b->life_unit > 0 && b->level == 8)
+			{
+				if (++n == 6)
+				{
+					notify_all_gfx_seg(e, t);
+					return (1);
+				}
+			}
+		}
+	}
+	return (0);
+}
 
 int					main(int ac, char **av)
 {
@@ -42,6 +70,8 @@ int					main(int ac, char **av)
 		try_int(e.res, -1, "select");
 		fd_iter_all(&e, fd_check);
 		bot_iter_all_connected_queued_egg(&e, timer);
+		if (check_end(&e))
+			while (1);
 	}
 	return (EXIT_SUCCESS);
 }

@@ -167,6 +167,7 @@ class Trantorien
     return false
 
   recv_message: (k, text) ->
+    if @path.length > 0 then return
     required_level = parseInt(text)
     if required_level isnt @level then return
     switch k

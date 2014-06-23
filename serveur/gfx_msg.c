@@ -6,7 +6,7 @@
 /*   By: vdefilip <vdefilip@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/06/18 16:49:50 by vdefilip          #+#    #+#             */
-/*   Updated: 2014/06/20 17:26:34 by vdefilip         ###   ########.fr       */
+/*   Updated: 2014/06/23 15:55:23 by vdefilip         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,6 @@
 #include <string.h>
 #include "libft.h"
 #include "server.h"
-#include "requests.h"
 
 void			msz(t_env *e, int fd)
 {
@@ -68,7 +67,7 @@ void			bct(t_env *e, int fd, char **req, int square)
 	while ((o = (t_obj *)ft_lst_iter_next_content(e->board[sq].obj, &iter)))
 		obj[o->type]++;
 	sprintf(buf, "bct %d %d %d %d %d %d %d %d %d\n",
-		sq / e->opt.width, sq % e->opt.width,
+		sq % e->opt.width, sq / e->opt.width,
 		obj[0], obj[1], obj[2], obj[3], obj[4], obj[5], obj[6]);
 	ft_strcat(e->fds[fd].buf_write, buf);
 }
@@ -257,22 +256,22 @@ void			pbc(t_env *e, int fd, t_bot *bot, char *msg)
 	ft_strcat(e->fds[fd].buf_write, buf);
 }
 
-void			pic(t_env *e, int fd, t_bot *bot, int *ids)
+void			pic(t_env *e, int fd, t_bot *bot)
 {
 	char			buf[128];
-	int				i;
+	t_iterator		iter;
+	t_bot			*b;
 
 	sprintf(buf, "pic %d %d %d #%d",
 		bot->sq % e->opt.width, bot->sq / e->opt.width,
 		bot->level,
 		bot->id);
 	ft_strcat(e->fds[fd].buf_write, buf);
-	i = 0;
-	while (ids[i] != -1)
+	iter = NULL;
+	while ((b = (t_bot *)ft_lst_iter_next_content(bot->incant.req[0], &iter)))
 	{
-		sprintf(buf, " #%d", ids[i]);
+		sprintf(buf, " #%d", b->id);
 		ft_strcat(e->fds[fd].buf_write, buf);
-		i++;
 	}
 	ft_strcat(e->fds[fd].buf_write, "\n");
 }
@@ -524,3 +523,40 @@ void		notify_all_gfx_bct(t_env *e, int sq)
 		bct(e, gfx->fd, NULL, sq);
 }
 
+void		notify_all_gfx_pic(t_env *e, t_bot *bot)
+{
+	t_iterator		iter;
+	t_gfx			*gfx;
+
+	iter = NULL;
+	while ((gfx = (t_gfx *)ft_lst_iter_next_content(e->gfx_lst, &iter)))
+		pic(e, gfx->fd, bot);
+}
+
+void		notify_all_gfx_incant(t_env *e, t_bot *bot, int res)
+{
+	t_iterator		it_gfx;
+	t_gfx			*gfx;
+	t_iterator		it;
+	t_bot			*b;
+
+	it_gfx = NULL;
+	while ((gfx = (t_gfx *)ft_lst_iter_next_content(e->gfx_lst, &it_gfx)))
+	{
+		pie(e, gfx->fd, bot, res);
+		plv(e, gfx->fd, NULL, bot);
+		it = NULL;
+		while ((b = (t_bot *)ft_lst_iter_next_content(bot->incant.req[0], &it)))
+			plv(e, gfx->fd, NULL, b);
+	}
+}
+
+void		notify_all_gfx_seg(t_env *e, t_team *team)
+{
+	t_iterator		iter;
+	t_gfx			*gfx;
+
+	iter = NULL;
+	while ((gfx = (t_gfx *)ft_lst_iter_next_content(e->gfx_lst, &iter)))
+		seg(e, gfx->fd, team);
+}

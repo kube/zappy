@@ -85,6 +85,7 @@ if use_keyboard?
     else if key.shift
       res = get_resource_name key.name
       if res then send_cmd "pose #{res}"
+    else if key.name is 'return' then send_cmd 'prend mendiane'
     else if key.name is 'e' then console.log 'expulse is not supported'
     else if key.name is 'b' then send_cmd "broadcast #{tr.level}"
     else if key.name is 'pageup' then send_cmd 'incantation'

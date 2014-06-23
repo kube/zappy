@@ -6,7 +6,7 @@
 /*   By: vdefilip <vdefilip@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/06/11 16:40:39 by vdefilip          #+#    #+#             */
-/*   Updated: 2014/06/20 12:21:15 by vdefilip         ###   ########.fr       */
+/*   Updated: 2014/06/23 16:27:49 by vdefilip         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,8 @@ void		add_sq_content(t_env *e, char **s, t_bot *bot, int sq)
 	iter = NULL;
 	while ((obj = (t_obj*)ft_lst_iter_next_content(e->board[sq].obj, &iter)))
 	{
+		if (obj->lock == OBJ_LOCKED)
+			continue ;
 		if ((*s)[ft_strlen(*s) - 1] != '{' && (*s)[ft_strlen(*s) - 1] != ' ')
 			*s = ft_strjoin(*s, " ", FT_JOIN_FREE1);
 		*s = ft_strjoin(*s, type[obj->type], FT_JOIN_FREE1);
