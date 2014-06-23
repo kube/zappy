@@ -1,5 +1,6 @@
 var	Map = require('./Map.js'),
-	Bot = require('./Bot.js');
+	Bot = require('./Bot.js'),
+	Team = require('./Team.js');
 
 var Game = function(options) {
 	var self = this;
@@ -35,17 +36,6 @@ var Game = function(options) {
 			color: 0x272831
 		}),
 
-		characters: [
-			new THREE.MeshBasicMaterial({
-				color: 0xdd0f09
-			}),
-			new THREE.MeshBasicMaterial({
-				color: 0xedc700
-			}),
-			new THREE.MeshBasicMaterial({
-				color: 0x00cf70
-			})],
-
 		ressources: [
 			new THREE.MeshBasicMaterial({
 				color: 0xdacd60
@@ -70,6 +60,7 @@ var Game = function(options) {
 			})]
 	};
 
+	this.teams = [];
 	this.bots = [];
 
 
@@ -198,13 +189,28 @@ var Game = function(options) {
 		renderer.setSize(window.innerWidth, window.innerHeight);
 	}
 
+	this.createTeam = function(name) {
+		self.teams.push(new Team(self, name));
+	}
+
+	this.getTeamByName = function(name) {
+		console.log('Get Team By Name');
+		for (var i in self.teams)
+			if (self.teams[i].name == name)
+				return self.teams[i];
+		return null;
+	}
+
 	this.createMap = function(width, height) {
 		self.map = new Map(self, width, height);
 	}
 
 	this.createBot = function(number, x, y, orientation, level, team) {
+		console.log('WELCOME');
 		var bot = new Bot(self, number, x, y, orientation, level, team);
 		this.bots[number] = bot;
+
+
 		return bot;
 	}
 

@@ -39,6 +39,7 @@ var ResponseParser = function(client, game) {
 			case 'msz':
 				game.createMap(a.i(1), a.i(2));
 				game.run();
+				global.game = game;
 				break;
 
 			case 'bct':
@@ -48,8 +49,10 @@ var ResponseParser = function(client, game) {
 				break;
 
 			case 'pnw':
+				console.log('PNW');
+				console.log(a)
 				var player = parseInt(a[1].replace('#', ''));
-				game.createBot(player, a.i(2), a.i(3), a.i(3), a.i(4), a[5]);
+				game.createBot(player, a.i(2), a.i(3), a.i(4), a[5], a[6]);
 				break;
 
 			case 'ppo':
@@ -62,7 +65,11 @@ var ResponseParser = function(client, game) {
 			case 'pdi':
 				var player = parseInt(a[1].replace('#', ''));
 				game.bots[player].die();
-				console.log('Player ' + player + ' is dead');
+				break;
+
+			case 'tna':
+				console.log('Creating team ' + a[1]);
+				game.createTeam(a[1]);
 				break;
 
 		}

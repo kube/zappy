@@ -1,4 +1,4 @@
-var Bot = function(game, number, x, y, orientation, level, team) {
+var Bot = function(game, number, x, y, orientation, level, teamName) {
 	var self = this;
 
 	this.name = number;
@@ -6,18 +6,27 @@ var Bot = function(game, number, x, y, orientation, level, team) {
 	this.y;
 	this.orientation = orientation;
 	this.level = level;
-	this.team = team;
-
-	console.log('Creating BOT');
+	// this.team = teamName;
 
 	var block = game.map.blocks[x][y];
-
-	// console.log(block)
 
 	this.position = {
 		x: block.position.x,
 		y: block.position.y
 	};
+
+	// Add bot to team
+	console.log('Creating BOt')
+
+	console.log(number)
+	console.log(x)
+	console.log(y)
+	console.log(orientation)
+	console.log(level)
+	console.log(teamName)
+
+	console.log(game.getTeamByName(teamName))
+	game.getTeamByName(teamName).addBot(self);
 
 	this.setPosition = function(x, y, o) {
 
@@ -65,7 +74,7 @@ var Bot = function(game, number, x, y, orientation, level, team) {
 	this.die = function() {
 		game.scene.remove(self.mesh);
 		self.mesh = new THREE.Mesh(game.RIPGeometry,
-			game.materials.characters[2]);
+			self.team.material);
 
 		self.mesh.scale.x = 0.05;
 		self.mesh.scale.y = 0.05;
@@ -79,7 +88,7 @@ var Bot = function(game, number, x, y, orientation, level, team) {
 	function createMesh() {
 
 		self.mesh = new THREE.Mesh(game.stickmanGeometry,
-			game.materials.characters[2]);
+			self.team.material);
 
 		self.mesh.scale.x = 0.05;
 		self.mesh.scale.y = 0.05;
