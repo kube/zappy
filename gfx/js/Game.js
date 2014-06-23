@@ -34,10 +34,17 @@ var Game = function(options) {
 		block: new THREE.MeshPhongMaterial({
 			color: 0x272831
 		}),
-		character: new THREE.MeshNormalMaterial({
-			// color: 0xe68680
-			color: 0x7880e6
-		}),
+
+		characters: [
+			new THREE.MeshBasicMaterial({
+				color: 0xdd0f09
+			}),
+			new THREE.MeshBasicMaterial({
+				color: 0xedc700
+			}),
+			new THREE.MeshBasicMaterial({
+				color: 0x00cf70
+			})],
 
 		ressources: [
 			new THREE.MeshBasicMaterial({
@@ -66,6 +73,26 @@ var Game = function(options) {
 	this.bots = [];
 
 
+	function createRIPGeometry() {
+
+		var	a = new THREE.Mesh(
+				new THREE.BoxGeometry(1, 4, 1),
+				self.materials.character),
+
+			b = new THREE.Mesh(
+				new THREE.BoxGeometry(3, 1, 1),
+				self.materials.character);
+
+		a.position.set(0, 2, 0);
+		b.position.set(0, 2.5, 0);
+
+		var geometry = new THREE.Geometry();
+		THREE.GeometryUtils.merge(geometry, a);
+		THREE.GeometryUtils.merge(geometry, b);
+
+		return geometry;
+	}
+	this.RIPGeometry = createRIPGeometry();
 
 	function createStickmanGeometry() {
 
@@ -88,7 +115,6 @@ var Game = function(options) {
 			f = new THREE.Mesh(
 				new THREE.CylinderGeometry(0, 1, 1, 4),
 				self.materials.character);
-
 
 		a.position.set(0.6, 0.75, 0);
 		b.position.set(-0.6, 0.75, 0);

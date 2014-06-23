@@ -59,6 +59,12 @@ var ResponseParser = function(client, game) {
 				game.bots[player].setPosition(a.i(2), a.i(3), a.i(4));
 				break;
 
+			case 'pdi':
+				var player = parseInt(a[1].replace('#', ''));
+				game.bots[player].die();
+				console.log('Player ' + player + ' is dead');
+				break;
+
 		}
 		self.next();
 	}

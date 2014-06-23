@@ -62,20 +62,33 @@ var Bot = function(game, number, x, y, orientation, level, team) {
 		self.mesh.updateMatrix();
 	}
 
+	this.die = function() {
+		game.scene.remove(self.mesh);
+		self.mesh = new THREE.Mesh(game.RIPGeometry,
+			game.materials.characters[2]);
 
+		self.mesh.scale.x = 0.05;
+		self.mesh.scale.y = 0.05;
+		self.mesh.scale.z = 0.05;
+
+		self.setPosition(self.x, self.y, self.orientation);
+
+		game.scene.add(self.mesh);
+	}
 
 	function createMesh() {
 
 		self.mesh = new THREE.Mesh(game.stickmanGeometry,
-			game.materials.character);
+			game.materials.characters[2]);
 
 		self.mesh.scale.x = 0.05;
 		self.mesh.scale.y = 0.05;
 		self.mesh.scale.z = 0.05;
 
 		// Set Mesh position
-		self.mesh.position.set(block.position.x, 0.025, block.position.y);
-		self.mesh.rotation.set(0, - (Math.PI / 2 * (1 + orientation)), 0);
+		self.setPosition(x, y, orientation);
+		// self.mesh.position.set(block.position.x, 0.025, block.position.y);
+		// self.mesh.rotation.set(0, - (Math.PI / 2 * (1 + orientation)), 0);
 
 		self.mesh.onclick = function(e, pick) {
 			// var pickedMesh = pick.pickedMesh;
@@ -84,24 +97,6 @@ var Bot = function(game, number, x, y, orientation, level, team) {
 
 		game.scene.add(self.mesh);
 	}
-
-	// function createMesh() {
-
-	// 	self.mesh = new THREE.Mesh(
-	// 		new THREE.CylinderGeometry(0, 0.2, 0.2, 4),
-	// 		game.materials.basic);
-
-	// 	self.mesh.scale.x = 0.4;
-	// 	self.mesh.scale.z = 0.1;
-
-	// 	self.setPosition(x, y, orientation);
-	// 	game.scene.add(self.mesh);
-
-	// 	self.mesh.onclick = function(e, pick) {
-	// 		// var pickedMesh = pick.pickedMesh;
-	// 		console.log(self);
-	// 	}
-	// }
 	createMesh();
 }
 
