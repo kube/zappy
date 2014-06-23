@@ -38,27 +38,38 @@ var Game = function(options) {
 
 		ressources: [
 			new THREE.MeshBasicMaterial({
-				color: 0xdacd60
+				color: 0xdacd60,
+				opacity: 0.5
 			}),
 			new THREE.MeshBasicMaterial({
-				color: 0xda428c
+				color: 0xda428c,
+				opacity: 0.5
 			}),
 			new THREE.MeshBasicMaterial({
-				color: 0x8046db
+				color: 0x8046db,
+				opacity: 0.5
 			}),
 			new THREE.MeshBasicMaterial({
-				color: 0x40abdb
+				color: 0x40abdb,
+				opacity: 0.5
 			}),
 			new THREE.MeshBasicMaterial({
-				color: 0x47dc37
+				color: 0x47dc37,
+				opacity: 0.5
 			}),
 			new THREE.MeshBasicMaterial({
-				color: 0xdc6a28
+				color: 0xdc6a28,
+				opacity: 0.5
 			}),
 			new THREE.MeshBasicMaterial({
-				color: 0xb1dc41
+				color: 0xb1dc41,
+				opacity: 0.5
 			})]
 	};
+
+	// Hackish way to make transparent material
+	for (var i in self.materials.ressources)
+		self.materials.ressources[i].transparent = true;
 
 	this.teams = [];
 	this.bots = [];
@@ -180,6 +191,12 @@ var Game = function(options) {
 	function runRenderLoop(time) {
 		window.requestAnimationFrame(runRenderLoop);
 		TWEEN.update(time);
+
+		var d = new Date();
+		// Ressources opacity animation
+		for (var i in self.materials.ressources)
+			self.materials.ressources[i].opacity = 0.65 + Math.sin(d.getTime() * 0.005) * 0.25;
+
 		renderer.render(scene, camera);
 	};
 
@@ -194,7 +211,6 @@ var Game = function(options) {
 	}
 
 	this.getTeamByName = function(name) {
-		console.log('Get Team By Name');
 		for (var i in self.teams)
 			if (self.teams[i].name == name)
 				return self.teams[i];
@@ -206,11 +222,8 @@ var Game = function(options) {
 	}
 
 	this.createBot = function(number, x, y, orientation, level, team) {
-		console.log('WELCOME');
 		var bot = new Bot(self, number, x, y, orientation, level, team);
 		this.bots[number] = bot;
-
-
 		return bot;
 	}
 

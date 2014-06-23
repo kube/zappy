@@ -28,8 +28,6 @@ var ResponseParser = function(client, game) {
 			return parseInt(this[i]);
 		}
 
-		// console.log(a)
-
 		switch (a[0]) {
 
 			case 'BIENVENUE':
@@ -49,8 +47,6 @@ var ResponseParser = function(client, game) {
 				break;
 
 			case 'pnw':
-				console.log('PNW');
-				console.log(a)
 				var player = parseInt(a[1].replace('#', ''));
 				game.createBot(player, a.i(2), a.i(3), a.i(4), a[5], a[6]);
 				break;
@@ -58,8 +54,12 @@ var ResponseParser = function(client, game) {
 			case 'ppo':
 				var player = parseInt(a[1].replace('#', ''));
 				if (game.bots[player])
-					console.log(game.bots[player])
-				game.bots[player].setPosition(a.i(2), a.i(3), a.i(4));
+					game.bots[player].setPosition(a.i(2), a.i(3), a.i(4));
+				break;
+
+			case 'plv':
+				var player = parseInt(a[1].replace('#', ''));
+				game.bots[player].elevateBot(a[2]);
 				break;
 
 			case 'pdi':
@@ -67,11 +67,17 @@ var ResponseParser = function(client, game) {
 				game.bots[player].die();
 				break;
 
+			case 'seg':
+				game.getTeamByName(a[1]).win();
+
 			case 'tna':
-				console.log('Creating team ' + a[1]);
 				game.createTeam(a[1]);
 				break;
 
+			case 'smg':
+				var regex = /^smg /,
+					message = a.replace(regex, '');
+				console.log(message);
 		}
 		self.next();
 	}

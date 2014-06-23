@@ -1,13 +1,13 @@
 var teamColors = [
-	0xcf2500,
-	0xcf9700,
-	0x9fcf00,
-	0x3fcf00,
-	0x00cf84,
-	0x008bcf,
-	0x0e00cf,
-	0x7400cf,
-	0xcf0094
+	0x3e3dff,
+	0x61d33c,
+	0xdea200,
+	0x008bd0,
+	0xe34934,
+	0x00ea95,
+	0x8e22ee,
+	0xbbe546,
+	0xe13bb5
 ];
 
 var Team = function(game, name) {
@@ -21,9 +21,6 @@ var Team = function(game, name) {
 		});
 
 	this.addBot = function(bot) {
-
-		console.log('Bot is joining ' + self.name);
-
 		_bots.push(bot);
 		bot.team = self;
 	}
@@ -34,6 +31,13 @@ var Team = function(game, name) {
 
 	this.getBots = function() {
 		return _bots;
+	}
+
+	this.win = function() {
+		// DO THE STUFF WHEN TEAM WINS
+		// - MAKE BOTS JUMP
+		// - BLOCK SOCKET PARSING
+		// - DISPLAY '#WINNER TEAM' TEXT
 	}
 }
 

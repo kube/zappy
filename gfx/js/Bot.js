@@ -15,17 +15,6 @@ var Bot = function(game, number, x, y, orientation, level, teamName) {
 		y: block.position.y
 	};
 
-	// Add bot to team
-	console.log('Creating BOt')
-
-	console.log(number)
-	console.log(x)
-	console.log(y)
-	console.log(orientation)
-	console.log(level)
-	console.log(teamName)
-
-	console.log(game.getTeamByName(teamName))
 	game.getTeamByName(teamName).addBot(self);
 
 	this.setPosition = function(x, y, o) {
@@ -69,6 +58,10 @@ var Bot = function(game, number, x, y, orientation, level, teamName) {
 		// Mesh position update
 		// self.mesh.position.set(block.position.x, 0.05, block.position.y);
 		self.mesh.updateMatrix();
+	}
+
+	this.elevate = function() {
+
 	}
 
 	this.die = function() {

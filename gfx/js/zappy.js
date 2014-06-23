@@ -8,21 +8,35 @@ var	net = require('net'),
 	ResponseParser = require('./js/ResponseParser.js');
 
 
+/*
+**	Override exceptions handling to prevent crashes
+*/
 process.on('uncaughtException', function(e) {
-	// console.log(e);
-	// console.log(e.message);
 
-	if (e.code == "ECONNREFUSED") {
-		// console.log("Cannot reach the server");
-		displayConnectionForm();
+	switch (e.code) {
+
+		case 'ECONNREFUSED':
+			displayConnectionForm();
+			break;
+
+		default:
+			console.log(e.message);
 	}
 });
 
+
+/*
+**	Set Window Properties
+*/
 var win = gui.Window.get();
 win.title = "Zappy";
 win.width = 1300;
 win.height = 900;
 
+
+/*
+**	Interface and Form
+*/
 function displayConnectionForm() {
 	$("#loginForm").show();
 	$("#renderCanvas").hide();
@@ -33,10 +47,21 @@ function displayGame() {
 	$("#renderCanvas").show();
 }
 
+function validateConnectionForm() {
+	var	host = document.getElementById('hostField').value,
+		port = document.getElementById('portField').value;
+
+	console.log('Connecting to ' + host + ':' + port);
+	connectToServer(host, port);
+}
+
+
+/*
+**	Server Connection
+*/
 function destroySession(client, game) {
 	client.destroy();
 	game.destroy();
-	// Remove event from Back button
 	displayConnectionForm();
 }
 
@@ -54,35 +79,22 @@ function connectToServer(host, port) {
 	});
 
 	client.connect(port, host, function() {
-
-	});
-
-	client.on('close', function() {
-		destroySession(client, game);
-		game.clear();
-		game = null;
+		console.log('Established connection');
 	});
 
 	client.on('data', function(data) {
 		var responses = data.toString().split('\n');
+
+		// Push each response to the response parser
 		for (var i in responses)
 			responseParser.push(responses[i]);
 	});
 
-	client.on('end', function() {
-		// console.log('Client disconnected');
+	client.on('close', function() {
+		console.log('Disconnected from Server');
 		destroySession(client, game);
+		game.clear();
+		game = null;
 	});
 }
 
-function validateConnectionForm() {
-
-	// console.log('Conneting to '
-		// + document.getElementById('hostField').value
-		// + ' '
-		// + document.getElementById('portField').value);
-
-	connectToServer(
-		document.getElementById('hostField').value,
-		document.getElementById('portField').value);
-}

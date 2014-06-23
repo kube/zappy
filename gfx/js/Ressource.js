@@ -8,7 +8,7 @@ var Ressource = function(block, x, y, type) {
 		y: block.position.y + Math.sin(type / 7 * Math.PI * 2) / 3
 	};
 
-	this.mesh = new THREE.Mesh(new THREE.BoxGeometry(0.05, 1.0, 0.05), game.materials.ressources[type]);
+	this.mesh = new THREE.Mesh(new THREE.BoxGeometry(0.04, 1.0, 0.04), game.materials.ressources[type]);
 	this.mesh.position.set(this.position.x, -0.1, this.position.y);
 	this.mesh.updateMatrix();
 	this.mesh.matrixAutoUpdate = false;
