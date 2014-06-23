@@ -68,7 +68,7 @@ void			bct(t_env *e, int fd, char **req, int square)
 	while ((o = (t_obj *)ft_lst_iter_next_content(e->board[sq].obj, &iter)))
 		obj[o->type]++;
 	sprintf(buf, "bct %d %d %d %d %d %d %d %d %d\n",
-		sq / e->opt.width, sq % e->opt.width,
+		sq % e->opt.width, sq / e->opt.width,
 		obj[0], obj[1], obj[2], obj[3], obj[4], obj[5], obj[6]);
 	ft_strcat(e->fds[fd].buf_write, buf);
 }
@@ -523,4 +523,3 @@ void		notify_all_gfx_bct(t_env *e, int sq)
 	while ((gfx = (t_gfx *)ft_lst_iter_next_content(e->gfx_lst, &iter)))
 		bct(e, gfx->fd, NULL, sq);
 }
-
