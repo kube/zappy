@@ -164,6 +164,9 @@ handle_response = (msg) ->
     i = msg.indexOf(':') + 1
     s = msg.substring i
     tr.level = parseInt s
+    tr.inventory = false
+    tr.around = false
+    tr.wait_elevation = 0
   else if msg.search("deplacement ") isnt -1
     tr.inventory = false
     tr.around = false
