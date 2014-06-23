@@ -225,10 +225,12 @@ int				get_sound_dir(t_env *e, t_bot *bot_dst, t_bot *bot_src)
 	src[Y] = bot_src->sq / e->opt.width;
 	diff[X] = src[X] - dst[X];
 	if (ABS(diff[X]) > e->opt.width / 2)
-		diff[X] = (e->opt.width - diff[X]) * -1;
+		diff[X] = (diff[X] >= 0) ? (e->opt.width - ABS(diff[X])) * -1
+			: (e->opt.width - ABS(diff[X]));
 	diff[Y] = src[Y] - dst[Y];
 	if (ABS(diff[Y]) > e->opt.height / 2)
-		diff[Y] = (e->opt.height - diff[Y]) * -1;
+		diff[Y] = (diff[Y] >= 0) ? (e->opt.height - ABS(diff[Y])) * -1
+		: (e->opt.height - ABS(diff[Y]));
 	if ((dir = calcul_north_dir(diff)) == 0)
 		return (0);
 	if (bot_dst->dir == WEST)
