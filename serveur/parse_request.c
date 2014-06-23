@@ -367,8 +367,8 @@ void			incantation(t_env *e, t_bot *bot)
 	{
 		i = 0;
 		while (i < 7)
-			ft_lst_del(bot->incant.req[i], NULL);
-		b->action_timer = INCANTATION_TIME;
+			ft_lst_del(bot->incant.req[i++], NULL);
+		bot->action_timer = INCANTATION_TIME;
 		ft_strcat(bot->buf_action, "ko\n");
 		return ;
 	}
