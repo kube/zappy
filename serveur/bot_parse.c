@@ -6,7 +6,7 @@
 /*   By: vdefilip <vdefilip@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/06/24 15:31:42 by vdefilip          #+#    #+#             */
-/*   Updated: 2014/06/24 15:50:03 by vdefilip         ###   ########.fr       */
+/*   Updated: 2014/06/24 16:07:56 by vdefilip         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,7 @@ static void		dead(t_env *e, t_bot *bot)
 	ft_strcat(e->fds[bot->fd].buf_write, "mort\n");
 }
 
-static void		bot_exec_cmd(t_env *e, t_bot *bot, char **req)
+static void		bot_exec_cmd(t_env *e, t_bot *bot, char *str, char **req)
 {
 	int			i;
 
@@ -91,7 +91,9 @@ static void		bot_exec_cmd(t_env *e, t_bot *bot, char **req)
 	{
 		if (ft_strequ(req[0], g_bot_parse[i].cmd))
 		{
-			if (i < 3)
+			if (i == 0)
+				g_bot_parse[i].fct(e, bot, &str[ft_strlen(req[0]) + 1]);
+			else if (i < 3)
 				g_bot_parse[i].fct(e, bot, req[1]);
 			else if (i < 11)
 				g_bot_parse[i].fct(e, bot);
@@ -117,6 +119,6 @@ void			bot_parse_request(t_env *e, int fd, char *str)
 	else if (bot->life_unit <= 0)
 		dead(e, bot);
 	else
-		bot_exec_cmd(e, bot, req);
+		bot_exec_cmd(e, bot, str, req);
 	ft_free_strtab(req);
 }

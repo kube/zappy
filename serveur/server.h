@@ -6,7 +6,7 @@
 /*   By: cfeijoo <cfeijoo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/05/24 17:00:41 by vdefilip          #+#    #+#             */
-/*   Updated: 2014/06/24 15:35:05 by vdefilip         ###   ########.fr       */
+/*   Updated: 2014/06/24 16:05:04 by vdefilip         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -269,10 +269,6 @@ void			print_board(t_env *e);
 void			bot_parse_request(t_env *e, int cs, char *str);
 void			gfx_parse_request(t_env *e, int fd, char *str);
 
-void			turn_left(t_env *e, t_bot *bot);
-void			turn_right(t_env *e, t_bot *bot);
-void			step(t_env *e, t_bot *bot);
-void			move(t_env *e, t_bot *bot, int sq);
 
 int				get_north(t_env *e, int sq);
 int				get_south(t_env *e, int sq);
@@ -329,19 +325,23 @@ void			notify_all_gfx_pic(t_env *e, t_bot *bot);
 void			notify_all_gfx_incant(t_env *e, t_bot *bot, int res);
 void			notify_all_gfx_seg(t_env *e, t_team *team);
 
-void			look(t_env *e, t_bot *bot);
-void			get_inventory(t_env *e, t_bot *bot);
+void			broadcast(t_env *e, t_bot *bot, char *msg);
 void			take(t_env *e, t_bot *bot, char *obj_name);
 void			put(t_env *e, t_bot *bot, char *obj_name);
-void			broadcast(t_env *e, t_bot *bot, char *msg);
-void			send_nbr(t_env *e, int fd);
-void			send_dimension(t_env *e, int fd);
+void			step(t_env *e, t_bot *bot);
+void			turn_right(t_env *e, t_bot *bot);
+void			turn_left(t_env *e, t_bot *bot);
+void			look(t_env *e, t_bot *bot);
+void			get_inventory(t_env *e, t_bot *bot);
 void			expulse(t_env *e, t_bot *bot);
+void			incantation(t_env *e, t_bot *bot);
 void			fork_egg(t_env *e, t_bot *bot);
+void			send_nbr(t_env *e, int fd);
+void			move(t_env *e, t_bot *bot, int sq);
+void			send_dimension(t_env *e, int fd);
 int				*incant_get_requirements(int level);
 void			incant_get_elements(t_env *e, t_bot *bot);
 void			incant_del_elements(t_env *e, t_bot *bot);
 void			move_rocks_after_incant(t_env *e, t_bot *bot);
-void			incantation(t_env *e, t_bot *bot);
 
 #endif
