@@ -6,7 +6,7 @@
 /*   By: cfeijoo <cfeijoo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/05/24 17:00:40 by vdefilip          #+#    #+#             */
-/*   Updated: 2014/06/23 15:59:42 by vdefilip         ###   ########.fr       */
+/*   Updated: 2014/06/24 11:08:51 by vdefilip         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,8 @@ int					main(int ac, char **av)
 		fd_iter_all(&e, fd_check);
 		bot_iter_all_connected_queued_egg(&e, timer);
 		if (check_end(&e))
-			while (1);
+			while (1)
+				;
 	}
 	return (EXIT_SUCCESS);
 }

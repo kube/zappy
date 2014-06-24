@@ -6,7 +6,7 @@
 /*   By: cfeijoo <cfeijoo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/05/24 17:00:40 by vdefilip          #+#    #+#             */
-/*   Updated: 2014/06/19 14:31:14 by vdefilip         ###   ########.fr       */
+/*   Updated: 2014/06/24 11:06:23 by vdefilip         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,39 +46,42 @@ static int		check_buf_read(t_env *e, int cs, int type)
 	return (0);
 }
 
+static void		parse(t_env *e, int cs, int type)
+{
+	if (type == FD_BOT_CLIENT)
+	{
+		printf("%s", PURPLE);
+		printf("Client #%d (BOT) [%s]\n", cs, e->fds[cs].buf_read);
+		printf("%s", DEFAULT);
+		bot_parse_request(e, cs, e->fds[cs].buf_read);
+	}
+	else if (type == FD_GFX_CLIENT)
+	{
+		printf("%s", CYAN);
+		printf("Client #%d (GFX) [%s]\n", cs, e->fds[cs].buf_read);
+		printf("%s", DEFAULT);
+		gfx_parse_request(e, cs, e->fds[cs].buf_read);
+	}
+	else
+	{
+		printf("%s", GREEN);
+		printf("Client #%d [%s]\n", cs, e->fds[cs].buf_read);
+		printf("%s", DEFAULT);
+		if (ft_strequ(e->fds[cs].buf_read, "GRAPHIC"))
+			gfx_connection(e, cs);
+		else
+			bot_connection(e, cs, e->fds[cs].buf_read);
+	}
+}
+
 void			client_read(t_env *e, int cs)
 {
 	int		type;
 
-	type =  e->fds[cs].type;
+	type = e->fds[cs].type;
 	if (check_buf_read(e, cs, type) > 0)
-	{
-		if (type == FD_BOT_CLIENT)
-		{
-			printf("%s", PURPLE);
-			printf("Client #%d (BOT) [%s]\n", cs, e->fds[cs].buf_read);
-			printf("%s", DEFAULT);
-			bot_parse_request(e, cs, e->fds[cs].buf_read);
-		}
-		else if (type == FD_GFX_CLIENT)
-		{
-			printf("%s", CYAN);
-			printf("Client #%d (GFX) [%s]\n", cs, e->fds[cs].buf_read);
-			printf("%s", DEFAULT);
-			gfx_parse_request(e, cs, e->fds[cs].buf_read);
-		}
-		else
-		{
-			printf("%s", GREEN);
-			printf("Client #%d [%s]\n", cs, e->fds[cs].buf_read);
-			printf("%s", DEFAULT);
-			if (ft_strequ(e->fds[cs].buf_read, "GRAPHIC"))
-				gfx_connection(e, cs);
-			else
-				bot_connection(e, cs, e->fds[cs].buf_read);
-		}
-		ft_bzero(e->fds[cs].buf_read, BUF_SIZE);
-	}
+		parse(e, cs, type);
+	ft_bzero(e->fds[cs].buf_read, BUF_SIZE);
 }
 
 void			client_write(t_env *e, int cs)

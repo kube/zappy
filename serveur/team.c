@@ -1,48 +1,44 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   gfx.c                                              :+:      :+:    :+:   */
+/*   team.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: vdefilip <vdefilip@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2014/06/03 12:28:53 by vdefilip          #+#    #+#             */
-/*   Updated: 2014/06/24 11:33:35 by vdefilip         ###   ########.fr       */
+/*   Created: 2014/06/24 11:28:35 by vdefilip          #+#    #+#             */
+/*   Updated: 2014/06/24 13:38:03 by vdefilip         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <unistd.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include "libft.h"
 #include "server.h"
 
-t_gfx			*gfx_new(int fd)
+t_team			*team_new(char *name, int limit)
 {
-	static int		id = 1;
-	t_gfx			*new;
+	t_team		*team;
 
-	new = (t_gfx *)try_void(ft_memalloc(sizeof(*new)), NULL, "malloc");
-	new->fd = fd;
-	new->id = id++;
-	return (new);
+	team = (t_team *)try_void(malloc(sizeof(*team)), NULL, "malloc");
+	team->name = name;
+	team->limit = limit;
+	team->unconnected = ft_lst_new(NULL);
+	team->connected = ft_lst_new(NULL);
+	team->queue = ft_lst_new(NULL);
+	team->egg = ft_lst_new(NULL);
+	return (team);
 }
 
-void			gfx_destroy(t_env *e, int fd, char *msg)
+t_team			*get_team_by_name(t_env *e, char *name)
 {
-	t_gfx			*gfx;
 	t_iterator		iter;
+	t_team			*team;
 
-	printf("Client #%d (GFX) gone away", fd);
-	if (msg)
-		printf(": %s", msg);
-	printf("\n");
 	iter = NULL;
-	while ((gfx = (t_gfx *)ft_lst_iter_next_content(e->gfx_lst, &iter)))
+	while ((team = (t_team *)ft_lst_iter_next_content(e->team, &iter)))
 	{
-		if (gfx->fd == fd)
-		{
-			ft_lst_del_atom(e->gfx_lst, iter, free);
-			break ;
-		}
+		if (ft_strequ(team->name, name))
+			return (team);
 	}
+	return (NULL);
 }

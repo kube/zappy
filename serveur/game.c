@@ -6,7 +6,7 @@
 /*   By: vdefilip <vdefilip@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/06/04 13:05:23 by vdefilip          #+#    #+#             */
-/*   Updated: 2014/06/23 12:26:37 by vdefilip         ###   ########.fr       */
+/*   Updated: 2014/06/24 11:32:28 by vdefilip         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 
 void				print_board(t_env *e)
 {
-	t_iterator		iter;
+	t_iterator		itr;
 	int				i;
 	t_bot			*bot;
 	t_obj			*obj;
@@ -28,19 +28,14 @@ void				print_board(t_env *e)
 	while (i < e->n_sq)
 	{
 		ft_bzero(rock, sizeof(int) * OBJ_NB);
-		iter = NULL;
-		while ((obj = (t_obj *)ft_lst_iter_next_content(e->board[i].obj, &iter)))
+		itr = NULL;
+		while ((obj = (t_obj *)ft_lst_iter_next_content(e->board[i].obj, &itr)))
 			rock[obj->type]++;
 		printf("[%4d] : ", i);
-		printf("%4d ", rock[0]);
-		printf("%2d ", rock[1]);
-		printf("%2d ", rock[2]);
-		printf("%2d ", rock[3]);
-		printf("%2d ", rock[4]);
-		printf("%2d ", rock[5]);
-		printf("%2d ", rock[6]);
-		iter = NULL;
-		while ((bot = (t_bot *)ft_lst_iter_next_content(e->board[i].bot, &iter)))
+		printf("%4d %2d %2d %2d ", rock[0], rock[1], rock[2], rock[3]);
+		printf("%2d %2d %2d ", rock[4], rock[5], rock[6]);
+		itr = NULL;
+		while ((bot = (t_bot *)ft_lst_iter_next_content(e->board[i].bot, &itr)))
 			printf("#%d ", bot->fd);
 		printf("\n");
 		i++;
@@ -106,13 +101,7 @@ void				init_game(t_env *e)
 	iter = NULL;
 	while ((name = (char *)ft_lst_iter_next_content(e->opt.team_name, &iter)))
 	{
-		team = (t_team *)try_void(malloc(sizeof(*team)), NULL, "malloc");
-		team->name = name;
-		team->limit = e->opt.limit;
-		team->unconnected = ft_lst_new(NULL);
-		team->connected = ft_lst_new(NULL);
-		team->queue = ft_lst_new(NULL);
-		team->egg = ft_lst_new(NULL);
+		team = team_new(name, e->opt.limit);
 		i = 0;
 		while (i < team->limit)
 		{

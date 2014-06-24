@@ -6,7 +6,7 @@
 /*   By: vdefilip <vdefilip@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/06/13 11:02:20 by vdefilip          #+#    #+#             */
-/*   Updated: 2014/06/23 15:56:42 by vdefilip         ###   ########.fr       */
+/*   Updated: 2014/06/24 11:54:20 by vdefilip         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,43 +34,45 @@ static int			check_life(t_env *e, t_bot *bot, int unit)
 	return (0);
 }
 
-void				move_obj(t_env *e, t_obj *obj, int sq)
+static void			handle_status_fork_and_egg(t_env *e, t_bot *bot)
 {
-	t_iterator			iter;
-	t_obj				*o;
-	int					new_sq;
+	t_bot			*egg;
 
-	new_sq = sq_rand(e);
-	iter = NULL;
-	while ((o = (t_obj *)ft_lst_iter_next_content(e->board[sq].obj, &iter)))
+	if (bot->status == STATUS_FORK)
 	{
-		if (o == obj)
-		{
-			ft_lst_del_atom(e->board[sq].obj, iter, NULL);
-			ft_lst_pushend(e->board[new_sq].obj, obj);
-			notify_all_gfx_bct(e, sq);
-			notify_all_gfx_bct(e, new_sq);
-			return ;
-		}
+		bot->status = STATUS_NONE;
+		egg = bot_new(bot->team);
+		egg->sq = bot->sq;
+		move(e, egg, egg->sq);
+		gettimeofday(&egg->time, NULL);
+		egg->status = STATUS_EGG;
+		egg->parent = bot;
+		ft_lst_pushend(bot->team->egg, egg);
+		notify_all_gfx_enw(e, bot, egg);
+		egg->action_timer = EGG_TIME;
+	}
+	else if (bot->status == STATUS_EGG)
+	{
+		bot->status = STATUS_NONE;
+		notify_all_gfx_eht(e, bot);
 	}
 }
 
-void				move_rocks(t_env *e, t_bot *bot)
+static void			handle_status_incantation(t_env *e, t_bot *bot)
 {
-	t_iterator		it;
-	t_obj			*o;
 	int				i;
 
-	i = 1;
-	while (i < 7)
+	bot->status = STATUS_NONE;
+	bot->level++;
+	if (bot->incant.parent != NULL)
+		bot->incant.parent = NULL;
+	else
 	{
-		it = NULL;
-		while ((o = (t_obj *)ft_lst_iter_next_content(bot->incant.req[i], &it)))
-		{
-			o->lock = OBJ_UNLOCKED;
-			move_obj(e, o, bot->sq);
-		}
-		i++;
+		notify_all_gfx_incant(e, bot, 1);
+		move_rocks_after_incant(e, bot);
+		i = 0;
+		while (i < 7)
+			ft_lst_del(bot->incant.req[i++], NULL);
 	}
 }
 
@@ -79,8 +81,6 @@ void				timer(t_env *e, t_bot *bot)
 	struct timeval			cur;
 	t_ulong					diff;
 	t_ulong					unit;
-	t_bot					*egg;
-	int						i;
 
 	if (bot->life_unit <= 0)
 		return ;
@@ -94,39 +94,10 @@ void				timer(t_env *e, t_bot *bot)
 	check_life(e, bot, unit);
 	if (bot->action_timer > 0 && (bot->action_timer -= unit) <= 0)
 	{
-		if (bot->status == STATUS_FORK)
-		{
-			bot->status = STATUS_NONE;
-			egg = bot_new(bot->team);
-			egg->sq = bot->sq;
-			move(e, egg, egg->sq);
-			gettimeofday(&egg->time, NULL);
-			egg->status = STATUS_EGG;
-			egg->parent = bot;
-			ft_lst_pushend(bot->team->egg, egg);
-			notify_all_gfx_enw(e, bot, egg);
-			egg->action_timer = EGG_TIME;
-		}
-		else if (bot->status == STATUS_EGG)
-		{
-			bot->status = STATUS_NONE;
-			notify_all_gfx_eht(e, bot);
-		}
+		if (bot->status == STATUS_FORK || bot->status == STATUS_EGG)
+			handle_status_fork_and_egg(e, bot);
 		else if (bot->status == STATUS_INCANTATION)
-		{
-			bot->status = STATUS_NONE;
-			bot->level++;
-			if (bot->incant.parent != NULL)
-				bot->incant.parent = NULL;
-			else
-			{
-				notify_all_gfx_incant(e, bot, 1);
-				move_rocks(e, bot);
-				i = 0;
-				while (i < 7)
-					ft_lst_del(bot->incant.req[i++], NULL);
-			}
-		}
+			handle_status_incantation(e, bot);
 		bot->action_timer = -1;
 		ft_strcat(e->fds[bot->fd].buf_write, bot->buf_action);
 		ft_bzero(bot->buf_action, BUF_SIZE);
