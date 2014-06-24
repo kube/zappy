@@ -6,7 +6,7 @@
 /*   By: vdefilip <vdefilip@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/06/24 15:31:42 by vdefilip          #+#    #+#             */
-/*   Updated: 2014/06/24 15:34:40 by vdefilip         ###   ########.fr       */
+/*   Updated: 2014/06/24 15:50:03 by vdefilip         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,8 +93,10 @@ static void		bot_exec_cmd(t_env *e, t_bot *bot, char **req)
 		{
 			if (i < 3)
 				g_bot_parse[i].fct(e, bot, req[1]);
-			else
+			else if (i < 11)
 				g_bot_parse[i].fct(e, bot);
+			else
+				g_bot_parse[i].fct(e, bot->fd);
 		}
 		i++;
 	}
