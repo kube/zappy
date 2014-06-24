@@ -6,7 +6,7 @@
 /*   By: cfeijoo <cfeijoo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/05/24 17:00:41 by vdefilip          #+#    #+#             */
-/*   Updated: 2014/06/24 13:56:45 by vdefilip         ###   ########.fr       */
+/*   Updated: 2014/06/24 15:35:05 by vdefilip         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,9 +102,9 @@
 # define PUT_TIME         7
 # define EXPULSE_TIME     7
 # define BROADCAST_TIME   7
-# define INCANTATION_TIME 10	//TO RESTAURE 300
-# define FORK_TIME        10	// TO RESTAURE 42
-# define EGG_TIME         10	// TO RESTAURE 600
+# define INCANTATION_TIME 300
+# define FORK_TIME        42
+# define EGG_TIME         600
 
 # define STATUS_NONE        0
 # define STATUS_FORK        1
@@ -118,6 +118,12 @@ typedef struct rlimit	t_rlimit;
 typedef struct timeval	t_tv;
 typedef unsigned long	t_ulong;
 typedef struct s_bot	t_bot;
+
+typedef struct	s_parse
+{
+	char		*cmd;
+	void		(*fct)();
+}				t_parse;
 
 typedef struct	s_opt
 {
@@ -286,7 +292,7 @@ void			ppo(t_env *e, int fd, char **req, t_bot *b);
 void			plv(t_env *e, int fd, char **req, t_bot *b);
 void			pin(t_env *e, int fd, char **req, t_bot *b);
 void			sgt(t_env *e, int fd);
-void			sst(t_env *e, int fd, char **req);
+void			sst(t_env *e, int fd, char **req, int tmp);
 
 void			pnw(t_env *e, int fd, t_bot *bot);
 void			pex(t_env *e, int fd, t_bot *bot);
@@ -325,8 +331,8 @@ void			notify_all_gfx_seg(t_env *e, t_team *team);
 
 void			look(t_env *e, t_bot *bot);
 void			get_inventory(t_env *e, t_bot *bot);
-int				take(t_env *e, t_bot *bot, char *obj_name);
-int				put(t_env *e, t_bot *bot, char *obj_name);
+void			take(t_env *e, t_bot *bot, char *obj_name);
+void			put(t_env *e, t_bot *bot, char *obj_name);
 void			broadcast(t_env *e, t_bot *bot, char *msg);
 void			send_nbr(t_env *e, int fd);
 void			send_dimension(t_env *e, int fd);

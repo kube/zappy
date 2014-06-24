@@ -6,16 +6,17 @@
 /*   By: vdefilip <vdefilip@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/06/24 13:14:40 by vdefilip          #+#    #+#             */
-/*   Updated: 2014/06/24 13:14:57 by vdefilip         ###   ########.fr       */
+/*   Updated: 2014/06/24 15:27:52 by vdefilip         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "server.h"
 
-void			sst(t_env *e, int fd, char **req)
+void			sst(t_env *e, int fd, char **req, int tmp)
 {
 	int		t;
 
+	(void)tmp;
 	if (req[1] == NULL)
 	{
 		printf("Client #%d (GFX): Invalid request (too few arguments)\n", fd);

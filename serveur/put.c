@@ -6,20 +6,19 @@
 /*   By: vdefilip <vdefilip@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/06/24 13:54:22 by vdefilip          #+#    #+#             */
-/*   Updated: 2014/06/24 14:01:29 by vdefilip         ###   ########.fr       */
+/*   Updated: 2014/06/24 15:07:28 by vdefilip         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "server.h"
 
-static int		error(t_bot *bot, char *msg)
+static void		error(t_bot *bot, char *msg)
 {
 	printf("Client #%d (BOT): %s\n", bot->fd, msg);
 	ft_strcat(bot->buf_action, "ko\n");
-	return (-1);
 }
 
-int				put(t_env *e, t_bot *bot, char *obj_name)
+void			put(t_env *e, t_bot *bot, char *obj_name)
 {
 	t_iterator		iter;
 	t_obj			*obj;
@@ -38,7 +37,7 @@ int				put(t_env *e, t_bot *bot, char *obj_name)
 			printf("BOT #%d put %s\n", bot->id, obj_name);
 			notify_all_gfx_put(e, bot, type);
 			ft_strcat(bot->buf_action, "ok\n");
-			return (0);
+			return ;
 		}
 	}
 	return (error(bot, "Object not found"));

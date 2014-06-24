@@ -5,18 +5,19 @@
 #                                                     +:+ +:+         +:+      #
 #    By: vdefilip <vdefilip@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2014/06/24 13:55:25 by vdefilip          #+#    #+#              #
-#    Updated: 2014/06/24 13:55:25 by vdefilip         ###   ########.fr        #
+#    Created: 2014/06/24 15:31:55 by vdefilip          #+#    #+#              #
+#    Updated: 2014/06/24 15:31:55 by vdefilip         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME=serveur
-VERSION=1.2.6
+VERSION=1.2.7
 CFLAGS=-Wall -Werror -Wextra -g
 INCLUDES=-I ./libft/includes
 LIBS=-L ./libft -l ft
 
 SRC=bot.c \
+	bot_parse.c \
 	broadcast.c \
 	client_handler.c \
 	connect_bot.c \
@@ -36,6 +37,7 @@ SRC=bot.c \
 	gfx_enw.c \
 	gfx_mct.c \
 	gfx_msz.c \
+	gfx_parse.c \
 	gfx_pbc.c \
 	gfx_pdi.c \
 	gfx_pdr.c \
@@ -62,7 +64,6 @@ SRC=bot.c \
 	move.c \
 	obj.c \
 	opt.c \
-	parse_request.c \
 	put.c \
 	rand.c \
 	send_dimension.c \
