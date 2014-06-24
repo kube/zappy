@@ -9,7 +9,7 @@ class Trantorien
     @elevation = []
     @elevation_failed = false
     @queries = 0
-    @wait_elevation = 0
+    @locked = false
 
   seek_place: ->
     needed = this.needed_res()
@@ -168,16 +168,15 @@ class Trantorien
     return false
 
   recv_message: (k, text) ->
-    if @wait_elevation > 0
-      @wait_elevation--
-      return
+    if @locked then return
     if @path.length > 0 and k isnt 0 then return
     required_level = parseInt(text)
     if required_level isnt @level then return
     switch k
       when 0
         @path = []
-        @wait_elevation = 10
+        @locked = true
+        console.log "#{process.pid} I'm at ZERO"
       when 1 then @path = ['avance']
       when 2 then @path = ['avance', 'gauche', 'avance']
       when 3 then @path = ['gauche', 'avance']
@@ -195,9 +194,7 @@ class Trantorien
     return 'avance'
 
   live: ->
-    if @wait_elevation > 0
-      @wait_elevation--
-      return 'voir'
+    if @locked then return 'voir'
     if ++@queries % 10 is 0 then return "connect_nbr"
     if @path.length > 0 then return this.next_move()
     if @elevation.length > 0 then return this.next_action()
@@ -214,6 +211,7 @@ class Trantorien
           return this.next_action()
         when 0
           @around = false
+          @inventory = false
           return "broadcast #{@level}"
       if this.will_try_to_fork() then return "fork"
     i = this.seek_place()

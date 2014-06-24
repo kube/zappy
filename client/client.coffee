@@ -166,7 +166,7 @@ handle_response = (msg) ->
     tr.level = parseInt s
     tr.inventory = false
     tr.around = false
-    tr.wait_elevation = 0
+    tr.locked = false
   else if msg.search("deplacement ") isnt -1
     tr.inventory = false
     tr.around = false
