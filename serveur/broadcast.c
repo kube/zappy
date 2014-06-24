@@ -80,6 +80,7 @@ void			broadcast(t_env *e, t_bot *bot, char *msg)
 		{
 			if (b != bot)
 			{
+				b->action_timer = BROADCAST_TIME;
 				sprintf(buf, "message %d,%s\n", get_sound_dir(e, b, bot), msg);
 				ft_strcat(b->buf_action, buf);
 			}
