@@ -6,7 +6,7 @@
 /*   By: cfeijoo <cfeijoo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/05/24 17:00:41 by vdefilip          #+#    #+#             */
-/*   Updated: 2014/06/24 16:05:04 by vdefilip         ###   ########.fr       */
+/*   Updated: 2014/06/24 18:52:40 by vdefilip         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,12 +17,18 @@
 # include <stdio.h>
 # include <stdlib.h>
 # include <string.h>
+# include <errno.h>
 # include <sys/socket.h>
+# include <sys/resource.h>
+# include <netdb.h>
+# include <netinet/in.h>
+# include <arpa/inet.h>
 # include <sys/select.h>
 # include <sys/time.h>
 # include "libft.h"
 
 # define CONNEXION_QUEUE  42
+# define CONNEXION_LIMIT  200
 
 # define FD_FREE          0
 # define FD_SRV           1
@@ -205,7 +211,6 @@ typedef struct	s_sq
 typedef struct	s_env
 {
 	t_opt		opt;
-
 	int			maxfd;
 	int			max;
 	int			res;
@@ -225,6 +230,8 @@ typedef struct	s_env
 
 int				try_int(int res, int err, char *str);
 void			*try_void(void *res, void *err, char *str);
+
+int				check_end(t_env *e);
 
 int				sq_rand(t_env *e);
 int				dir_rand();
@@ -268,7 +275,6 @@ void			print_board(t_env *e);
 
 void			bot_parse_request(t_env *e, int cs, char *str);
 void			gfx_parse_request(t_env *e, int fd, char *str);
-
 
 int				get_north(t_env *e, int sq);
 int				get_south(t_env *e, int sq);

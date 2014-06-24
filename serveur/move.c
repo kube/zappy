@@ -6,12 +6,10 @@
 /*   By: vdefilip <vdefilip@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/06/11 11:07:55 by vdefilip          #+#    #+#             */
-/*   Updated: 2014/06/24 11:25:00 by vdefilip         ###   ########.fr       */
+/*   Updated: 2014/06/24 18:48:54 by vdefilip         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdio.h>
-#include "libft.h"
 #include "server.h"
 
 void			move(t_env *e, t_bot *bot, int sq)

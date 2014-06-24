@@ -6,16 +6,10 @@
 /*   By: vdefilip <vdefilip@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/05/24 17:00:40 by vdefilip          #+#    #+#             */
-/*   Updated: 2014/06/19 14:56:29 by vdefilip         ###   ########.fr       */
+/*   Updated: 2014/06/24 18:46:12 by vdefilip         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <unistd.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <sys/select.h>
-#include "libft.h"
 #include "server.h"
 
 void			fd_clean(t_fd *fd)

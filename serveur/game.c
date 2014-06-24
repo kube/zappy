@@ -6,13 +6,10 @@
 /*   By: vdefilip <vdefilip@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/06/04 13:05:23 by vdefilip          #+#    #+#             */
-/*   Updated: 2014/06/24 11:32:28 by vdefilip         ###   ########.fr       */
+/*   Updated: 2014/06/24 18:48:15 by vdefilip         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdio.h>
-#include <stdlib.h>
-#include "libft.h"
 #include "server.h"
 
 void				print_board(t_env *e)

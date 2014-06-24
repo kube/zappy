@@ -6,14 +6,10 @@
 /*   By: vdefilip <vdefilip@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/05/28 15:19:39 by vdefilip          #+#    #+#             */
-/*   Updated: 2014/06/19 13:01:21 by vdefilip         ###   ########.fr       */
+/*   Updated: 2014/06/24 18:49:50 by vdefilip         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <unistd.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include "libft.h"
 #include "server.h"
 
 static void		usage(t_opt *opt)

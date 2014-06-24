@@ -6,13 +6,10 @@
 /*   By: vdefilip <vdefilip@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/06/11 16:40:39 by vdefilip          #+#    #+#             */
-/*   Updated: 2014/06/24 11:24:40 by vdefilip         ###   ########.fr       */
+/*   Updated: 2014/06/24 18:48:42 by vdefilip         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdio.h>
-#include <stdlib.h>
-#include "libft.h"
 #include "server.h"
 
 static int		get_top_left(t_env *e, int sq, int dir)

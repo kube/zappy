@@ -6,12 +6,10 @@
 /*   By: vdefilip <vdefilip@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/06/13 11:02:20 by vdefilip          #+#    #+#             */
-/*   Updated: 2014/06/24 11:54:20 by vdefilip         ###   ########.fr       */
+/*   Updated: 2014/06/24 18:53:42 by vdefilip         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdio.h>
-#include <sys/time.h>
 #include "server.h"
 
 static int			check_life(t_env *e, t_bot *bot, int unit)

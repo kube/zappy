@@ -6,14 +6,10 @@
 /*   By: vdefilip <vdefilip@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/06/03 12:28:53 by vdefilip          #+#    #+#             */
-/*   Updated: 2014/06/24 11:33:35 by vdefilip         ###   ########.fr       */
+/*   Updated: 2014/06/24 18:48:27 by vdefilip         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <unistd.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include "libft.h"
 #include "server.h"
 
 t_gfx			*gfx_new(int fd)

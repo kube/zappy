@@ -6,13 +6,10 @@
 /*   By: vdefilip <vdefilip@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/06/04 19:29:42 by vdefilip          #+#    #+#             */
-/*   Updated: 2014/06/24 14:03:41 by vdefilip         ###   ########.fr       */
+/*   Updated: 2014/06/24 18:49:04 by vdefilip         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdio.h>
-#include <stdlib.h>
-#include "libft.h"
 #include "server.h"
 
 int			get_obj_type(char *obj_name)

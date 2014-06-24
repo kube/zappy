@@ -6,15 +6,10 @@
 /*   By: vdefilip <vdefilip@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/06/03 12:23:13 by vdefilip          #+#    #+#             */
-/*   Updated: 2014/06/24 12:10:31 by vdefilip         ###   ########.fr       */
+/*   Updated: 2014/06/24 18:47:54 by vdefilip         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <unistd.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <sys/time.h>
-#include "libft.h"
 #include "server.h"
 
 t_bot			*bot_new(t_team *team)

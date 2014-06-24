@@ -6,13 +6,10 @@
 /*   By: vdefilip <vdefilip@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/06/24 11:28:35 by vdefilip          #+#    #+#             */
-/*   Updated: 2014/06/24 13:38:03 by vdefilip         ###   ########.fr       */
+/*   Updated: 2014/06/24 18:49:19 by vdefilip         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdio.h>
-#include <stdlib.h>
-#include "libft.h"
 #include "server.h"
 
 t_team			*team_new(char *name, int limit)

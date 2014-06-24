@@ -6,17 +6,10 @@
 /*   By: cfeijoo <cfeijoo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/05/24 17:00:40 by vdefilip          #+#    #+#             */
-/*   Updated: 2014/06/24 11:06:23 by vdefilip         ###   ########.fr       */
+/*   Updated: 2014/06/24 18:47:44 by vdefilip         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <unistd.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <sys/socket.h>
-#include <string.h>
-#include "libft.h"
 #include "server.h"
 
 static int		check_buf_read(t_env *e, int cs, int type)

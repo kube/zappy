@@ -5,13 +5,13 @@
 #                                                     +:+ +:+         +:+      #
 #    By: vdefilip <vdefilip@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2014/06/24 15:31:55 by vdefilip          #+#    #+#              #
-#    Updated: 2014/06/24 15:31:55 by vdefilip         ###   ########.fr        #
+#    Created: 2014/06/24 18:46:26 by vdefilip          #+#    #+#              #
+#    Updated: 2014/06/24 18:46:26 by vdefilip         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME=serveur
-VERSION=1.2.7
+VERSION=1.2.8
 CFLAGS=-Wall -Werror -Wextra -g
 INCLUDES=-I ./libft/includes
 LIBS=-L ./libft -l ft
@@ -19,6 +19,7 @@ LIBS=-L ./libft -l ft
 SRC=bot.c \
 	bot_parse.c \
 	broadcast.c \
+	check_end.c \
 	client_handler.c \
 	connect_bot.c \
 	connection.c \

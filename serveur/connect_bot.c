@@ -6,15 +6,10 @@
 /*   By: vdefilip <vdefilip@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/06/24 11:58:31 by vdefilip          #+#    #+#             */
-/*   Updated: 2014/06/24 12:07:42 by vdefilip         ###   ########.fr       */
+/*   Updated: 2014/06/24 18:50:22 by vdefilip         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <unistd.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <sys/time.h>
-#include "libft.h"
 #include "server.h"
 
 static t_bot	*try_to_connect_from_queued(t_team *team)
