@@ -176,7 +176,6 @@ class Trantorien
       when 0
         @path = []
         @locked = true
-        console.log "#{process.pid} I'm at ZERO"
       when 1 then @path = ['avance']
       when 2 then @path = ['avance', 'gauche', 'avance']
       when 3 then @path = ['gauche', 'avance']
