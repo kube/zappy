@@ -17,7 +17,7 @@ var Team = function(game, name) {
 	var _bots = [];
 
 	this.material = new THREE.MeshBasicMaterial({
-			color: teamColors[game.teams.length]
+			color: teamColors[game.teams.length % 9]
 		});
 
 	this.addBot = function(bot) {

@@ -3,6 +3,7 @@ var Ressource = require('./Ressource.js');
 var Block = function(map, x, y) {
 	var self = this;
 	var game = map.game;
+	var _bots = [];
 
 	this.x = x;
 	this.y = y;
@@ -17,7 +18,7 @@ var Block = function(map, x, y) {
 	for (var i = 0; i < 7; i++)
 		this.ressources[i] = new Ressource(this, x, y, i);
 
-	this.mesh = new THREE.Mesh(new THREE.BoxGeometry(0.9, 0.2, 0.9), game.materials.block);
+	this.mesh = new THREE.Mesh(new THREE.BoxGeometry(0.9, 0.005, 0.9), game.materials.block);
 	this.mesh.position.set(this.position.x, -0.1, this.position.y);
 	this.mesh.updateMatrix();
 	this.mesh.matrixAutoUpdate = false;
@@ -25,6 +26,23 @@ var Block = function(map, x, y) {
 		// self.mesh.position.y += 0.5;
 	}
 	game.scene.add(this.mesh);
+
+	this.addBot = function(bot) {
+		_bots.push(bot);
+		bot.block = self;
+	}
+
+	this.removeBot = function(bot) {
+		var index = _bots.indexOf(bot);
+		if (index > -1) {
+			_bots.slice(index, 1);
+			bot.block = null;
+		}
+	}
+
+	this.getBots = function() {
+		return _bots;
+	}
 
 	this.displayRessource = function(type) {
 		for (var i in self.ressources)
