@@ -6,7 +6,7 @@
 /*   By: vdefilip <vdefilip@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/06/24 12:26:34 by vdefilip          #+#    #+#             */
-/*   Updated: 2014/06/25 18:48:13 by vdefilip         ###   ########.fr       */
+/*   Updated: 2014/06/25 19:47:33 by vdefilip         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,28 +55,26 @@ static void			mark_bots_for_incantation(t_env *e, t_bot *bot)
 
 static void			mark_obj_for_incantation(t_bot *bot, int req[7])
 {
-	t_iterator		it;
+	t_atom			*curr;
+	t_atom			*next;
 	t_obj			*o;
 	int				i;
 	int				n;
-	t_iterator		next;
 
 	i = 1;
 	while (i < 7)
 	{
 		n = 0;
-		it = NULL;
-		while ((o = (t_obj *)ft_lst_iter_next_content(bot->incant.req[i], &it)))
+		curr = bot->incant.req[i]->first;
+		while (curr)
 		{
+			o = (t_obj *)curr->content;
+			next = curr->next;
 			if (n++ < req[i])
 				o->lock = OBJ_LOCKED;
 			else
-			{
-				next = it->next;
-				ft_lst_del_atom(bot->incant.req[i], it, NULL);
-				if ((it = next) == NULL)
-					break ;
-			}
+				ft_lst_del_atom(bot->incant.req[i], curr, NULL);
+			curr = next;
 		}
 		i++;
 	}

@@ -6,7 +6,7 @@
 /*   By: vdefilip <vdefilip@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/05/24 17:00:40 by vdefilip          #+#    #+#             */
-/*   Updated: 2014/06/25 19:13:20 by vdefilip         ###   ########.fr       */
+/*   Updated: 2014/06/25 19:47:35 by vdefilip         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,8 +69,8 @@ void			fd_check(t_env *e, int fd)
 
 void			fd_iter_all(t_env *e, void (*fct)())
 {
-	t_iterator	iter;
-	t_iterator	next;
+	t_atom		*next;
+	t_atom		*curr;
 	int			*fd;
 
 	if (e->srv != -1)
@@ -80,12 +80,13 @@ void			fd_iter_all(t_env *e, void (*fct)())
 		fct(e, e->bot_srv);
 		fct(e, e->gfx_srv);
 	}
-	iter = NULL;
-	while ((fd = (int *)ft_lst_iter_next_content(e->client_lst, &iter)))
+	curr = e->client_lst->first;
+	while (curr)
 	{
-		next = iter->next;
+		fd = (int *)curr->content;
+		next = curr->next;
+		printf("WATCH %d\n", *fd);
 		fct(e, *fd);
-		if ((iter = next) == NULL)
-			break ;
+		curr = next;
 	}
 }
