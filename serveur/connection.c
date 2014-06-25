@@ -6,7 +6,7 @@
 /*   By: vdefilip <vdefilip@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/06/04 13:20:00 by vdefilip          #+#    #+#             */
-/*   Updated: 2014/06/24 18:48:06 by vdefilip         ###   ########.fr       */
+/*   Updated: 2014/06/25 12:23:22 by vdefilip         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ static void			srv_accept(t_env *e, int fd)
 	}
 	printf("New client #%d ", *cs);
 	printf("from %s:%d\n", e->fds[*cs].addr, e->fds[*cs].port);
-	ft_strcpy(e->fds[*cs].buf_write, "BIENVENUE");
+	buf_load(e->fds[*cs].buf_write, "BIENVENUE");
 }
 
 static int			srv_create(t_env *e, int port, int type)

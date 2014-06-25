@@ -6,7 +6,7 @@
 /*   By: vdefilip <vdefilip@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/06/24 13:15:14 by vdefilip          #+#    #+#             */
-/*   Updated: 2014/06/24 13:15:32 by vdefilip         ###   ########.fr       */
+/*   Updated: 2014/06/25 12:33:34 by vdefilip         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void			pnw(t_env *e, int fd, t_bot *bot)
 {
-	char			buf[128];
+	char			buf[BUF_SIZE];
 
 	sprintf(buf, "pnw #%d %d %d %d %d %s\n",
 		bot->id,
@@ -22,7 +22,7 @@ void			pnw(t_env *e, int fd, t_bot *bot)
 		bot->dir,
 		bot->level,
 		bot->team->name);
-	ft_strcat(e->fds[fd].buf_write, buf);
+	buf_load(e->fds[fd].buf_write, buf);
 }
 
 void			notify_all_gfx_pnw(t_env *e, t_bot *bot)

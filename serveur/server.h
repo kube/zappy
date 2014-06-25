@@ -6,7 +6,7 @@
 /*   By: cfeijoo <cfeijoo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/05/24 17:00:41 by vdefilip          #+#    #+#             */
-/*   Updated: 2014/06/24 18:52:40 by vdefilip         ###   ########.fr       */
+/*   Updated: 2014/06/25 11:56:53 by vdefilip         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -154,8 +154,8 @@ typedef struct	s_fd
 	int			type;
 	void		(*fct_read)();
 	void		(*fct_write)();
-	char		buf_read[BUF_SIZE + 1];
-	char		buf_write[BUF_SIZE + 1];
+	t_buf		*buf_read;
+	t_buf		*buf_write;
 	char		*addr;
 	int			port;
 }				t_fd;
@@ -193,7 +193,7 @@ struct			s_bot
 	long		timer;
 	long		food_timer;
 	long		action_timer;
-	char		buf_action[BUF_SIZE + 1];
+	t_buf		*buf_action;
 };
 
 typedef struct	s_obj

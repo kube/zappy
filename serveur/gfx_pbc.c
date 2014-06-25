@@ -6,7 +6,7 @@
 /*   By: vdefilip <vdefilip@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/06/24 13:16:08 by vdefilip          #+#    #+#             */
-/*   Updated: 2014/06/24 13:33:02 by vdefilip         ###   ########.fr       */
+/*   Updated: 2014/06/25 12:36:24 by vdefilip         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,10 @@
 
 void			pbc(t_env *e, int fd, t_bot *bot, char *msg)
 {
-	char			buf[128];
+	char			buf[BUF_SIZE];
 
 	sprintf(buf, "pbc #%d %s\n", bot->id, msg);
-	ft_strcat(e->fds[fd].buf_write, buf);
+	buf_load(e->fds[fd].buf_write, buf);
 }
 
 void			notify_all_gfx_pbc(t_env *e, t_bot *bot, char *msg)

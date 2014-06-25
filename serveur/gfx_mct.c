@@ -6,7 +6,7 @@
 /*   By: vdefilip <vdefilip@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/06/24 13:12:09 by vdefilip          #+#    #+#             */
-/*   Updated: 2014/06/24 13:12:19 by vdefilip         ###   ########.fr       */
+/*   Updated: 2014/06/25 12:37:02 by vdefilip         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ void			mct(t_env *e, int fd)
 	t_iterator		iter;
 	t_obj			*o;
 	int				obj[7];
-	char			buf[128];
+	char			buf[BUF_SIZE];
 	int				sq;
 
 	sq = 0;
@@ -30,7 +30,7 @@ void			mct(t_env *e, int fd)
 		sprintf(buf, "bct %d %d %d %d %d %d %d %d %d\n",
 			sq % e->opt.width, sq / e->opt.width,
 			obj[0], obj[1], obj[2], obj[3], obj[4], obj[5], obj[6]);
-		ft_strcat(e->fds[fd].buf_write, buf);
+		buf_load(e->fds[fd].buf_write, buf);
 		sq++;
 	}
 }

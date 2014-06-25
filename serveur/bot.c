@@ -6,7 +6,7 @@
 /*   By: vdefilip <vdefilip@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/06/03 12:23:13 by vdefilip          #+#    #+#             */
-/*   Updated: 2014/06/24 18:47:54 by vdefilip         ###   ########.fr       */
+/*   Updated: 2014/06/25 11:59:00 by vdefilip         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ t_bot			*bot_new(t_team *team)
 	new->timer = 0;
 	new->food_timer = 0;
 	new->action_timer = -1;
-	ft_bzero(&new->buf_action, BUF_SIZE - 1);
+	new->buf_action = buf_new();
 	return (new);
 }
 

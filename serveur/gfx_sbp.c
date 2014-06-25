@@ -6,7 +6,7 @@
 /*   By: vdefilip <vdefilip@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/06/24 13:22:15 by vdefilip          #+#    #+#             */
-/*   Updated: 2014/06/24 13:22:22 by vdefilip         ###   ########.fr       */
+/*   Updated: 2014/06/25 12:34:40 by vdefilip         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 void			sbp(t_env *e, int fd)
 {
-	char			buf[128];
+	char			buf[BUF_SIZE];
 
 	sprintf(buf, "sbp\n");
-	ft_strcat(e->fds[fd].buf_write, buf);
+	buf_load(e->fds[fd].buf_write, buf);
 }

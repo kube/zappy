@@ -6,7 +6,7 @@
 /*   By: vdefilip <vdefilip@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/06/24 13:13:35 by vdefilip          #+#    #+#             */
-/*   Updated: 2014/06/24 13:13:45 by vdefilip         ###   ########.fr       */
+/*   Updated: 2014/06/25 12:33:09 by vdefilip         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void			plv(t_env *e, int fd, char **req, t_bot *b)
 {
-	char			buf[128];
+	char			buf[BUF_SIZE];
 	t_bot			*bot;
 
 	if (req != NULL)
@@ -27,5 +27,5 @@ void			plv(t_env *e, int fd, char **req, t_bot *b)
 	sprintf(buf, "plv #%d %d\n",
 		bot->id,
 		bot->level);
-	ft_strcat(e->fds[fd].buf_write, buf);
+	buf_load(e->fds[fd].buf_write, buf);
 }

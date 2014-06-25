@@ -6,7 +6,7 @@
 /*   By: vdefilip <vdefilip@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/06/24 13:13:59 by vdefilip          #+#    #+#             */
-/*   Updated: 2014/06/24 13:14:09 by vdefilip         ###   ########.fr       */
+/*   Updated: 2014/06/25 12:32:51 by vdefilip         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void			pin(t_env *e, int fd, char **req, t_bot *b)
 	t_bot			*bot;
 	t_obj			*o;
 	int				obj[7];
-	char			buf[128];
+	char			buf[BUF_SIZE];
 
 	if (req != NULL)
 	{
@@ -36,5 +36,6 @@ void			pin(t_env *e, int fd, char **req, t_bot *b)
 		bot->id,
 		bot->sq % e->opt.width, bot->sq / e->opt.width,
 		obj[0], obj[1], obj[2], obj[3], obj[4], obj[5], obj[6]);
-	ft_strcat(e->fds[fd].buf_write, buf);
-}
+	buf_load(e->fds[fd].buf_write, buf);
+}:w
+

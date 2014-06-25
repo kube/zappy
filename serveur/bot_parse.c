@@ -6,7 +6,7 @@
 /*   By: vdefilip <vdefilip@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/06/24 15:31:42 by vdefilip          #+#    #+#             */
-/*   Updated: 2014/06/24 16:07:56 by vdefilip         ###   ########.fr       */
+/*   Updated: 2014/06/25 11:59:50 by vdefilip         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ static void		dead(t_env *e, t_bot *bot)
 		printf("BOT #%d is dead\n", bot->id);
 	else
 		printf("EGG #%d is dead\n", bot->id);
-	ft_strcat(e->fds[bot->fd].buf_write, "mort\n");
+	buf_load(e->fds[bot->fd].buf_write, "mort\n");
 }
 
 static void		bot_exec_cmd(t_env *e, t_bot *bot, char *str, char **req)

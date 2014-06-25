@@ -6,7 +6,7 @@
 /*   By: vdefilip <vdefilip@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/06/24 13:21:55 by vdefilip          #+#    #+#             */
-/*   Updated: 2014/06/24 13:22:05 by vdefilip         ###   ########.fr       */
+/*   Updated: 2014/06/25 12:35:25 by vdefilip         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 void			suc(t_env *e, int fd)
 {
-	char			buf[128];
+	char			buf[BUF_SIZE];
 
 	sprintf(buf, "suc\n");
-	ft_strcat(e->fds[fd].buf_write, buf);
+	buf_load(e->fds[fd].buf_write, buf);
 }

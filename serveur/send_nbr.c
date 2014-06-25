@@ -6,7 +6,7 @@
 /*   By: vdefilip <vdefilip@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/06/24 12:18:02 by vdefilip          #+#    #+#             */
-/*   Updated: 2014/06/24 15:59:19 by vdefilip         ###   ########.fr       */
+/*   Updated: 2014/06/25 12:47:02 by vdefilip         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,6 @@ void			send_nbr(t_env *e, int fd)
 			n++;
 	}
 	nbr = ft_itoa(n);
-	ft_strcat(e->fds[fd].buf_write, nbr);
-	ft_strcat(e->fds[fd].buf_write, "\n");
+	buf_load(e->fds[fd].buf_write, nbr);
 	free(nbr);
 }
