@@ -84,10 +84,9 @@ function connectToServer(host, port) {
 
 	client.on('data', function(data) {
 		var responses = data.toString().split('\n');
-
-		// Push each response to the response parser
 		for (var i in responses)
 			responseParser.push(responses[i]);
+		// Push each response to the response parser
 	});
 
 	client.on('close', function() {

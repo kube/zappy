@@ -3,6 +3,7 @@ var Ressource = require('./Ressource.js');
 var Block = function(map, x, y) {
 	var self = this;
 	var game = map.game;
+	var _bots = [];
 
 	this.x = x;
 	this.y = y;
@@ -25,6 +26,20 @@ var Block = function(map, x, y) {
 		// self.mesh.position.y += 0.5;
 	}
 	game.scene.add(this.mesh);
+
+	this.addBot = function(bot) {
+		_bots.push(bot);
+		bot.team = self;
+	}
+
+	this.removeBot = function(bot) {
+		if (_bots.indexOf(bot) > -1)
+			_bots.slice(_bots.indexOf(bot), 1);
+	}
+
+	this.getBots = function() {
+		return _bots;
+	}
 
 	this.displayRessource = function(type) {
 		for (var i in self.ressources)

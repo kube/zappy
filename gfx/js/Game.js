@@ -33,7 +33,7 @@ var Game = function(options) {
 			color: 0xada1e6
 		}),
 		block: new THREE.MeshPhongMaterial({
-			color: 0x272831
+			color: 0x15161b
 		}),
 
 		ressources: [
@@ -71,6 +71,7 @@ var Game = function(options) {
 	for (var i in self.materials.ressources)
 		self.materials.ressources[i].transparent = true;
 
+	this.time = 7;
 	this.teams = [];
 	this.bots = [];
 
