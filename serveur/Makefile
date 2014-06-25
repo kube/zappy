@@ -3,15 +3,15 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: vdefilip <vdefilip@student.42.fr>          +#+  +:+       +#+         #
+#    By: lseguin <lseguin@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2014/06/24 18:46:26 by vdefilip          #+#    #+#              #
-#    Updated: 2014/06/24 18:46:26 by vdefilip         ###   ########.fr        #
+#    Created: 2014/06/25 12:55:48 by lseguin           #+#    #+#              #
+#    Updated: 2014/06/25 12:55:48 by lseguin          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME=serveur
-VERSION=1.2.8
+VERSION=1.0.0
 CFLAGS=-Wall -Werror -Wextra -g
 INCLUDES=-I ./libft/includes
 LIBS=-L ./libft -l ft
@@ -19,6 +19,7 @@ LIBS=-L ./libft -l ft
 SRC=bot.c \
 	bot_parse.c \
 	broadcast.c \
+	buf.c \
 	check_end.c \
 	client_handler.c \
 	connect_bot.c \

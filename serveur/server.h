@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   server.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cfeijoo <cfeijoo@student.42.fr>            +#+  +:+       +#+        */
+/*   By: vdefilip <vdefilip@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2014/05/24 17:00:41 by vdefilip          #+#    #+#             */
-/*   Updated: 2014/06/25 11:56:53 by vdefilip         ###   ########.fr       */
+/*   Created: 2014/06/25 13:04:04 by vdefilip          #+#    #+#             */
+/*   Updated: 2014/06/25 13:04:09 by vdefilip         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,6 +125,11 @@ typedef struct timeval	t_tv;
 typedef unsigned long	t_ulong;
 typedef struct s_bot	t_bot;
 
+typedef struct	s_buf
+{
+	t_list		*list;
+}				t_buf;
+
 typedef struct	s_parse
 {
 	char		*cmd;
@@ -227,6 +232,11 @@ typedef struct	s_env
 	t_list		*bot_fd_lst;
 	t_sq		*board;
 }				t_env;
+
+t_buf			*buf_new();
+int				buf_load(t_buf *buffer, char *str);
+int				buf_unload(t_buf *buffer, char *res);
+int				buf_len(t_buf *buffer);
 
 int				try_int(int res, int err, char *str);
 void			*try_void(void *res, void *err, char *str);
