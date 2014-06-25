@@ -6,7 +6,7 @@
 /*   By: vdefilip <vdefilip@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/06/24 12:26:34 by vdefilip          #+#    #+#             */
-/*   Updated: 2014/06/25 12:56:23 by vdefilip         ###   ########.fr       */
+/*   Updated: 2014/06/25 16:27:18 by vdefilip         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,6 +100,7 @@ void				incantation(t_env *e, t_bot *bot)
 		mark_bots_for_incantation(e, bot);
 		mark_obj_for_incantation(bot, req);
 		notify_all_gfx_pic(e, bot);
+		return ;
 	}
 	buf_load(bot->buf_action, "ko\n");
 }
