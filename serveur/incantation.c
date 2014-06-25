@@ -6,7 +6,7 @@
 /*   By: vdefilip <vdefilip@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/06/24 12:26:34 by vdefilip          #+#    #+#             */
-/*   Updated: 2014/06/25 16:27:18 by vdefilip         ###   ########.fr       */
+/*   Updated: 2014/06/25 18:48:13 by vdefilip         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,7 @@ static void			mark_obj_for_incantation(t_bot *bot, int req[7])
 	t_obj			*o;
 	int				i;
 	int				n;
+	t_iterator		next;
 
 	i = 1;
 	while (i < 7)
@@ -70,7 +71,12 @@ static void			mark_obj_for_incantation(t_bot *bot, int req[7])
 			if (n++ < req[i])
 				o->lock = OBJ_LOCKED;
 			else
+			{
+				next = it->next;
 				ft_lst_del_atom(bot->incant.req[i], it, NULL);
+				if ((it = next) == NULL)
+					break ;
+			}
 		}
 		i++;
 	}

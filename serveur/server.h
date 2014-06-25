@@ -6,7 +6,7 @@
 /*   By: vdefilip <vdefilip@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/06/25 13:04:04 by vdefilip          #+#    #+#             */
-/*   Updated: 2014/06/25 13:27:04 by vdefilip         ###   ########.fr       */
+/*   Updated: 2014/06/25 18:20:16 by vdefilip         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@
 # define MAX_LIMIT  20
 # define MAX_T      100
 
-# define BUF_SIZE   65536
+# define BUF_SIZE   1024
 
 # define DEFAULT   "\033[0m"
 # define HIGHLIGHT "\033[1m"

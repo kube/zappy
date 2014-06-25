@@ -6,7 +6,7 @@
 /*   By: vdefilip <vdefilip@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/05/24 17:00:40 by vdefilip          #+#    #+#             */
-/*   Updated: 2014/06/25 13:15:33 by vdefilip         ###   ########.fr       */
+/*   Updated: 2014/06/25 19:13:20 by vdefilip         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,7 @@ void			fd_check(t_env *e, int fd)
 void			fd_iter_all(t_env *e, void (*fct)())
 {
 	t_iterator	iter;
+	t_iterator	next;
 	int			*fd;
 
 	if (e->srv != -1)
@@ -81,5 +82,10 @@ void			fd_iter_all(t_env *e, void (*fct)())
 	}
 	iter = NULL;
 	while ((fd = (int *)ft_lst_iter_next_content(e->client_lst, &iter)))
+	{
+		next = iter->next;
 		fct(e, *fd);
+		if ((iter = next) == NULL)
+			break ;
+	}
 }
