@@ -198,7 +198,7 @@ class Trantorien
 
   elevation_did_fail: ->
     @elevation_failed = false
-    if @inventory['nourriture'] >= @FOOD_THRESHOLD then @elevation = ['incantation']
+    @elevation = ['incantation']
     return "broadcast #{@level}"
 
   reset_state: ->

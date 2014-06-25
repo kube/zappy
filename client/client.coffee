@@ -116,6 +116,7 @@ welcome = ->
 
 die = ->
   console.log 'dead'
+  while 1 then ;
   client.end()
   process.exit
 
@@ -163,7 +164,6 @@ handle_response = (msg) ->
     tr.reset_state()
     if last_cmd? and last_cmd is 'incantation' then last_cmd = null
   else if msg.search("niveau actuel :") isnt -1
-    console.log "debug: #{msg}"
     i = msg.indexOf(':') + 1
     s = msg.substring i
     tr.level = parseInt s
