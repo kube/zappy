@@ -6,23 +6,17 @@
 /*   By: vdefilip <vdefilip@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/05/24 17:00:40 by vdefilip          #+#    #+#             */
-/*   Updated: 2014/06/19 14:56:29 by vdefilip         ###   ########.fr       */
+/*   Updated: 2014/06/25 13:15:33 by vdefilip         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <unistd.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <sys/select.h>
-#include "libft.h"
 #include "server.h"
 
 void			fd_clean(t_fd *fd)
 {
 	fd->type = FD_FREE;
-	ft_bzero(&fd->buf_read, BUF_SIZE + 1);
-	ft_bzero(&fd->buf_write, BUF_SIZE + 1);
+	fd->buf_read = buf_new();
+	fd->buf_write = buf_new();
 	fd->fct_read = NULL;
 	fd->fct_write = NULL;
 	fd->addr = NULL;
@@ -56,7 +50,7 @@ void			fd_destroy(t_env *e, int fd, char *msg)
 
 void			fd_watch(t_env *e, int fd)
 {
-	if (strlen(e->fds[fd].buf_write) > 0)
+	if (buf_len(e->fds[fd].buf_write) > 0)
 		FD_SET(fd, &e->fd_write);
 	else
 		FD_SET(fd, &e->fd_read);

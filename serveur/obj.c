@@ -6,13 +6,10 @@
 /*   By: vdefilip <vdefilip@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/06/04 19:29:42 by vdefilip          #+#    #+#             */
-/*   Updated: 2014/06/23 16:24:11 by vdefilip         ###   ########.fr       */
+/*   Updated: 2014/06/24 18:49:04 by vdefilip         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdio.h>
-#include <stdlib.h>
-#include "libft.h"
 #include "server.h"
 
 int			get_obj_type(char *obj_name)
@@ -63,6 +60,27 @@ t_obj		*obj_new(int type)
 	return (new);
 }
 
+void		move_obj_random(t_env *e, t_obj *obj, int sq)
+{
+	t_iterator			iter;
+	t_obj				*o;
+	int					new_sq;
+
+	new_sq = sq_rand(e);
+	iter = NULL;
+	while ((o = (t_obj *)ft_lst_iter_next_content(e->board[sq].obj, &iter)))
+	{
+		if (o == obj)
+		{
+			ft_lst_del_atom(e->board[sq].obj, iter, NULL);
+			ft_lst_pushend(e->board[new_sq].obj, obj);
+			notify_all_gfx_bct(e, sq);
+			notify_all_gfx_bct(e, new_sq);
+			return ;
+		}
+	}
+}
+
 t_obj		*get_obj(t_env *e, int sq, int type)
 {
 	t_iterator		iter;
@@ -78,95 +96,4 @@ t_obj		*get_obj(t_env *e, int sq, int type)
 		}
 	}
 	return (NULL);
-}
-
-int			take(t_env *e, t_bot *bot, char *obj_name)
-{
-	int				sq;
-	t_obj			*obj;
-	int				type;
-
-	bot->action_timer = TAKE_TIME;
-	if ((type = get_obj_type(obj_name)) == -1)
-	{
-		printf("Client #%d (BOT): Invalid object\n", bot->fd);
-		ft_strcat(bot->buf_action, "ko\n");
-		return (-1);
-	}
-	if ((obj = get_obj(e, bot->sq, type)) == NULL)
-	{
-		printf("Client #%d (BOT): Object not found\n", bot->fd);
-		ft_strcat(bot->buf_action, "ko\n");
-		return (-1);
-	}
-	if (type == OBJ_FOOD)
-	{
-		bot->life_unit += FOOD_UNIT;
-		sq = sq_rand(e);
-		ft_lst_pushend(e->board[sq].obj, obj_new(OBJ_FOOD));
-		notify_all_gfx_bct(e, sq);
-	}
-	else
-		ft_lst_pushend(bot->inventory, obj);
-	printf("BOT #%d take %s\n", bot->id, obj_name);
-	notify_all_gfx_take(e, bot, type);
-	ft_strcat(bot->buf_action, "ok\n");
-	return (0);
-}
-
-int			put(t_env *e, t_bot *bot, char *obj_name)
-{
-	t_iterator		iter;
-	t_obj			*obj;
-	int				type;
-
-	bot->action_timer = PUT_TIME;
-	if ((type = get_obj_type(obj_name)) == -1)
-	{
-		printf("Client #%d (BOT): Invalid object\n", bot->fd);
-		ft_strcat(bot->buf_action, "ko\n");
-		return (-1);
-	}
-	iter = NULL;
-	while ((obj = (t_obj *)ft_lst_iter_next_content(bot->inventory, &iter)))
-	{
-		if (obj->type == type)
-		{
-			ft_lst_del_atom(bot->inventory, iter, NULL);
-			ft_lst_pushend(e->board[bot->sq].obj, obj);
-			printf("BOT #%d put %s\n", bot->id, obj_name);
-			notify_all_gfx_put(e, bot, type);
-			ft_strcat(bot->buf_action, "ok\n");
-			return (0);
-		}
-	}
-	printf("Client #%d (BOT): Object not found\n", bot->fd);
-	ft_strcat(bot->buf_action, "ko\n");
-	return (-1);
-}
-
-void		get_inventory(t_env *e, t_bot *bot)
-{
-	t_iterator		iter;
-	t_obj			*o;
-	int				obj[7];
-	char			str[128];
-
-	(void)e;
-	bot->action_timer = INVENTORY_TIME;
-	ft_bzero(obj, sizeof(int) * 7);
-	obj[0] = bot->life_unit / FOOD_UNIT;
-	iter = NULL;
-	while ((o = (t_obj *)ft_lst_iter_next_content(bot->inventory, &iter)))
-		obj[o->type]++;
-	sprintf(str, "{%s %d, %s %d, %s %d, %s %d, %s %d, %s %d, %s %d}",
-		FOOD, obj[0],
-		ROCK1, obj[1],
-		ROCK2, obj[2],
-		ROCK3, obj[3],
-		ROCK4, obj[4],
-		ROCK5, obj[5],
-		ROCK6, obj[6]);
-	printf("BOT #%d has %s\n", bot->id, str);
-	ft_strcat(bot->buf_action, str);
 }

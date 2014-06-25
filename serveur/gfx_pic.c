@@ -1,44 +1,44 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   gfx.c                                              :+:      :+:    :+:   */
+/*   gfx_pic.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: vdefilip <vdefilip@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2014/06/03 12:28:53 by vdefilip          #+#    #+#             */
-/*   Updated: 2014/06/24 18:48:27 by vdefilip         ###   ########.fr       */
+/*   Created: 2014/06/24 13:16:52 by vdefilip          #+#    #+#             */
+/*   Updated: 2014/06/25 13:01:29 by vdefilip         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "server.h"
 
-t_gfx			*gfx_new(int fd)
+void			pic(t_env *e, int fd, t_bot *bot)
 {
-	static int		id = 1;
-	t_gfx			*new;
+	char			buf1[BUF_SIZE];
+	char			buf2[BUF_SIZE];
+	t_iterator		iter;
+	t_bot			*b;
 
-	new = (t_gfx *)try_void(ft_memalloc(sizeof(*new)), NULL, "malloc");
-	new->fd = fd;
-	new->id = id++;
-	return (new);
+	sprintf(buf1, "pic %d %d %d #%d",
+		bot->sq % e->opt.width, bot->sq / e->opt.width,
+		bot->level,
+		bot->id);
+	iter = NULL;
+	while ((b = (t_bot *)ft_lst_iter_next_content(bot->incant.req[0], &iter)))
+	{
+		sprintf(buf2, " #%d", b->id);
+		ft_strcat(buf1, buf2);
+	}
+	ft_strcat(buf1, "\n");
+	buf_load(e->fds[fd].buf_write, buf1);
 }
 
-void			gfx_destroy(t_env *e, int fd, char *msg)
+void			notify_all_gfx_pic(t_env *e, t_bot *bot)
 {
-	t_gfx			*gfx;
 	t_iterator		iter;
+	t_gfx			*gfx;
 
-	printf("Client #%d (GFX) gone away", fd);
-	if (msg)
-		printf(": %s", msg);
-	printf("\n");
 	iter = NULL;
 	while ((gfx = (t_gfx *)ft_lst_iter_next_content(e->gfx_lst, &iter)))
-	{
-		if (gfx->fd == fd)
-		{
-			ft_lst_del_atom(e->gfx_lst, iter, free);
-			break ;
-		}
-	}
+		pic(e, gfx->fd, bot);
 }

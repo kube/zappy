@@ -107,7 +107,7 @@ send = (msg) ->
   client.write msg + '\n'
 
 send_cmd = (cmd) ->
-  if cmd.search('incantation') is -1 then last_cmd = cmd
+  last_cmd = cmd
   send cmd
 
 welcome = ->
@@ -116,6 +116,7 @@ welcome = ->
 
 die = ->
   console.log 'dead'
+  while 1 then ;
   client.end()
   process.exit
 
@@ -139,8 +140,7 @@ prend = (msg) ->
 incantation = (msg) ->
   if msg is 'ko'
     tr.elevation_failed = true
-  tr.inventory = false
-  tr.around = false
+  tr.reset_state()
 
 connect_nbr = (msg) ->
   if isNaN msg
@@ -160,16 +160,16 @@ world_size = (msg) ->
 handle_response = (msg) ->
   if not last_cmd? then return
   console.log "(#{process.pid}) #{last_cmd}: #{msg}"
-  if msg.search("niveau actuel :") isnt -1
+  if msg.search("elevation en cours") isnt -1
+    tr.reset_state()
+    if last_cmd? and last_cmd is 'incantation' then last_cmd = null
+  else if msg.search("niveau actuel :") isnt -1
     i = msg.indexOf(':') + 1
     s = msg.substring i
     tr.level = parseInt s
-    tr.inventory = false
-    tr.around = false
-    tr.wait_elevation = 0
-  else if msg.search("deplacement ") isnt -1
-    tr.inventory = false
-    tr.around = false
+    tr.reset_state()
+    if last_cmd? and last_cmd is 'incantation' then last_cmd = null
+  else if msg.search("deplacement ") isnt -1 then tr.reset_state()
   else
     cmd_name = last_cmd.split(' ')[0]
     switch cmd_name

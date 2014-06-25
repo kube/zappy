@@ -1,44 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   gfx.c                                              :+:      :+:    :+:   */
+/*   gfx_pex.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: vdefilip <vdefilip@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2014/06/03 12:28:53 by vdefilip          #+#    #+#             */
-/*   Updated: 2014/06/24 18:48:27 by vdefilip         ###   ########.fr       */
+/*   Created: 2014/06/24 13:15:44 by vdefilip          #+#    #+#             */
+/*   Updated: 2014/06/25 12:29:12 by vdefilip         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "server.h"
 
-t_gfx			*gfx_new(int fd)
+void			pex(t_env *e, int fd, t_bot *bot)
 {
-	static int		id = 1;
-	t_gfx			*new;
+	char			buf[BUF_SIZE];
 
-	new = (t_gfx *)try_void(ft_memalloc(sizeof(*new)), NULL, "malloc");
-	new->fd = fd;
-	new->id = id++;
-	return (new);
+	sprintf(buf, "pex #%d\n", bot->id);
+	buf_load(e->fds[fd].buf_write, buf);
 }
 
-void			gfx_destroy(t_env *e, int fd, char *msg)
+void			notify_all_gfx_pex(t_env *e, t_bot *bot)
 {
-	t_gfx			*gfx;
 	t_iterator		iter;
+	t_gfx			*gfx;
 
-	printf("Client #%d (GFX) gone away", fd);
-	if (msg)
-		printf(": %s", msg);
-	printf("\n");
 	iter = NULL;
 	while ((gfx = (t_gfx *)ft_lst_iter_next_content(e->gfx_lst, &iter)))
-	{
-		if (gfx->fd == fd)
-		{
-			ft_lst_del_atom(e->gfx_lst, iter, free);
-			break ;
-		}
-	}
+		pex(e, gfx->fd, bot);
 }

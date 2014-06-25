@@ -6,16 +6,13 @@
 /*   By: vdefilip <vdefilip@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/06/11 16:40:39 by vdefilip          #+#    #+#             */
-/*   Updated: 2014/06/23 16:27:49 by vdefilip         ###   ########.fr       */
+/*   Updated: 2014/06/25 12:41:48 by vdefilip         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdio.h>
-#include <stdlib.h>
-#include "libft.h"
 #include "server.h"
 
-int			get_top_left(t_env *e, int sq, int dir)
+static int		get_top_left(t_env *e, int sq, int dir)
 {
 	if (dir == NORTH)
 		return (get_west(e, get_north(e, sq)));
@@ -26,7 +23,7 @@ int			get_top_left(t_env *e, int sq, int dir)
 	return (get_south(e, get_west(e, sq)));
 }
 
-int			get_right(t_env *e, int sq, int dir)
+static int		get_right(t_env *e, int sq, int dir)
 {
 	if (dir == NORTH)
 		return (get_east(e, sq));
@@ -37,11 +34,10 @@ int			get_right(t_env *e, int sq, int dir)
 	return (get_north(e, sq));
 }
 
-void		add_sq_content(t_env *e, char **s, t_bot *bot, int sq)
+static void		add_sq_content(t_env *e, char **s, t_bot *bot, int sq)
 {
 	t_iterator	iter;
 	t_obj		*obj;
-	char		type[][16] = {FOOD, ROCK1, ROCK2, ROCK3, ROCK4, ROCK5, ROCK6};
 	int			n;
 
 	iter = NULL;
@@ -51,7 +47,7 @@ void		add_sq_content(t_env *e, char **s, t_bot *bot, int sq)
 			continue ;
 		if ((*s)[ft_strlen(*s) - 1] != '{' && (*s)[ft_strlen(*s) - 1] != ' ')
 			*s = ft_strjoin(*s, " ", FT_JOIN_FREE1);
-		*s = ft_strjoin(*s, type[obj->type], FT_JOIN_FREE1);
+		*s = ft_strjoin(*s, get_obj_name(obj->type), FT_JOIN_FREE1);
 	}
 	n = (bot->sq != sq ? e->board[sq].bot->len : e->board[sq].bot->len - 1);
 	while (n--)
@@ -62,17 +58,12 @@ void		add_sq_content(t_env *e, char **s, t_bot *bot, int sq)
 	}
 }
 
-void		look(t_env *e, t_bot *bot)
+static void		get_content(t_env *e, t_bot *bot, int first_sq, char **s)
 {
-	char		*s;
 	int			i;
 	int			j;
-	int			first_sq;
 	int			sq;
 
-	bot->action_timer = LOOK_TIME;
-	s = ft_strdup("{");
-	first_sq = bot->sq;
 	i = 0;
 	while (i < bot->level + 1)
 	{
@@ -80,16 +71,25 @@ void		look(t_env *e, t_bot *bot)
 		j = 0;
 		while (j < (i * 2 + 1))
 		{
-			add_sq_content(e, &s, bot, sq);
-			s = ft_strjoin(s, ", ", FT_JOIN_FREE1);
+			add_sq_content(e, s, bot, sq);
+			*s = ft_strjoin(*s, ", ", FT_JOIN_FREE1);
 			sq = get_right(e, sq, bot->dir);
 			j++;
 		}
 		first_sq = get_top_left(e, first_sq, bot->dir);
 		i++;
 	}
+}
+
+void			look(t_env *e, t_bot *bot)
+{
+	char		*s;
+
+	bot->action_timer = LOOK_TIME;
+	s = ft_strdup("{");
+	get_content(e, bot, bot->sq, &s);
 	ft_strcpy(s + ft_strlen(s) - 2, "}\n");
 	printf("BOT #%d see %s\n", bot->id, s);
-	ft_strcat(bot->buf_action, s);
+	buf_load(bot->buf_action, s);
 	free(s);
 }

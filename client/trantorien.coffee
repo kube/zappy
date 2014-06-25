@@ -1,5 +1,9 @@
 class Trantorien
   MAX_LEVEL: 8
+  FOOD_THRESHOLD: 4
+  MISSING_RESOURCES: -1
+  MISSING_PLAYERS: 0
+  OK: 1
 
   constructor: (@team) ->
     @level = 1
@@ -8,8 +12,8 @@ class Trantorien
     @path = []
     @elevation = []
     @elevation_failed = false
-    @queries = 0
-    @wait_elevation = 0
+    @connect_watcher = 0
+    @locked = false
 
   seek_place: ->
     needed = this.needed_res()
@@ -19,7 +23,7 @@ class Trantorien
         if element is 'nourriture'
           @to_take = 'nourriture'
           return i
-        if @inventory[element] < needed[element]
+        if @level isnt @MAX_LEVEL and @inventory[element] < needed[element]
           @to_take = element
           return i
       i++
@@ -34,9 +38,9 @@ class Trantorien
   can_elevate: ->
     needed = this.needed_res()
     for key, val of needed
-      if key isnt 'nb_players' and @inventory[key] < val then return -1
-    if this.get_players_around() < needed['nb_players'] then return 0
-    return 1
+      if key isnt 'nb_players' and @inventory[key] < val then return @MISSING_RESOURCES
+    if this.get_players_around() < needed['nb_players'] then return @MISSING_PLAYERS
+    return @OK
 
   prepare_elevation: ->
     @elevation = []
@@ -168,16 +172,14 @@ class Trantorien
     return false
 
   recv_message: (k, text) ->
-    if @wait_elevation > 0
-      @wait_elevation--
-      return
+    if @locked then return
     if @path.length > 0 and k isnt 0 then return
     required_level = parseInt(text)
     if required_level isnt @level then return
     switch k
       when 0
         @path = []
-        @wait_elevation = 10
+        @locked = true
       when 1 then @path = ['avance']
       when 2 then @path = ['avance', 'gauche', 'avance']
       when 3 then @path = ['gauche', 'avance']
@@ -194,28 +196,36 @@ class Trantorien
       when 1 then return 'droite'
     return 'avance'
 
+  elevation_did_fail: ->
+    @elevation_failed = false
+    @elevation = ['incantation']
+    return "broadcast #{@level}"
+
+  reset_state: ->
+    @around = false
+    @inventory = false
+    @locked = false
+
   live: ->
-    if @wait_elevation > 0
-      @wait_elevation--
-      return 'voir'
-    if ++@queries % 10 is 0 then return "connect_nbr"
+    if not @inventory then return 'inventaire'
+    if @inventory['nourriture'] < @FOOD_THRESHOLD then @locked = false
+    if @connect_watcher++ % 10 is 0 or @locked
+      @inventory = false
+      return 'connect_nbr'
     if @path.length > 0 then return this.next_move()
     if @elevation.length > 0 then return this.next_action()
-    if not @around then return "voir"
-    if @level isnt @MAX_LEVEL
-      if @elevation_failed
-        @elevation_failed = false
-        @elevation = ['incantation']
-        return "broadcast #{@level}"
-      if not @inventory then return "inventaire"
+    if not @around then return 'voir'
+    if @level isnt @MAX_LEVEL and @inventory['nourriture'] >= @FOOD_THRESHOLD
+      if @elevation_failed then return this.elevation_did_fail()
       switch this.can_elevate()
-        when 1
+        when @MISSING_PLAYERS
+          @around = false
+          @inventory = false
+          if this.will_try_to_fork() then return 'fork'
+          return "broadcast #{@level}"
+        when @OK
           this.prepare_elevation()
           return this.next_action()
-        when 0
-          @around = false
-          return "broadcast #{@level}"
-      if this.will_try_to_fork() then return "fork"
     i = this.seek_place()
     if i isnt -1
       if i is 0 then return "prend #{@to_take}"

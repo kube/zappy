@@ -6,25 +6,15 @@
 /*   By: vdefilip <vdefilip@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/06/04 13:20:00 by vdefilip          #+#    #+#             */
-/*   Updated: 2014/06/19 14:30:00 by vdefilip         ###   ########.fr       */
+/*   Updated: 2014/06/25 12:23:22 by vdefilip         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <unistd.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <sys/resource.h>
-#include <netdb.h>
-#include <netinet/in.h>
-#include <arpa/inet.h>
-#include <sys/select.h>
-#include <sys/time.h>
-#include "libft.h"
 #include "server.h"
 
 static void			srv_accept(t_env *e, int fd)
 {
+	static int			n = 0;
 	int					*cs;
 	struct sockaddr_in	csin;
 	socklen_t			csin_len;
@@ -32,6 +22,7 @@ static void			srv_accept(t_env *e, int fd)
 	csin_len = sizeof(csin);
 	cs = (int *)try_void(malloc(sizeof(*cs)), NULL, "malloc");
 	*cs = accept(fd, (struct sockaddr *)&csin, &csin_len);
+	n++;
 	try_int(*cs, -1, "accept");
 	e->fds[*cs].type = FD_CLIENT;
 	e->fds[*cs].fct_read = client_read;
@@ -39,9 +30,14 @@ static void			srv_accept(t_env *e, int fd)
 	e->fds[*cs].addr = inet_ntoa(csin.sin_addr);
 	e->fds[*cs].port = ntohs(csin.sin_port);
 	ft_lst_pushend(e->client_lst, cs);
+	if (n > CONNEXION_LIMIT)
+	{
+		fd_destroy(e, *cs, "Server limit reached");
+		return ;
+	}
 	printf("New client #%d ", *cs);
 	printf("from %s:%d\n", e->fds[*cs].addr, e->fds[*cs].port);
-	ft_strcpy(e->fds[*cs].buf_write, "BIENVENUE");
+	buf_load(e->fds[*cs].buf_write, "BIENVENUE");
 }
 
 static int			srv_create(t_env *e, int port, int type)

@@ -1,44 +1,42 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   gfx.c                                              :+:      :+:    :+:   */
+/*   gfx_ppo.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: vdefilip <vdefilip@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2014/06/03 12:28:53 by vdefilip          #+#    #+#             */
-/*   Updated: 2014/06/24 18:48:27 by vdefilip         ###   ########.fr       */
+/*   Created: 2014/06/24 13:12:57 by vdefilip          #+#    #+#             */
+/*   Updated: 2014/06/25 12:33:54 by vdefilip         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "server.h"
 
-t_gfx			*gfx_new(int fd)
+void			ppo(t_env *e, int fd, char **req, t_bot *b)
 {
-	static int		id = 1;
-	t_gfx			*new;
+	char			buf[BUF_SIZE];
+	t_bot			*bot;
 
-	new = (t_gfx *)try_void(ft_memalloc(sizeof(*new)), NULL, "malloc");
-	new->fd = fd;
-	new->id = id++;
-	return (new);
+	if (req != NULL)
+	{
+		if ((bot = get_bot_by_id_arg(e, fd, req)) == NULL)
+			return ;
+	}
+	else
+		bot = b;
+	sprintf(buf, "ppo #%d %d %d %d\n",
+		bot->id,
+		bot->sq % e->opt.width, bot->sq / e->opt.width,
+		bot->dir);
+	buf_load(e->fds[fd].buf_write, buf);
 }
 
-void			gfx_destroy(t_env *e, int fd, char *msg)
+void			notify_all_gfx_ppo(t_env *e, t_bot *bot)
 {
-	t_gfx			*gfx;
 	t_iterator		iter;
+	t_gfx			*gfx;
 
-	printf("Client #%d (GFX) gone away", fd);
-	if (msg)
-		printf(": %s", msg);
-	printf("\n");
 	iter = NULL;
 	while ((gfx = (t_gfx *)ft_lst_iter_next_content(e->gfx_lst, &iter)))
-	{
-		if (gfx->fd == fd)
-		{
-			ft_lst_del_atom(e->gfx_lst, iter, free);
-			break ;
-		}
-	}
+		ppo(e, gfx->fd, NULL, bot);
 }

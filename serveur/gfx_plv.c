@@ -1,33 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   try.c                                              :+:      :+:    :+:   */
+/*   gfx_plv.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: vdefilip <vdefilip@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2014/05/24 17:00:41 by vdefilip          #+#    #+#             */
-/*   Updated: 2014/06/24 18:50:09 by vdefilip         ###   ########.fr       */
+/*   Created: 2014/06/24 13:13:35 by vdefilip          #+#    #+#             */
+/*   Updated: 2014/06/25 12:33:09 by vdefilip         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "server.h"
 
-int		try_int(int res, int err, char *str)
+void			plv(t_env *e, int fd, char **req, t_bot *b)
 {
-	if (res == err)
-	{
-		fprintf(stderr, "ERROR [ %s ] : %s\n", str, strerror(errno));
-		exit(EXIT_FAILURE);
-	}
-	return (res);
-}
+	char			buf[BUF_SIZE];
+	t_bot			*bot;
 
-void	*try_void(void *res, void *err, char *str)
-{
-	if (res == err)
+	if (req != NULL)
 	{
-		fprintf(stderr, "ERROR [ %s ] : %s\n", str, strerror(errno));
-		exit(EXIT_FAILURE);
+		if ((bot = get_bot_by_id_arg(e, fd, req)) == NULL)
+			return ;
 	}
-	return (res);
+	else
+		bot = b;
+	sprintf(buf, "plv #%d %d\n",
+		bot->id,
+		bot->level);
+	buf_load(e->fds[fd].buf_write, buf);
 }

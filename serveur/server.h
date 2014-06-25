@@ -3,20 +3,32 @@
 /*                                                        :::      ::::::::   */
 /*   server.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cfeijoo <cfeijoo@student.42.fr>            +#+  +:+       +#+        */
+/*   By: vdefilip <vdefilip@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2014/05/24 17:00:41 by vdefilip          #+#    #+#             */
-/*   Updated: 2014/06/23 15:53:10 by vdefilip         ###   ########.fr       */
+/*   Created: 2014/06/25 13:04:04 by vdefilip          #+#    #+#             */
+/*   Updated: 2014/06/25 13:27:04 by vdefilip         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef SERVER_H
 # define SERVER_H
 
+# include <unistd.h>
+# include <stdio.h>
+# include <stdlib.h>
+# include <string.h>
+# include <errno.h>
+# include <sys/socket.h>
+# include <sys/resource.h>
+# include <netdb.h>
+# include <netinet/in.h>
+# include <arpa/inet.h>
 # include <sys/select.h>
+# include <sys/time.h>
 # include "libft.h"
 
-#define CONNEXION_QUEUE   42
+# define CONNEXION_QUEUE  42
+# define CONNEXION_LIMIT  200
 
 # define FD_FREE          0
 # define FD_SRV           1
@@ -87,18 +99,18 @@
 
 # define FOOD_UNIT 126
 
-# define STEP_TIME 7
-# define TURN_RIGHT_TIME 7
-# define TURN_LEFT_TIME 7
-# define LOOK_TIME 7
-# define INVENTORY_TIME 1
-# define TAKE_TIME 7
-# define PUT_TIME 7
-# define EXPULSE_TIME 7
-# define BROADCAST_TIME 7
+# define STEP_TIME        7
+# define TURN_RIGHT_TIME  7
+# define TURN_LEFT_TIME   7
+# define LOOK_TIME        7
+# define INVENTORY_TIME   1
+# define TAKE_TIME        7
+# define PUT_TIME         7
+# define EXPULSE_TIME     7
+# define BROADCAST_TIME   7
 # define INCANTATION_TIME 300
-# define FORK_TIME 10		// TO RESTAURE 42
-# define EGG_TIME 10		// TO RESTAURE 600
+# define FORK_TIME        42
+# define EGG_TIME         600
 
 # define STATUS_NONE        0
 # define STATUS_FORK        1
@@ -111,6 +123,18 @@
 typedef struct rlimit	t_rlimit;
 typedef struct timeval	t_tv;
 typedef unsigned long	t_ulong;
+typedef struct s_bot	t_bot;
+
+typedef struct	s_buf
+{
+	t_list		*list;
+}				t_buf;
+
+typedef struct	s_parse
+{
+	char		*cmd;
+	void		(*fct)();
+}				t_parse;
 
 typedef struct	s_opt
 {
@@ -135,8 +159,8 @@ typedef struct	s_fd
 	int			type;
 	void		(*fct_read)();
 	void		(*fct_write)();
-	char		buf_read[BUF_SIZE + 1];
-	char		buf_write[BUF_SIZE + 1];
+	t_buf		*buf_read;
+	t_buf		*buf_write;
 	char		*addr;
 	int			port;
 }				t_fd;
@@ -151,9 +175,7 @@ typedef struct	s_team
 	t_list		*egg;
 }				t_team;
 
-typedef struct	s_bot	t_bot;
-
-typedef struct s_incant
+typedef struct	s_incant
 {
 	t_bot		*parent;
 	t_list		*req[7];
@@ -176,7 +198,7 @@ struct			s_bot
 	long		timer;
 	long		food_timer;
 	long		action_timer;
-	char		buf_action[BUF_SIZE + 1];
+	t_buf		*buf_action;
 };
 
 typedef struct	s_obj
@@ -194,7 +216,6 @@ typedef struct	s_sq
 typedef struct	s_env
 {
 	t_opt		opt;
-
 	int			maxfd;
 	int			max;
 	int			res;
@@ -212,8 +233,16 @@ typedef struct	s_env
 	t_sq		*board;
 }				t_env;
 
+t_buf			*buf_new(void);
+int				buf_load(t_buf *buffer, char *str);
+int				buf_unload(t_buf *buffer, char *res);
+int				buf_len(t_buf *buffer);
+
 int				try_int(int res, int err, char *str);
 void			*try_void(void *res, void *err, char *str);
+
+int				check_end(t_env *e);
+
 int				sq_rand(t_env *e);
 int				dir_rand();
 
@@ -225,12 +254,22 @@ void			fd_watch(t_env *e, int fd);
 void			fd_check(t_env *e, int fd);
 void			fd_iter_all(t_env *e, void (*fct)());
 
+t_team			*team_new(char *name, int limit);
+t_team			*get_team_by_name(t_env *e, char *name);
+
+int				get_obj_type(char *obj_name);
+t_obj			*get_obj(t_env *e, int sq, int type);
+void			move_obj_random(t_env *e, t_obj *obj, int sq);
+char			*get_obj_name(int type);
 t_obj			*obj_new(int type);
+
 t_bot			*bot_new(t_team *team);
 void			bot_iter_all_connected_queued_egg(t_env *e, void (*fct)());
 t_bot			*get_bot_by_fd(t_env *e, int fd);
 t_bot			*get_bot_by_id(t_env *e, int id);
 void			bot_destroy(t_env *e, int fd, char *msg);
+t_bot			*get_bot_by_id_arg(t_env *e, int fd, char **req);
+
 t_gfx			*gfx_new(int fd);
 void			gfx_destroy(t_env *e, int fd, char *msg);
 
@@ -242,27 +281,18 @@ void			client_write(t_env *e, int cs);
 
 void			init_connection(t_env *e);
 void			init_game(t_env *e);
-void 			print_board(t_env *e);
+void			print_board(t_env *e);
 
 void			bot_parse_request(t_env *e, int cs, char *str);
 void			gfx_parse_request(t_env *e, int fd, char *str);
-
-void			turn_left(t_env *e, t_bot *bot);
-void			turn_right(t_env *e, t_bot *bot);
-void			step(t_env *e, t_bot *bot);
-void			move(t_env *e, t_bot *bot, int sq);
 
 int				get_north(t_env *e, int sq);
 int				get_south(t_env *e, int sq);
 int				get_east(t_env *e, int sq);
 int				get_west(t_env *e, int sq);
 
-void			look(t_env *e, t_bot *bot);
-void			get_inventory(t_env *e, t_bot *bot);
-int				take(t_env *e, t_bot *bot, char *obj_name);
-int				put(t_env *e, t_bot *bot, char *obj_name);
-
 t_bot			*connect_bot(t_env *e, t_team *team);
+void			unconnect_bot(t_env *e, t_bot *bot);
 
 void			timer(t_env *e, t_bot *bot);
 
@@ -274,7 +304,7 @@ void			ppo(t_env *e, int fd, char **req, t_bot *b);
 void			plv(t_env *e, int fd, char **req, t_bot *b);
 void			pin(t_env *e, int fd, char **req, t_bot *b);
 void			sgt(t_env *e, int fd);
-void			sst(t_env *e, int fd, char **req);
+void			sst(t_env *e, int fd, char **req, int tmp);
 
 void			pnw(t_env *e, int fd, t_bot *bot);
 void			pex(t_env *e, int fd, t_bot *bot);
@@ -310,5 +340,24 @@ void			notify_all_gfx_bct(t_env *e, int sq);
 void			notify_all_gfx_pic(t_env *e, t_bot *bot);
 void			notify_all_gfx_incant(t_env *e, t_bot *bot, int res);
 void			notify_all_gfx_seg(t_env *e, t_team *team);
+
+void			broadcast(t_env *e, t_bot *bot, char *msg);
+void			take(t_env *e, t_bot *bot, char *obj_name);
+void			put(t_env *e, t_bot *bot, char *obj_name);
+void			step(t_env *e, t_bot *bot);
+void			turn_right(t_env *e, t_bot *bot);
+void			turn_left(t_env *e, t_bot *bot);
+void			look(t_env *e, t_bot *bot);
+void			get_inventory(t_env *e, t_bot *bot);
+void			expulse(t_env *e, t_bot *bot);
+void			incantation(t_env *e, t_bot *bot);
+void			fork_egg(t_env *e, t_bot *bot);
+void			send_nbr(t_env *e, int fd);
+void			move(t_env *e, t_bot *bot, int sq);
+void			send_dimension(t_env *e, int fd);
+int				*incant_get_requirements(int level);
+void			incant_get_elements(t_env *e, t_bot *bot);
+void			incant_del_elements(t_env *e, t_bot *bot);
+void			move_rocks_after_incant(t_env *e, t_bot *bot);
 
 #endif

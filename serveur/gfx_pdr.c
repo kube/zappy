@@ -1,33 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   try.c                                              :+:      :+:    :+:   */
+/*   gfx_pdr.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: vdefilip <vdefilip@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2014/05/24 17:00:41 by vdefilip          #+#    #+#             */
-/*   Updated: 2014/06/24 18:50:09 by vdefilip         ###   ########.fr       */
+/*   Created: 2014/06/24 13:18:05 by vdefilip          #+#    #+#             */
+/*   Updated: 2014/06/25 12:29:40 by vdefilip         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "server.h"
 
-int		try_int(int res, int err, char *str)
+void			pdr(t_env *e, int fd, t_bot *bot, int type)
 {
-	if (res == err)
-	{
-		fprintf(stderr, "ERROR [ %s ] : %s\n", str, strerror(errno));
-		exit(EXIT_FAILURE);
-	}
-	return (res);
-}
+	char			buf[BUF_SIZE];
 
-void	*try_void(void *res, void *err, char *str)
-{
-	if (res == err)
-	{
-		fprintf(stderr, "ERROR [ %s ] : %s\n", str, strerror(errno));
-		exit(EXIT_FAILURE);
-	}
-	return (res);
+	sprintf(buf, "pdr #%d %d\n", bot->id, type);
+	buf_load(e->fds[fd].buf_write, buf);
 }

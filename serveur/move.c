@@ -6,12 +6,10 @@
 /*   By: vdefilip <vdefilip@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/06/11 11:07:55 by vdefilip          #+#    #+#             */
-/*   Updated: 2014/06/20 10:36:20 by vdefilip         ###   ########.fr       */
+/*   Updated: 2014/06/25 12:42:21 by vdefilip         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdio.h>
-#include "libft.h"
 #include "server.h"
 
 void			move(t_env *e, t_bot *bot, int sq)
@@ -43,7 +41,7 @@ void			turn_left(t_env *e, t_bot *bot)
 	bot->action_timer = TURN_LEFT_TIME;
 	printf("BOT #%d turn left\n", bot->id);
 	notify_all_gfx_ppo(e, bot);
-	ft_strcat(bot->buf_action, "ok\n");
+	buf_load(bot->buf_action, "ok\n");
 }
 
 void			turn_right(t_env *e, t_bot *bot)
@@ -55,7 +53,7 @@ void			turn_right(t_env *e, t_bot *bot)
 	bot->action_timer = TURN_RIGHT_TIME;
 	printf("BOT #%d turn right\n", bot->id);
 	notify_all_gfx_ppo(e, bot);
-	ft_strcat(bot->buf_action, "ok\n");
+	buf_load(bot->buf_action, "ok\n");
 }
 
 void			step(t_env *e, t_bot *bot)
@@ -74,5 +72,5 @@ void			step(t_env *e, t_bot *bot)
 	bot->action_timer = STEP_TIME;
 	printf("BOT #%d step\n", bot->id);
 	notify_all_gfx_ppo(e, bot);
-	ft_strcat(bot->buf_action, "ok\n");
+	buf_load(bot->buf_action, "ok\n");
 }

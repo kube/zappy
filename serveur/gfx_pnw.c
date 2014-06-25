@@ -1,44 +1,36 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   gfx.c                                              :+:      :+:    :+:   */
+/*   gfx_pnw.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: vdefilip <vdefilip@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2014/06/03 12:28:53 by vdefilip          #+#    #+#             */
-/*   Updated: 2014/06/24 18:48:27 by vdefilip         ###   ########.fr       */
+/*   Created: 2014/06/24 13:15:14 by vdefilip          #+#    #+#             */
+/*   Updated: 2014/06/25 12:33:34 by vdefilip         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "server.h"
 
-t_gfx			*gfx_new(int fd)
+void			pnw(t_env *e, int fd, t_bot *bot)
 {
-	static int		id = 1;
-	t_gfx			*new;
+	char			buf[BUF_SIZE];
 
-	new = (t_gfx *)try_void(ft_memalloc(sizeof(*new)), NULL, "malloc");
-	new->fd = fd;
-	new->id = id++;
-	return (new);
+	sprintf(buf, "pnw #%d %d %d %d %d %s\n",
+		bot->id,
+		bot->sq % e->opt.width, bot->sq / e->opt.width,
+		bot->dir,
+		bot->level,
+		bot->team->name);
+	buf_load(e->fds[fd].buf_write, buf);
 }
 
-void			gfx_destroy(t_env *e, int fd, char *msg)
+void			notify_all_gfx_pnw(t_env *e, t_bot *bot)
 {
-	t_gfx			*gfx;
 	t_iterator		iter;
+	t_gfx			*gfx;
 
-	printf("Client #%d (GFX) gone away", fd);
-	if (msg)
-		printf(": %s", msg);
-	printf("\n");
 	iter = NULL;
 	while ((gfx = (t_gfx *)ft_lst_iter_next_content(e->gfx_lst, &iter)))
-	{
-		if (gfx->fd == fd)
-		{
-			ft_lst_del_atom(e->gfx_lst, iter, free);
-			break ;
-		}
-	}
+		pnw(e, gfx->fd, bot);
 }

@@ -1,33 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   try.c                                              :+:      :+:    :+:   */
+/*   gfx_sst.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: vdefilip <vdefilip@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2014/05/24 17:00:41 by vdefilip          #+#    #+#             */
-/*   Updated: 2014/06/24 18:50:09 by vdefilip         ###   ########.fr       */
+/*   Created: 2014/06/24 13:14:40 by vdefilip          #+#    #+#             */
+/*   Updated: 2014/06/24 15:27:52 by vdefilip         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "server.h"
 
-int		try_int(int res, int err, char *str)
+void			sst(t_env *e, int fd, char **req, int tmp)
 {
-	if (res == err)
-	{
-		fprintf(stderr, "ERROR [ %s ] : %s\n", str, strerror(errno));
-		exit(EXIT_FAILURE);
-	}
-	return (res);
-}
+	int		t;
 
-void	*try_void(void *res, void *err, char *str)
-{
-	if (res == err)
+	(void)tmp;
+	if (req[1] == NULL)
 	{
-		fprintf(stderr, "ERROR [ %s ] : %s\n", str, strerror(errno));
-		exit(EXIT_FAILURE);
+		printf("Client #%d (GFX): Invalid request (too few arguments)\n", fd);
+		sbp(e, fd);
+		return ;
 	}
-	return (res);
+	t = ft_atoi(req[1]);
+	if (t < 1 || t > MAX_T)
+	{
+		printf("Client #%d (GFX): Invalid request (1 <= t <= %d\n", fd, MAX_T);
+		sbp(e, fd);
+		return ;
+	}
+	e->opt.t = t;
+	sgt(e, fd);
 }

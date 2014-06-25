@@ -1,33 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   try.c                                              :+:      :+:    :+:   */
+/*   send_nbr.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: vdefilip <vdefilip@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2014/05/24 17:00:41 by vdefilip          #+#    #+#             */
-/*   Updated: 2014/06/24 18:50:09 by vdefilip         ###   ########.fr       */
+/*   Created: 2014/06/24 12:18:02 by vdefilip          #+#    #+#             */
+/*   Updated: 2014/06/25 12:47:02 by vdefilip         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "server.h"
 
-int		try_int(int res, int err, char *str)
+void			send_nbr(t_env *e, int fd)
 {
-	if (res == err)
-	{
-		fprintf(stderr, "ERROR [ %s ] : %s\n", str, strerror(errno));
-		exit(EXIT_FAILURE);
-	}
-	return (res);
-}
+	t_bot			*bot;
+	int				n;
+	char			*nbr;
+	t_iterator		iter;
+	t_bot			*egg;
 
-void	*try_void(void *res, void *err, char *str)
-{
-	if (res == err)
+	bot = get_bot_by_fd(e, fd);
+	n = bot->team->unconnected->len + bot->team->queue->len;
+	iter = NULL;
+	while ((egg = (t_bot *)ft_lst_iter_next_content(bot->team->egg, &iter)))
 	{
-		fprintf(stderr, "ERROR [ %s ] : %s\n", str, strerror(errno));
-		exit(EXIT_FAILURE);
+		if (bot->status == STATUS_NONE)
+			n++;
 	}
-	return (res);
+	nbr = ft_itoa(n);
+	buf_load(e->fds[fd].buf_write, nbr);
+	free(nbr);
 }
