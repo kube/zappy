@@ -116,9 +116,9 @@ welcome = ->
 
 die = ->
   console.log 'dead'
-  while 1 then ;
-  client.end()
-  process.exit
+  tr.dead = true
+  # client.end()
+  # process.exit
 
 voir = (msg) ->
   tr.around = []
@@ -204,10 +204,10 @@ process_msg = (msg) ->
       else if handshake is 2
         if world_size(msg) is true
           handshake = 3
-          if not use_keyboard? then send_cmd tr.live()
+          if not use_keyboard? and not tr.dead then send_cmd tr.live()
       else if handshake >= 3
         if msg.search("message") is 0
           handle_message msg
         else
           handle_response msg
-          if not last_cmd? and not use_keyboard? then send_cmd tr.live()
+          if not last_cmd? and not use_keyboard? and not tr.dead then send_cmd tr.live()
