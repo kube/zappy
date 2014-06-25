@@ -69,7 +69,7 @@ function connectToServer(host, port) {
 	displayGame();
 
 	var	client = new net.Socket(),
-		game = new Game(),
+		game = new Game({client: client}),
 		responseParser = new ResponseParser(client, game);
 
 	// Attach event to Back button

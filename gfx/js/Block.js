@@ -18,7 +18,7 @@ var Block = function(map, x, y) {
 	for (var i = 0; i < 7; i++)
 		this.ressources[i] = new Ressource(this, x, y, i);
 
-	this.mesh = new THREE.Mesh(new THREE.BoxGeometry(0.9, 0.2, 0.9), game.materials.block);
+	this.mesh = new THREE.Mesh(new THREE.BoxGeometry(0.9, 0.005, 0.9), game.materials.block);
 	this.mesh.position.set(this.position.x, -0.1, this.position.y);
 	this.mesh.updateMatrix();
 	this.mesh.matrixAutoUpdate = false;
@@ -29,12 +29,15 @@ var Block = function(map, x, y) {
 
 	this.addBot = function(bot) {
 		_bots.push(bot);
-		bot.team = self;
+		bot.block = self;
 	}
 
 	this.removeBot = function(bot) {
-		if (_bots.indexOf(bot) > -1)
-			_bots.slice(_bots.indexOf(bot), 1);
+		var index = _bots.indexOf(bot);
+		if (index > -1) {
+			_bots.slice(index, 1);
+			bot.block = null;
+		}
 	}
 
 	this.getBots = function() {

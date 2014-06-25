@@ -97,31 +97,39 @@ var Bot = function(game, number, x, y, orientation, level, teamName) {
 		}
 	}
 
-	this.jump = function() {
+	this.jump = function(time, repeats) {
+
+		// Animation Up
 		var tweenUp = new TWEEN.Tween({
 			z: 0.025
 		})
 		.to({
-			z: 0.85
-		}, 200)
+			z: 0.76
+		}, time * 7000 / game.time)
 		.easing(TWEEN.Easing.Bounce.InOut)
 		.onUpdate(function() {
 			self.mesh.position.y = this.z;
 		});
 
+		// Animation Down
 		var tweenDown = new TWEEN.Tween({
-			z: 0.85
+			z: 0.76
 		})
 		.to({
 			z: 0.025
-		}, 200)
+		}, time * 7000 / game.time)
 		.easing(TWEEN.Easing.Bounce.InOut)
 		.onUpdate(function() {
 			self.mesh.position.y = this.z;
+		})
+		.onComplete(function() {
+			// Restart until repeats count down
+			repeats--;
+			if (repeats)
+				tweenUp.start();
 		});
 
 		tweenUp.chain(tweenDown);
-
 		tweenUp.start();
 	}
 
@@ -148,9 +156,6 @@ var Bot = function(game, number, x, y, orientation, level, teamName) {
 		self.mesh = new THREE.Mesh(new THREE.SphereGeometry(1, 20, 20),
 			self.team.material);
 
-
-		console.log('');
-
 		self.mesh.scale.x = 0.04;
 		self.mesh.scale.y = 0.04;
 		self.mesh.scale.z = 0.04;
@@ -167,10 +172,8 @@ var Bot = function(game, number, x, y, orientation, level, teamName) {
 
 		game.scene.add(self.mesh);
 	}
-	if (level == 0) {
-		console.log('Creating EGG MESH');
+	if (level == 0)
 		createEggMesh();
-	}
 	else
 		createBotMesh();
 }

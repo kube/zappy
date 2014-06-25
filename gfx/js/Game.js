@@ -8,6 +8,8 @@ var Game = function(options) {
 	var document = window.document;
 	global.game = this;
 
+	var server = options.client;
+
 	var canvas = document.getElementById("renderCanvas");
 	var scene = new THREE.Scene();
 	var	camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
@@ -17,13 +19,8 @@ var Game = function(options) {
 		canvas: canvas,
 		antialias: true
 	});
-	renderer.setSize(window.innerWidth, window.innerHeight);
 
-	var ambientLight = new THREE.AmbientLight(0x111111);
-	var directionalLight = new THREE.DirectionalLight(0x666666);
-	directionalLight.position.set(1, 10, 1).normalize();
-	scene.add(ambientLight);
-	scene.add(directionalLight);
+	renderer.setSize(window.innerWidth, window.innerHeight);
 
 	this.scene = scene;
 	this.renderer = renderer;
@@ -32,8 +29,8 @@ var Game = function(options) {
 		basic: new THREE.MeshBasicMaterial({
 			color: 0xada1e6
 		}),
-		block: new THREE.MeshPhongMaterial({
-			color: 0x15161b
+		block: new THREE.MeshBasicMaterial({
+			color: 0x17171d
 		}),
 
 		ressources: [
@@ -178,8 +175,27 @@ var Game = function(options) {
 
 	window.addEventListener('keydown', function(e) {
 
+		console.log('keyDown: ' + e.keyCode);
 		switch (e.keyCode) {
 
+			// Minus
+			case 189:
+				// Decrement server time
+				if (game.time > 1) {
+					var newTime = game.time;
+						newTime--;
+					server.write('sst ' + newTime + '\n');
+				}
+				break;
+
+			// Plus
+			case 187:
+				// Increment server time
+				var newTime = game.time + 1;
+				server.write('sst ' + newTime + '\n');
+				break;
+
+			// Space
 			case 32:
 				currentDisplayedRessource = (currentDisplayedRessource + 2) % 8 - 1;
 				self.map.displayRessource(currentDisplayedRessource);

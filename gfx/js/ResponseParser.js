@@ -44,6 +44,7 @@ var ResponseParser = function(client, game) {
 			case 'msz':
 				game.createMap(a.i(1), a.i(2));
 				game.run();
+				// Set game global for debugging
 				global.game = game;
 				break;
 
@@ -83,7 +84,6 @@ var ResponseParser = function(client, game) {
 			**	ppo #n X Y O
 			*/
 			case 'ppo':
-				console.log(a);
 				var player = parseInt(a[1].replace('#', ''));
 				if (game.bots[player])
 					game.bots[player].setPosition(a.i(2), a.i(3), a.i(4));
@@ -116,7 +116,7 @@ var ResponseParser = function(client, game) {
 
 				for (var i in bots)
 					if (bots[i] != player)
-						bots[i].jump();
+						bots[i].jump(0.3, 1);
 				break;
 
 			/*
@@ -180,12 +180,10 @@ var ResponseParser = function(client, game) {
 			**	enw #e #n X Y
 			*/
 			case 'enw':
-				console.log('NEW EGG')
 				var egg = parseInt(a[1].replace('#', ''));
 				var player = parseInt(a[2].replace('#', ''));
 
 				var team = game.bots[player].team;
-				console.log(team);
 				game.createBot(egg, a.i(3), a.i(4), 1, 0, team.name);
 				break;
 
@@ -194,10 +192,8 @@ var ResponseParser = function(client, game) {
 			**	eht #e
 			*/
 			case 'eht':
-				console.log('JUMP!');
-				// Jump around!
 				var player = parseInt(a[1].replace('#', ''));
-				game.bots[player].jump();
+				game.bots[player].jump(0.2, 2);
 				break;
 
 			/*
@@ -205,7 +201,8 @@ var ResponseParser = function(client, game) {
 			**	ebo #e
 			*/
 			case 'ebo':
-				console.log('EGG Connection');
+				var player = parseInt(a[1].replace('#', ''));
+				game.bots[player].jump(0.3, 1);
 				break;
 
 			/*
@@ -222,8 +219,8 @@ var ResponseParser = function(client, game) {
 			**	sgt T
 			*/
 			case 'sgt':
-				console.log('GETTING TIME!')
 				game.time = a.i(1);
+				console.log('Time: ' + game.time);
 				break;
 
 			/*
