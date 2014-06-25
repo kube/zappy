@@ -6,7 +6,7 @@
 /*   By: vdefilip <vdefilip@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/06/24 13:54:51 by vdefilip          #+#    #+#             */
-/*   Updated: 2014/06/24 14:01:38 by vdefilip         ###   ########.fr       */
+/*   Updated: 2014/06/25 11:42:00 by vdefilip         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ void		get_inventory(t_env *e, t_bot *bot)
 	iter = NULL;
 	while ((o = (t_obj *)ft_lst_iter_next_content(bot->inventory, &iter)))
 		obj[o->type]++;
-	sprintf(str, "{%s %d, %s %d, %s %d, %s %d, %s %d, %s %d, %s %d}",
+	sprintf(str, "{%s %d, %s %d, %s %d, %s %d, %s %d, %s %d, %s %d}\n",
 		FOOD, obj[0],
 		ROCK1, obj[1],
 		ROCK2, obj[2],
@@ -34,6 +34,6 @@ void		get_inventory(t_env *e, t_bot *bot)
 		ROCK4, obj[4],
 		ROCK5, obj[5],
 		ROCK6, obj[6]);
-	printf("BOT #%d has %s\n", bot->id, str);
+	printf("BOT #%d has %s", bot->id, str);
 	ft_strcat(bot->buf_action, str);
 }
