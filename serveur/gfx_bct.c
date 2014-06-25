@@ -6,7 +6,7 @@
 /*   By: vdefilip <vdefilip@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/06/24 13:11:39 by vdefilip          #+#    #+#             */
-/*   Updated: 2014/06/24 13:11:56 by vdefilip         ###   ########.fr       */
+/*   Updated: 2014/06/25 12:25:54 by vdefilip         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ void			bct(t_env *e, int fd, char **req, int square)
 	sprintf(buf, "bct %d %d %d %d %d %d %d %d %d\n",
 		sq % e->opt.width, sq / e->opt.width,
 		obj[0], obj[1], obj[2], obj[3], obj[4], obj[5], obj[6]);
-	ft_strcat(e->fds[fd].buf_write, buf);
+	buf_load(e->fds[fd].buf_write, buf);
 }
 
 void			notify_all_gfx_bct(t_env *e, int sq)

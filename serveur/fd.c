@@ -6,7 +6,7 @@
 /*   By: vdefilip <vdefilip@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/05/24 17:00:40 by vdefilip          #+#    #+#             */
-/*   Updated: 2014/06/24 18:46:12 by vdefilip         ###   ########.fr       */
+/*   Updated: 2014/06/25 11:59:29 by vdefilip         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,8 @@
 void			fd_clean(t_fd *fd)
 {
 	fd->type = FD_FREE;
-	ft_bzero(&fd->buf_read, BUF_SIZE + 1);
-	ft_bzero(&fd->buf_write, BUF_SIZE + 1);
+	fd->buf_read = buf_new();
+	fd->buf_write = buf_new();
 	fd->fct_read = NULL;
 	fd->fct_write = NULL;
 	fd->addr = NULL;

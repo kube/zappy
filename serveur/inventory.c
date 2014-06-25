@@ -6,7 +6,7 @@
 /*   By: vdefilip <vdefilip@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/06/24 13:54:51 by vdefilip          #+#    #+#             */
-/*   Updated: 2014/06/25 11:42:00 by vdefilip         ###   ########.fr       */
+/*   Updated: 2014/06/25 12:52:00 by vdefilip         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ void		get_inventory(t_env *e, t_bot *bot)
 	t_iterator		iter;
 	t_obj			*o;
 	int				obj[7];
-	char			str[128];
+	char			str[BUF_SIZE];
 
 	(void)e;
 	bot->action_timer = INVENTORY_TIME;
@@ -35,5 +35,5 @@ void		get_inventory(t_env *e, t_bot *bot)
 		ROCK5, obj[5],
 		ROCK6, obj[6]);
 	printf("BOT #%d has %s", bot->id, str);
-	ft_strcat(bot->buf_action, str);
+	buf_load(bot->buf_action, str);
 }

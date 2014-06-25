@@ -6,7 +6,7 @@
 /*   By: vdefilip <vdefilip@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/06/24 13:53:27 by vdefilip          #+#    #+#             */
-/*   Updated: 2014/06/24 15:07:42 by vdefilip         ###   ########.fr       */
+/*   Updated: 2014/06/25 13:02:04 by vdefilip         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 static void		error(t_bot *bot, char *msg)
 {
 	printf("Client #%d (BOT): %s\n", bot->fd, msg);
-	ft_strcat(bot->buf_action, "ko\n");
+	buf_load(bot->buf_action, "ko\n");
 }
 
 void			take(t_env *e, t_bot *bot, char *obj_name)
@@ -40,5 +40,5 @@ void			take(t_env *e, t_bot *bot, char *obj_name)
 		ft_lst_pushend(bot->inventory, obj);
 	printf("BOT #%d take %s\n", bot->id, obj_name);
 	notify_all_gfx_take(e, bot, type);
-	ft_strcat(bot->buf_action, "ok\n");
+	buf_load(bot->buf_action, "ok\n");
 }

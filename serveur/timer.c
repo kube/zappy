@@ -6,7 +6,7 @@
 /*   By: vdefilip <vdefilip@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/06/13 11:02:20 by vdefilip          #+#    #+#             */
-/*   Updated: 2014/06/24 18:53:42 by vdefilip         ###   ########.fr       */
+/*   Updated: 2014/06/25 12:53:22 by vdefilip         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ static int			check_life(t_env *e, t_bot *bot, int unit)
 			printf("EGG #%d is dead\n", bot->id);
 			notify_all_gfx_edi(e, bot);
 		}
-		ft_strcat(e->fds[bot->fd].buf_write, "mort\n");
+		buf_load(e->fds[bot->fd].buf_write, "mort\n");
 		return (-1);
 	}
 	return (0);
@@ -79,6 +79,7 @@ void				timer(t_env *e, t_bot *bot)
 	struct timeval			cur;
 	t_ulong					diff;
 	t_ulong					unit;
+	char					buf[BUF_SIZE];
 
 	if (bot->life_unit <= 0)
 		return ;
@@ -97,7 +98,7 @@ void				timer(t_env *e, t_bot *bot)
 		else if (bot->status == STATUS_INCANTATION)
 			handle_status_incantation(e, bot);
 		bot->action_timer = -1;
-		ft_strcat(e->fds[bot->fd].buf_write, bot->buf_action);
-		ft_bzero(bot->buf_action, BUF_SIZE);
+		if (buf_unload(bot->buf_action, &buf) != -1)
+			buf_load(e->fds[bot->fd].buf_write, buf);
 	}
 }

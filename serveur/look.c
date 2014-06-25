@@ -6,7 +6,7 @@
 /*   By: vdefilip <vdefilip@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/06/11 16:40:39 by vdefilip          #+#    #+#             */
-/*   Updated: 2014/06/24 18:48:42 by vdefilip         ###   ########.fr       */
+/*   Updated: 2014/06/25 12:41:48 by vdefilip         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,6 +90,6 @@ void			look(t_env *e, t_bot *bot)
 	get_content(e, bot, bot->sq, &s);
 	ft_strcpy(s + ft_strlen(s) - 2, "}\n");
 	printf("BOT #%d see %s\n", bot->id, s);
-	ft_strcat(bot->buf_action, s);
+	buf_load(bot->buf_action, s);
 	free(s);
 }

@@ -6,7 +6,7 @@
 /*   By: vdefilip <vdefilip@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/06/24 12:15:09 by vdefilip          #+#    #+#             */
-/*   Updated: 2014/06/24 16:09:43 by vdefilip         ###   ########.fr       */
+/*   Updated: 2014/06/25 12:05:10 by vdefilip         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,9 +82,9 @@ void			broadcast(t_env *e, t_bot *bot, char *msg)
 			{
 				b->action_timer = BROADCAST_TIME;
 				sprintf(buf, "message %d,%s\n", get_sound_dir(e, b, bot), msg);
-				ft_strcat(b->buf_action, buf);
+				buf_load(b->buf_action, buf);
 			}
 		}
 	}
-	ft_strcat(bot->buf_action, "ok\n");
+	buf_load(bot->buf_action, "ok\n");
 }

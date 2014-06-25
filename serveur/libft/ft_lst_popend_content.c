@@ -1,21 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   gfx_msz.c                                          :+:      :+:    :+:   */
+/*   ft_lst_popend_content.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vdefilip <vdefilip@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lseguin <lseguin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2014/06/24 13:11:14 by vdefilip          #+#    #+#             */
-/*   Updated: 2014/06/25 12:36:46 by vdefilip         ###   ########.fr       */
+/*   Created: 2014/06/25 12:12:16 by lseguin           #+#    #+#             */
+/*   Updated: 2014/06/25 12:57:17 by lseguin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "server.h"
+#include "libft.h"
+#include <stdlib.h>
 
-void			msz(t_env *e, int fd)
+void	*ft_lst_popend_content(t_list *list)
 {
-	char	buf[BUF_SIZE];
+	t_atom	*atom;
+	void	*content;
 
-	sprintf(buf, "msz %d %d\n", e->opt.width, e->opt.height);
-	buf_load(e->fds[fd].buf_write, buf);
+	atom = ft_lst_popend(list);
+	content = atom->content;
+	free(atom);
+	return (content);
 }

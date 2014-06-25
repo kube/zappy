@@ -6,7 +6,7 @@
 /*   By: vdefilip <vdefilip@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/06/24 13:54:22 by vdefilip          #+#    #+#             */
-/*   Updated: 2014/06/24 15:07:28 by vdefilip         ###   ########.fr       */
+/*   Updated: 2014/06/25 13:02:03 by vdefilip         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 static void		error(t_bot *bot, char *msg)
 {
 	printf("Client #%d (BOT): %s\n", bot->fd, msg);
-	ft_strcat(bot->buf_action, "ko\n");
+	buf_load(bot->buf_action, "ko\n");
 }
 
 void			put(t_env *e, t_bot *bot, char *obj_name)
@@ -36,7 +36,7 @@ void			put(t_env *e, t_bot *bot, char *obj_name)
 			ft_lst_pushend(e->board[bot->sq].obj, obj);
 			printf("BOT #%d put %s\n", bot->id, obj_name);
 			notify_all_gfx_put(e, bot, type);
-			ft_strcat(bot->buf_action, "ok\n");
+			buf_load(bot->buf_action, "ok\n");
 			return ;
 		}
 	}

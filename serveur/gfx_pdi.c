@@ -6,7 +6,7 @@
 /*   By: vdefilip <vdefilip@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/06/24 13:19:07 by vdefilip          #+#    #+#             */
-/*   Updated: 2014/06/24 13:33:08 by vdefilip         ###   ########.fr       */
+/*   Updated: 2014/06/25 12:35:59 by vdefilip         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,10 @@
 
 void			pdi(t_env *e, int fd, t_bot *bot)
 {
-	char			buf[128];
+	char			buf[BUF_SIZE];
 
 	sprintf(buf, "pdi #%d\n", bot->id);
-	ft_strcat(e->fds[fd].buf_write, buf);
+	buf_load(e->fds[fd].buf_write, buf);
 }
 
 void			notify_all_gfx_pdi(t_env *e, t_bot *bot)

@@ -6,7 +6,7 @@
 /*   By: vdefilip <vdefilip@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/05/23 19:09:00 by vdefilip          #+#    #+#             */
-/*   Updated: 2014/05/28 12:53:12 by vdefilip         ###   ########.fr       */
+/*   Updated: 2014/06/25 12:52:59 by lseguin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,8 @@ void	ft_lst_push(t_list *lst, void *content);
 void	ft_lst_pushend(t_list *lst, void *content);
 t_atom	*ft_lst_pop(t_list *lst);
 t_atom	*ft_lst_popend(t_list *lst);
+void	*ft_lst_pop_content(t_list *list);
+void	*ft_lst_popend_content(t_list *list);
 int		ft_lst_atom_index(t_list *lst, t_atom *atom);
 int		ft_lst_curr_index(t_list *lst);
 t_list	*ft_lst_cpy(t_list *lst);
