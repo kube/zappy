@@ -6,7 +6,7 @@
 /*   By: vdefilip <vdefilip@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/05/24 17:00:40 by vdefilip          #+#    #+#             */
-/*   Updated: 2014/06/25 19:47:35 by vdefilip         ###   ########.fr       */
+/*   Updated: 2014/06/25 19:51:37 by vdefilip         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,6 @@ void			fd_iter_all(t_env *e, void (*fct)())
 	{
 		fd = (int *)curr->content;
 		next = curr->next;
-		printf("WATCH %d\n", *fd);
 		fct(e, *fd);
 		curr = next;
 	}

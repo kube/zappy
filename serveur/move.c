@@ -6,7 +6,7 @@
 /*   By: vdefilip <vdefilip@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/06/11 11:07:55 by vdefilip          #+#    #+#             */
-/*   Updated: 2014/06/25 19:47:30 by vdefilip         ###   ########.fr       */
+/*   Updated: 2014/06/25 19:51:28 by vdefilip         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ void			move(t_env *e, t_bot *bot, int sq)
 			b = (t_bot *)curr->content;
 			next = curr->next;
 			if (b == bot)
-				ft_lst_del_atom(e->board[old].bot, itr, NULL);
+				ft_lst_del_atom(e->board[old].bot, curr, NULL);
 			curr = next;
 		}
 	}
