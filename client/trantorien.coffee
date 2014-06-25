@@ -14,6 +14,7 @@ class Trantorien
     @elevation_failed = false
     @connect_watcher = 0
     @locked = false
+    @dead = false
 
   seek_place: ->
     needed = this.needed_res()
