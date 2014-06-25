@@ -6,7 +6,7 @@
 /*   By: cfeijoo <cfeijoo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/05/24 17:00:41 by vdefilip          #+#    #+#             */
-/*   Updated: 2014/06/25 12:54:33 by lseguin          ###   ########.fr       */
+/*   Updated: 2014/06/25 13:00:38 by lseguin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -232,6 +232,11 @@ typedef struct	s_env
 	t_list		*bot_fd_lst;
 	t_sq		*board;
 }				t_env;
+
+t_buf			*buf_new();
+int				buf_load(t_buf *buffer, char *str);
+int				buf_unload(t_buf *buffer, char *res);
+int				buf_len(t_buf *buffer);
 
 int				try_int(int res, int err, char *str);
 void			*try_void(void *res, void *err, char *str);
