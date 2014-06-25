@@ -6,14 +6,14 @@
 /*   By: lseguin <lseguin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/06/25 11:34:20 by lseguin           #+#    #+#             */
-/*   Updated: 2014/06/25 12:55:45 by lseguin          ###   ########.fr       */
+/*   Updated: 2014/06/25 13:26:08 by vdefilip         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
 #include "server.h"
 
-t_buf	*buf_new()
+t_buf	*buf_new(void)
 {
 	t_buf	*buf;
 
@@ -56,7 +56,8 @@ int		buf_unload(t_buf *buffer, char *res)
 
 	if (res == NULL || buffer == NULL || buffer->list == NULL)
 		return (-1);
-	tmp = (char *)ft_lst_pop_content(buffer->list);
+	if (!(tmp = (char *)ft_lst_pop_content(buffer->list)))
+		return (-1);
 	ft_strcpy(res, tmp);
 	free(tmp);
 	return (0);

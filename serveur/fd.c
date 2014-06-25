@@ -6,7 +6,7 @@
 /*   By: vdefilip <vdefilip@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/05/24 17:00:40 by vdefilip          #+#    #+#             */
-/*   Updated: 2014/06/25 11:59:29 by vdefilip         ###   ########.fr       */
+/*   Updated: 2014/06/25 13:15:33 by vdefilip         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ void			fd_destroy(t_env *e, int fd, char *msg)
 
 void			fd_watch(t_env *e, int fd)
 {
-	if (strlen(e->fds[fd].buf_write) > 0)
+	if (buf_len(e->fds[fd].buf_write) > 0)
 		FD_SET(fd, &e->fd_write);
 	else
 		FD_SET(fd, &e->fd_read);

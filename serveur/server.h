@@ -6,7 +6,7 @@
 /*   By: vdefilip <vdefilip@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/06/25 13:04:04 by vdefilip          #+#    #+#             */
-/*   Updated: 2014/06/25 13:04:09 by vdefilip         ###   ########.fr       */
+/*   Updated: 2014/06/25 13:27:04 by vdefilip         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -233,7 +233,7 @@ typedef struct	s_env
 	t_sq		*board;
 }				t_env;
 
-t_buf			*buf_new();
+t_buf			*buf_new(void);
 int				buf_load(t_buf *buffer, char *str);
 int				buf_unload(t_buf *buffer, char *res);
 int				buf_len(t_buf *buffer);
