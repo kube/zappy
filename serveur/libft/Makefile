@@ -3,15 +3,15 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: vdefilip <vdefilip@student.42.fr>          +#+  +:+       +#+         #
+#    By: lseguin <lseguin@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2014/05/28 12:53:23 by vdefilip          #+#    #+#              #
-#    Updated: 2014/05/28 12:53:23 by vdefilip         ###   ########.fr        #
+#    Created: 2014/06/25 12:57:27 by lseguin           #+#    #+#              #
+#    Updated: 2014/06/25 12:57:27 by lseguin          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME=libft.a
-VERSION=1.1.3
+VERSION=1.0.0
 CFLAGS=-Wall -Werror -Wextra -g
 INCLUDES=-I ./includes
 
@@ -52,7 +52,9 @@ SRC=ft_atod.c \
 	ft_lst_new.c \
 	ft_lst_next_content.c \
 	ft_lst_pop.c \
+	ft_lst_pop_content.c \
 	ft_lst_popend.c \
+	ft_lst_popend_content.c \
 	ft_lst_prev_content.c \
 	ft_lst_push.c \
 	ft_lst_push_after_atom.c \

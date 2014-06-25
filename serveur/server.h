@@ -6,7 +6,7 @@
 /*   By: cfeijoo <cfeijoo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/05/24 17:00:41 by vdefilip          #+#    #+#             */
-/*   Updated: 2014/06/24 18:52:40 by vdefilip         ###   ########.fr       */
+/*   Updated: 2014/06/25 12:54:33 by lseguin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,6 +124,11 @@ typedef struct rlimit	t_rlimit;
 typedef struct timeval	t_tv;
 typedef unsigned long	t_ulong;
 typedef struct s_bot	t_bot;
+
+typedef struct	s_buf
+{
+	t_list		*list;
+}				t_buf;
 
 typedef struct	s_parse
 {
