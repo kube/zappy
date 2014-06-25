@@ -109,6 +109,7 @@ send = (msg) ->
 send_cmd = (cmd) ->
   last_cmd = cmd
   send cmd
+  console.log "-> #{cmd}"
 
 welcome = ->
   handshake = 1
