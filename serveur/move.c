@@ -6,7 +6,7 @@
 /*   By: vdefilip <vdefilip@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/06/11 11:07:55 by vdefilip          #+#    #+#             */
-/*   Updated: 2014/06/25 12:42:21 by vdefilip         ###   ########.fr       */
+/*   Updated: 2014/06/25 18:49:26 by vdefilip         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@ void			move(t_env *e, t_bot *bot, int sq)
 	t_iterator		itr;
 	t_bot			*b;
 	int				old;
+	t_iterator		next;
 
 	old = bot->sq;
 	if (old != -1)
@@ -25,7 +26,12 @@ void			move(t_env *e, t_bot *bot, int sq)
 		while ((b = (t_bot *)ft_lst_iter_next_content(e->board[old].bot, &itr)))
 		{
 			if (b == bot)
+			{
+				next = itr->next;
 				ft_lst_del_atom(e->board[old].bot, itr, NULL);
+				if ((itr = next) == next)
+					break ;
+			}
 		}
 	}
 	ft_lst_pushend(e->board[sq].bot, bot);
