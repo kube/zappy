@@ -6,7 +6,7 @@
 /*   By: vdefilip <vdefilip@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/06/25 13:04:04 by vdefilip          #+#    #+#             */
-/*   Updated: 2014/06/25 18:20:16 by vdefilip         ###   ########.fr       */
+/*   Updated: 2014/06/25 20:04:35 by vdefilip         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -340,6 +340,7 @@ void			notify_all_gfx_bct(t_env *e, int sq);
 void			notify_all_gfx_pic(t_env *e, t_bot *bot);
 void			notify_all_gfx_incant(t_env *e, t_bot *bot, int res);
 void			notify_all_gfx_seg(t_env *e, t_team *team);
+void			notify_all_gfx_sgt(t_env *e);
 
 void			broadcast(t_env *e, t_bot *bot, char *msg);
 void			take(t_env *e, t_bot *bot, char *obj_name);

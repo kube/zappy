@@ -6,7 +6,7 @@
 /*   By: vdefilip <vdefilip@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/06/24 13:14:40 by vdefilip          #+#    #+#             */
-/*   Updated: 2014/06/24 15:27:52 by vdefilip         ###   ########.fr       */
+/*   Updated: 2014/06/25 20:04:09 by vdefilip         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,5 +31,5 @@ void			sst(t_env *e, int fd, char **req, int tmp)
 		return ;
 	}
 	e->opt.t = t;
-	sgt(e, fd);
+	notify_all_gfx_sgt(e);
 }
