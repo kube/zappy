@@ -77,6 +77,9 @@ var ResponseParser = function(client, game) {
 					game.bots[player].upgrade();
 				else
 					game.createBot(player, a.i(2), a.i(3), a.i(4), a[5], a[6]);
+
+				// Ask server current player's inventory
+				client.write('pin ' + a[1] + '\n');
 				break;
 
 			/*
@@ -103,6 +106,10 @@ var ResponseParser = function(client, game) {
 			**	pin #n X Y q q q q q q q
 			*/
 			case 'pin':
+				console.log(a);
+				var playerNumber = parseInt(a[1].replace('#', '')),
+					player = game.bots[playerNumber];
+				player.setInventory([a.i(2), a.i(3), a.i(4), a.i(5), a.i(6), a.i(7), a.i(8)]);
 				break;
 				
 			/*
@@ -155,7 +162,9 @@ var ResponseParser = function(client, game) {
 			**	pdr #n i
 			*/
 			case 'pdr':
-
+				console.log(a[0]);
+				// Ask server current player's inventory
+				client.write('pin ' + a[1] + '\n');
 				break;
 
 			/*
@@ -163,7 +172,9 @@ var ResponseParser = function(client, game) {
 			**	pgt #n i
 			*/
 			case 'pgt':
-
+				console.log(a[0]);
+				// Ask server current player's inventory
+				client.write('pin ' + a[1] + '\n');
 				break;
 
 			/*

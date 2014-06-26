@@ -12,6 +12,7 @@ var Map = function(game, width, height) {
 	this.game = game;
 
 	function initBlocks() {
+
 		for (var i = 0; i < width; i++) {
 			self.blocks[i] = [];
 			for (var j = 0; j < height; j++)
@@ -20,10 +21,34 @@ var Map = function(game, width, height) {
 	}
 	initBlocks();
 
+	this.switchRessource = function(type) {
+
+		if ($('#infoBar .t' + type).parent().hasClass('checked'))
+			self.displayRessource(type);
+		else
+			self.hideRessource(type);
+	}
+
 	this.displayRessource = function(type) {
+
+		// Display Ressource in each block
 		for (var i in self.blocks)
 			for (var j in self.blocks[i])
 				self.blocks[i][j].displayRessource(type);
+
+		// Remove class checked to Button
+		$('#infoBar .t' + type).parent().removeClass('checked');
+	}
+
+	this.hideRessource = function(type) {
+
+		// Hide Ressource in each block
+		for (var i in self.blocks)
+			for (var j in self.blocks[i])
+				self.blocks[i][j].hideRessource(type);
+
+		// Add class checked to Button
+		$('#infoBar .t' + type).parent().addClass('checked');
 	}
 }
 

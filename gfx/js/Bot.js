@@ -13,6 +13,7 @@ var Bot = function(game, number, x, y, orientation, level, teamName) {
 		x: block.position.x,
 		y: block.position.y
 	};
+	this.inventory = [0, 0, 0, 0, 0, 0, 0];
 
 	// Add Bot to Team
 	game.getTeamByName(teamName).addBot(self);
@@ -39,7 +40,7 @@ var Bot = function(game, number, x, y, orientation, level, teamName) {
 		self.orientation = o;
 
 		// Animate Mesh Move
-		var	newRotation = - (Math.PI / 2 * (1 + o));
+		var	newRotation = -(Math.PI / 2 * (1 + o));
 		var tween = new TWEEN.Tween({
 				x: self.position.x,
 				y: self.position.y,
@@ -53,7 +54,7 @@ var Bot = function(game, number, x, y, orientation, level, teamName) {
 			.easing(TWEEN.Easing.Cubic.InOut)
 			.onUpdate(function() {
 
-				self.mesh.position.set(this.x, 0.025, this.y);
+				self.mesh.position.set(this.x, 0, this.y);
 				self.mesh.rotation.set(0, this.a, 0);
 
 				// Update Self Position
@@ -64,16 +65,39 @@ var Bot = function(game, number, x, y, orientation, level, teamName) {
 			})
 			.start();
 
-		// Mesh position update
-		// self.mesh.position.set(block.position.x, 0.05, block.position.y);
 		self.mesh.updateMatrix();
+	}
+
+	this.setInventory = function(inventory) {
+		self.inventory = inventory;
 	}
 
 	this.elevate = function() {
 
 	}
 
+	// Passes from Egg to Bot
+	this.upgrade = function() {
+
+		// Remove current mesh
+		if (self.level == 0) {
+			game.scene.remove(self.mesh);
+			createBotMesh();
+			self.setPosition(self.x, self.y, self.orientation);
+		}
+	}
+
+	this.highlight = function() {
+		self.mesh.material = self.team.materialSelected;
+	}
+
+	this.unlight = function() {
+		self.mesh.material = self.team.material;
+	}
+
 	this.die = function() {
+
+		// Remove current Mesh from scene and create new one
 		game.scene.remove(self.mesh);
 		self.mesh = new THREE.Mesh(game.RIPGeometry,
 			self.team.material);
@@ -87,14 +111,10 @@ var Bot = function(game, number, x, y, orientation, level, teamName) {
 		game.scene.add(self.mesh);
 	}
 
-	this.upgrade = function() {
-
-		// Remove current mesh
-		if (self.level == 0) {
-			game.scene.remove(self.mesh);
-			createBotMesh();
-			self.setPosition(self.x, self.y, self.orientation);
-		}
+	this.displayInventory = function() {
+		console.log(self.inventory);
+		for (var i in self.inventory)
+			$('#infoBar .t' + i).text(self.inventory[i]);
 	}
 
 	this.jump = function(time, repeats) {
@@ -104,7 +124,7 @@ var Bot = function(game, number, x, y, orientation, level, teamName) {
 			z: 0.025
 		})
 		.to({
-			z: 0.76
+			z: 0
 		}, time * 7000 / game.time)
 		.easing(TWEEN.Easing.Bounce.InOut)
 		.onUpdate(function() {
@@ -116,7 +136,7 @@ var Bot = function(game, number, x, y, orientation, level, teamName) {
 			z: 0.76
 		})
 		.to({
-			z: 0.025
+			z: 0
 		}, time * 7000 / game.time)
 		.easing(TWEEN.Easing.Bounce.InOut)
 		.onUpdate(function() {
@@ -144,9 +164,18 @@ var Bot = function(game, number, x, y, orientation, level, teamName) {
 		// Set Mesh position
 		self.setPosition(self.x, self.y, self.orientation);
 
-		self.mesh.onclick = function(e, pick) {
+		self.mesh.onClick = function(e, pick) {
 			// var pickedMesh = pick.pickedMesh;
 			console.log(self);
+		}
+		self.mesh.onMouseOver = function(e, pick) {
+			console.log();
+			self.highlight();
+			self.displayInventory();
+		}
+		self.mesh.onMouseOut = function(e, pick) {
+			self.unlight();
+			$('#infoBar a').text('');
 		}
 		game.scene.add(self.mesh);
 	}
@@ -162,14 +191,9 @@ var Bot = function(game, number, x, y, orientation, level, teamName) {
 
 		// Set Mesh position
 		self.setPosition(self.x, self.y, self.orientation);
-		// self.mesh.position.set(block.position.x, 0.025, block.position.y);
-		// self.mesh.rotation.set(0, - (Math.PI / 2 * (1 + orientation)), 0);
 
-		self.mesh.onclick = function(e, pick) {
-			// var pickedMesh = pick.pickedMesh;
-			console.log(self);
+		self.mesh.onClick = function(e, pick) {
 		}
-
 		game.scene.add(self.mesh);
 	}
 	if (level == 0)

@@ -6,11 +6,9 @@ var Game = function(options) {
 	var self = this;
 	var window = GLOBAL.window;
 	var document = window.document;
-	global.game = this;
-
-	var server = options.client;
 
 	var canvas = document.getElementById("renderCanvas");
+	var server = options.client;
 	var scene = new THREE.Scene();
 	var	camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
 	camera.position.z = 5;
@@ -24,13 +22,26 @@ var Game = function(options) {
 
 	this.scene = scene;
 	this.renderer = renderer;
+	this.time = 7;
+	this.teams = [];
+	this.bots = [];
+
+
+	/*
+	**	Define Game Materials
+	*/
 	this.materials = {
 
 		basic: new THREE.MeshBasicMaterial({
 			color: 0xada1e6
 		}),
+
 		block: new THREE.MeshBasicMaterial({
 			color: 0x17171d
+		}),
+
+		blockSelected: new THREE.MeshBasicMaterial({
+			color: 0x2e2e3f
 		}),
 
 		ressources: [
@@ -68,11 +79,10 @@ var Game = function(options) {
 	for (var i in self.materials.ressources)
 		self.materials.ressources[i].transparent = true;
 
-	this.time = 7;
-	this.teams = [];
-	this.bots = [];
 
-
+	/*
+	**	Custom geometries generation
+	*/
 	function createRIPGeometry() {
 
 		var	a = new THREE.Mesh(
@@ -139,21 +149,33 @@ var Game = function(options) {
 	this.stickmanGeometry = createStickmanGeometry();
 
 
-
+	/*
+	**	Informations Bar initialization and clear
+	*/
 	function enableInfoBar() {
-
 		var	items = document.getElementById('infoBar')
 			.getElementsByTagName('ul')[0].getElementsByTagName('li');
-
 		for (var i = 0; i < 7; i++) {
 			items[i].addEventListener('click',
 				(function (i) {
-					return function() {
-						self.map.displayRessource(i);
+					return function a() {
+						self.map.switchRessource(i);
 					}})(i));
 		}
 	}
 
+	function clearInfoBar() {
+		var	items = document.getElementById('infoBar')
+			.getElementsByTagName('ul')[0].getElementsByTagName('li');
+		for (var i = 0; i < 7; i++) {
+			items[i].removeEventListener('click', 'a');
+		}
+	}
+
+
+	/*
+	**	Game Mouse & Keyboard Events
+	*/
 	function pickMesh(x, y) {
 		var projector = new THREE.Projector();
 		var vector = new THREE.Vector3(( x / window.innerWidth ) * 2 - 1, -( y / window.innerHeight ) * 2 + 1, 0.5);
@@ -166,12 +188,29 @@ var Game = function(options) {
 	canvas.addEventListener('click', function(e) {
 		var pick = pickMesh(e.x, e.y);
 		if (pick && pick.object
-			&& typeof pick.object.onclick == 'function')
-			pick.object.onclick(e);
+			&& typeof pick.object.onClick == 'function')
+			pick.object.onClick(e);
 	});
 
-
-	var currentDisplayedRessource = -1;
+	var currentMouseOver = null;
+	canvas.addEventListener('mouseout', function(e) {
+		if (currentMouseOver
+			&& typeof currentMouseOver.onMouseOut == 'function')
+			currentMouseOver.onMouseOut(e);
+		currentMouseOver = null;
+	});
+	canvas.addEventListener('mousemove', function(e) {
+		var pick = pickMesh(e.x, e.y);
+		if (!pick || pick.object != currentMouseOver) {
+			if (currentMouseOver
+				&& typeof currentMouseOver.onMouseOut == 'function')
+				currentMouseOver.onMouseOut(e);
+			currentMouseOver = pick ? pick.object : null;
+		}
+		if (pick && pick.object
+			&& typeof pick.object.onMouseOver == 'function')
+			pick.object.onMouseOver(e);
+	});
 
 	window.addEventListener('keydown', function(e) {
 
@@ -197,25 +236,11 @@ var Game = function(options) {
 
 			// Space
 			case 32:
-				currentDisplayedRessource = (currentDisplayedRessource + 2) % 8 - 1;
-				self.map.displayRessource(currentDisplayedRessource);
+				// currentDisplayedRessource = (currentDisplayedRessource + 2) % 8 - 1;
+				// self.map.displayRessource(currentDisplayedRessource);
 				break;
-
 		}
-
 	});
-
-	function runRenderLoop(time) {
-		window.requestAnimationFrame(runRenderLoop);
-		TWEEN.update(time);
-
-		var d = new Date();
-		// Ressources opacity animation
-		for (var i in self.materials.ressources)
-			self.materials.ressources[i].opacity = 0.65 + Math.sin(d.getTime() * 0.005) * 0.25;
-
-		renderer.render(scene, camera);
-	};
 
 	window.onresize = function() {
 		camera.aspect = window.innerWidth / window.innerHeight;
@@ -223,6 +248,10 @@ var Game = function(options) {
 		renderer.setSize(window.innerWidth, window.innerHeight);
 	}
 
+
+	/*
+	**	Game Content Methods
+	*/
 	this.createTeam = function(name) {
 		self.teams.push(new Team(self, name));
 	}
@@ -244,18 +273,32 @@ var Game = function(options) {
 		return bot;
 	}
 
+
+	/*
+	**	Render Loop
+	*/
+	function runRenderLoop(time) {
+		window.requestAnimationFrame(runRenderLoop);
+		TWEEN.update(time);
+
+		var d = new Date();
+		// Ressources opacity animation
+		for (var i in self.materials.ressources)
+			self.materials.ressources[i].opacity = 0.65 + Math.sin(d.getTime() * 0.005) * 0.25;
+
+		renderer.render(scene, camera);
+	};
+
 	this.run = function() {
 		runRenderLoop();
 	}
 
 	this.clear = function() {
-		// engine.stopRenderLoop();
-		// engine.clear(new BABYLON.Color3(0, 0, 0), true, true);
+
 	}
 
 	this.destroy = function() {
-		// scene.dispose();
-		// engine.clear(new BABYLON.Color3(0, 0, 0), true, true);
+
 	}
 
 	enableInfoBar();

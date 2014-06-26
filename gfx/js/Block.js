@@ -19,11 +19,20 @@ var Block = function(map, x, y) {
 		this.ressources[i] = new Ressource(this, x, y, i);
 
 	this.mesh = new THREE.Mesh(new THREE.BoxGeometry(0.9, 0.005, 0.9), game.materials.block);
-	this.mesh.position.set(this.position.x, -0.1, this.position.y);
+	this.mesh.position.set(this.position.x, 0, this.position.y);
 	this.mesh.updateMatrix();
 	this.mesh.matrixAutoUpdate = false;
-	this.mesh.onclick = function(e, pick) {
-		// self.mesh.position.y += 0.5;
+
+	this.mesh.onClick = function(e, pick) {
+	}
+	this.mesh.onMouseOver = function(e, pick) {
+		self.mesh.material = game.materials.blockSelected;
+		for (var i in self.ressources)
+			$('#infoBar .t' + i).text(self.ressources[i].quantity);
+	}
+	this.mesh.onMouseOut = function(e, pick) {
+		self.mesh.material = game.materials.block;
+		$('#infoBar a').text('');
 	}
 	game.scene.add(this.mesh);
 
@@ -45,11 +54,11 @@ var Block = function(map, x, y) {
 	}
 
 	this.displayRessource = function(type) {
-		for (var i in self.ressources)
-			if (i == type || type == -1)
-				self.ressources[i].display();
-			else
-				self.ressources[i].hide();
+		self.ressources[type].display();
+	}
+
+	this.hideRessource = function(type) {
+		self.ressources[type].hide();
 	}
 }
 

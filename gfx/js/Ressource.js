@@ -9,7 +9,7 @@ var Ressource = function(block, x, y, type) {
 	};
 
 	this.mesh = new THREE.Mesh(new THREE.BoxGeometry(0.04, 1.0, 0.04), game.materials.ressources[type]);
-	this.mesh.position.set(this.position.x, -0.1, this.position.y);
+	this.mesh.position.set(this.position.x, 0, this.position.y);
 	this.mesh.updateMatrix();
 	this.mesh.matrixAutoUpdate = false;
 	this.mesh.onclick = function(e, pick) {
