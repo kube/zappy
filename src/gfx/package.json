@@ -1,0 +1,17 @@
+{
+	"name": "Zappy",
+	"main": "index.html",
+	"scripts": {
+		"install": "zip -r app.nw . -i ./js ./lib ./node_modules/tween.js ./index.html ./style.css && cp -r ./node_modules/nodewebkit/nodewebkit ./Visualizer.app && cp app.nw ./Visualizer.app/Contents/Ressources",
+		"clean": "rm -rf Visualizer.app app.nw ./node_modules",
+		"start": "./node_modules/nodewebkit/bin/nodewebkit"
+	},
+	"dependencies": {
+		"nodewebkit": "*",
+		"tween.js": "*"
+	},
+	"window":{
+		"frame": false,
+		"toolbar": false
+	}
+}
