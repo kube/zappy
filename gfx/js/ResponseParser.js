@@ -97,7 +97,7 @@ var ResponseParser = function(client, game) {
 			**	plv #n L
 			*/
 			case 'plv':
-				console.log(a);
+				console.log('Player level');
 				var player = parseInt(a[1].replace('#', ''));
 				game.bots[player].elevate(a[2]);
 				break;

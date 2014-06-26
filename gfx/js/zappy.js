@@ -13,6 +13,8 @@ var	net = require('net'),
 */
 process.on('uncaughtException', function(e) {
 
+	console.log(e);
+
 	switch (e.code) {
 
 		case 'ECONNREFUSED':
