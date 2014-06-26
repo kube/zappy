@@ -6,7 +6,7 @@
 /*   By: vdefilip <vdefilip@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/06/13 11:02:20 by vdefilip          #+#    #+#             */
-/*   Updated: 2014/06/26 11:05:32 by vdefilip         ###   ########.fr       */
+/*   Updated: 2014/06/26 11:47:25 by vdefilip         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 
 static int			check_life(t_env *e, t_bot *bot, int unit)
 {
+	char		buf[BUF_SIZE];
+
 	if (bot->status != STATUS_EGG && (bot->life_unit -= unit) <= 0)
 	{
 		if (bot->parent == NULL)
@@ -26,6 +28,10 @@ static int			check_life(t_env *e, t_bot *bot, int unit)
 			printf("EGG #%d is dead\n", bot->id);
 			notify_all_gfx_edi(e, bot);
 		}
+		while (buf_unload(bot->buf_action, buf) != -1)
+			;
+		while (buf_unload(e->fds[bot->fd].buf_write, buf) != -1)
+			;
 		buf_load(e->fds[bot->fd].buf_write, "mort\n");
 		return (-1);
 	}
@@ -81,8 +87,6 @@ void				timer(t_env *e, t_bot *bot)
 	t_ulong					unit;
 	char					buf[BUF_SIZE];
 
-	if (bot->life_unit <= 0)
-		return ;
 	gettimeofday(&cur, NULL);
 	diff = (t_ulong)(cur.tv_sec - bot->time.tv_sec) * 1000000UL;
 	diff += (t_ulong)(cur.tv_usec - bot->time.tv_usec);
@@ -90,7 +94,8 @@ void				timer(t_env *e, t_bot *bot)
 	bot->timer += diff;
 	unit = ((bot->timer * e->opt.t) / 1000000UL);
 	bot->timer = bot->timer - (unit * 1000000UL / e->opt.t);
-	check_life(e, bot, unit);
+	if (bot->life_unit > 0)
+		check_life(e, bot, unit);
 	if (bot->action_timer > 0 && (bot->action_timer -= unit) <= 0)
 	{
 		if (bot->status == STATUS_FORK || bot->status == STATUS_EGG)

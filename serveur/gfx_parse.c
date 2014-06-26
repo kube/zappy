@@ -6,7 +6,7 @@
 /*   By: vdefilip <vdefilip@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/06/24 15:29:25 by vdefilip          #+#    #+#             */
-/*   Updated: 2014/06/24 15:33:08 by vdefilip         ###   ########.fr       */
+/*   Updated: 2014/06/26 11:47:21 by vdefilip         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,12 +75,12 @@ void			gfx_parse_request(t_env *e, int fd, char *str)
 	char		**req;
 	int			i;
 
+	i = 0;
 	req = (char **)try_void(ft_strsplit(str, ' '), NULL, "malloc");
 	if (!req[0])
 		printf("Client #%d (GFX): Invalid request (too few arguments)\n", fd);
 	else
 	{
-		i = 0;
 		while (i < 9)
 		{
 			if (ft_strequ(req[0], g_gfx_parse[i].cmd))
