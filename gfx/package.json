@@ -2,15 +2,13 @@
 	"name": "Zappy",
 	"main": "index.html",
 	"scripts": {
-		"install": "zip -r app.nw . && cp -r ./node_modules/nodewebkit/nodewebkit ./ZappyVisualizer.app && cp app.nw ./ZappyVisualizer.app/Contents/Ressources",
-		"clean": "rm -f trantorien.js client.js",
+		"install": "zip -r app.nw . -i ./js ./lib ./node_modules/tween.js ./index.html ./style.css && cp -r ./node_modules/nodewebkit/nodewebkit ./ZappyVisualizer.app && cp app.nw ./ZappyVisualizer.app/Contents/Ressources",
+		"clean": "rm -rf ZappyVisualizer.app app.nw ./node_modules",
 		"start": "./node_modules/nodewebkit/bin/nodewebkit"
 	},
 	"dependencies": {
 		"nodewebkit": "*",
-		"tween.js": "*",
-		"jquery": "*",
-		"three": "*"
+		"tween.js": "*"
 	},
 	"window":{
 		"frame": true,
