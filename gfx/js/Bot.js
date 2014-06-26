@@ -84,7 +84,7 @@ var Bot = function(game, number, x, y, orientation, level, teamName) {
 		})
 		.to({
 			z: 0
-		}, 2000 / game.time)
+		}, 5000 / game.time)
 		.easing(TWEEN.Easing.Cubic.InOut)
 		.onUpdate(function() {
 			self.mesh.position.y = this.z;
@@ -100,7 +100,7 @@ var Bot = function(game, number, x, y, orientation, level, teamName) {
 		})
 		.to({
 			z: 0.76
-		}, 2000 / game.time)
+		}, 5000 / game.time)
 		.easing(TWEEN.Easing.Cubic.InOut)
 		.onUpdate(function() {
 			self.mesh.position.y = this.z;

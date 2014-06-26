@@ -28,6 +28,8 @@ var ResponseParser = function(client, game) {
 			return parseInt(this[i]);
 		}
 
+		console.log(a[0]);
+
 		switch (a[0]) {
 
 			/*
@@ -142,7 +144,7 @@ var ResponseParser = function(client, game) {
 				console.log('Starts Incantation')
 				var players = game.map.blocks[a.i(1)][a.i(2)].getBots();
 				for (var i in players)
-					player[i].finishElevation();
+					players[i].startElevation();
 				break;
 
 			/*
@@ -153,7 +155,7 @@ var ResponseParser = function(client, game) {
 				console.log('Ends Incantation')
 				var players = game.map.blocks[a.i(1)][a.i(2)].getBots();
 				for (var i in players)
-					player[i].finishElevation();
+					players[i].finishElevation();
 				break;
 
 			/*

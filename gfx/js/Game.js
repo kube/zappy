@@ -291,7 +291,7 @@ var Game = function(options) {
 			self.materials.ressources[i].opacity = 0.65 + Math.sin(d.getTime() * 0.005) * 0.25;
 
 		// RandomRainbow Material color update
-		self.materials.randomRainbow.color = Math.random();
+		self.materials.randomRainbow.color.setHex(Math.floor(Math.random() * 16777215));
 
 		renderer.render(scene, camera);
 	};
