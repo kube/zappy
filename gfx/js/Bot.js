@@ -108,7 +108,6 @@ var Bot = function(game, number, x, y, orientation, level, teamName) {
 	}
 
 	this.elevate = function(level) {
-		console.log('Elevate ' +self.name + ' to ' + level)
 		self.level = level;
 	}
 
@@ -158,7 +157,6 @@ var Bot = function(game, number, x, y, orientation, level, teamName) {
 	}
 
 	this.displayInventory = function() {
-		console.log(self.inventory);
 		for (var i in self.inventory)
 			$('#infoBar .t' + i).text(self.inventory[i]);
 	}

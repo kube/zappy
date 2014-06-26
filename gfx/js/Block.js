@@ -24,6 +24,7 @@ var Block = function(map, x, y) {
 	this.mesh.matrixAutoUpdate = false;
 
 	this.mesh.onClick = function(e, pick) {
+		console.log(self.getBots());
 	}
 	this.mesh.onMouseOver = function(e, pick) {
 		self.mesh.material = game.materials.blockSelected;

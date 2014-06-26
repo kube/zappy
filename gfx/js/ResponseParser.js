@@ -28,8 +28,6 @@ var ResponseParser = function(client, game) {
 			return parseInt(this[i]);
 		}
 
-		console.log(a[0]);
-
 		switch (a[0]) {
 
 			/*
@@ -99,7 +97,6 @@ var ResponseParser = function(client, game) {
 			**	plv #n L
 			*/
 			case 'plv':
-				console.log('Player level');
 				var player = parseInt(a[1].replace('#', ''));
 				game.bots[player].elevate(a[2]);
 				break;
@@ -121,11 +118,14 @@ var ResponseParser = function(client, game) {
 			case 'pex':
 				var playerNumber = parseInt(a[1].replace('#', '')),
 					player = game.bots[playerNumber],
-					bots = game.blocks[player.x][player.y].getBots();
+					bots = game.map.blocks[player.x][player.y].getBots();
 
-				for (var i in bots)
+				console.log(bots);
+				for (var i in bots) {
+					console.log(i)
 					if (bots[i] != player)
 						bots[i].jump(0.3, 1);
+				}
 				break;
 
 			/*
@@ -141,7 +141,6 @@ var ResponseParser = function(client, game) {
 			**	pic X Y L #n #n ...
 			*/
 			case 'pic':
-				console.log('Starts Incantation')
 				var players = game.map.blocks[a.i(1)][a.i(2)].getBots();
 				for (var i in players)
 					players[i].startElevation();
@@ -152,7 +151,6 @@ var ResponseParser = function(client, game) {
 			**	pie X Y R
 			*/
 			case 'pie':
-				console.log('Ends Incantation')
 				var players = game.map.blocks[a.i(1)][a.i(2)].getBots();
 				for (var i in players)
 					players[i].finishElevation();

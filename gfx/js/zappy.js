@@ -42,12 +42,14 @@ win.height = 900;
 function displayConnectionForm() {
 	$("#loginForm").show();
 	$("#renderCanvas").hide();
+	$("#dragger .back").hide();
 	$("#infoBar").hide();
 }
 
 function displayGame() {
 	$("#loginForm").hide();
 	$("#renderCanvas").show();
+	$("#dragger .back").show();
 	$("#infoBar").show();
 }
 
