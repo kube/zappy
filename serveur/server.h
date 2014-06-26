@@ -6,7 +6,7 @@
 /*   By: vdefilip <vdefilip@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/06/25 13:04:04 by vdefilip          #+#    #+#             */
-/*   Updated: 2014/06/26 16:37:49 by vdefilip         ###   ########.fr       */
+/*   Updated: 2014/06/26 17:55:49 by vdefilip         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,6 +98,7 @@
 # define WEST  4
 
 # define FOOD_UNIT 126
+# define FOOD_START 10
 
 # define STEP_TIME        7
 # define TURN_RIGHT_TIME  7

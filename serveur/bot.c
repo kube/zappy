@@ -6,7 +6,7 @@
 /*   By: vdefilip <vdefilip@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/06/03 12:23:13 by vdefilip          #+#    #+#             */
-/*   Updated: 2014/06/25 11:59:00 by vdefilip         ###   ########.fr       */
+/*   Updated: 2014/06/26 17:38:03 by vdefilip         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ t_bot			*bot_new(t_team *team)
 	new->sq = -1;
 	new->dir = dir_rand();
 	new->status = STATUS_NONE;
-	new->life_unit = 10 * FOOD_UNIT;
+	new->life_unit = FOOD_START * FOOD_UNIT;
 	new->inventory = ft_lst_new(NULL);
 	new->level = 1;
 	new->incant.parent = NULL;

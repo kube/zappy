@@ -6,7 +6,7 @@
 /*   By: vdefilip <vdefilip@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/06/24 12:19:39 by vdefilip          #+#    #+#             */
-/*   Updated: 2014/06/25 12:25:01 by vdefilip         ###   ########.fr       */
+/*   Updated: 2014/06/26 18:12:19 by vdefilip         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ void			expulse(t_env *e, t_bot *bot)
 		{
 			ret = 1;
 			move(e, b, get_step_sq(e, bot));
-			notify_all_gfx_ppo(e, bot);
+			notify_all_gfx_ppo(e, b);
 			sprintf(buf, "deplacement %d\n", (bot->dir + 2) % 4);
 			buf_load(e->fds[b->fd].buf_write, buf);
 		}
