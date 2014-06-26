@@ -159,7 +159,7 @@ world_size = (msg) ->
   return true
 
 handle_response = (msg) ->
-  if not last_cmd? then return
+  # if not last_cmd? then return
   console.log "(#{process.pid}) #{last_cmd}: #{msg}"
   if msg.search("elevation en cours") isnt -1
     tr.reset_state()
