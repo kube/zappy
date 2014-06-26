@@ -6,7 +6,7 @@
 /*   By: vdefilip <vdefilip@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/06/04 13:05:23 by vdefilip          #+#    #+#             */
-/*   Updated: 2014/06/24 18:48:15 by vdefilip         ###   ########.fr       */
+/*   Updated: 2014/06/26 14:33:50 by vdefilip         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ static void			board_fill(t_env *e)
 	int		tmp;
 
 	max_bot = e->opt.limit * e->opt.team_name->len;
-	nb_food = max_bot * 2;
+	nb_food = max_bot * 10;
 	i = 0;
 	while (i < nb_food)
 	{

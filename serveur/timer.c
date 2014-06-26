@@ -6,7 +6,7 @@
 /*   By: vdefilip <vdefilip@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/06/13 11:02:20 by vdefilip          #+#    #+#             */
-/*   Updated: 2014/06/26 11:47:25 by vdefilip         ###   ########.fr       */
+/*   Updated: 2014/06/26 16:31:08 by vdefilip         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,16 +67,20 @@ static void			handle_status_incantation(t_env *e, t_bot *bot)
 	int				i;
 
 	bot->status = STATUS_NONE;
-	bot->level++;
 	if (bot->incant.parent != NULL)
 		bot->incant.parent = NULL;
 	else
 	{
-		notify_all_gfx_incant(e, bot, 1);
+		notify_all_gfx_pie(e, bot, 1);
 		move_rocks_after_incant(e, bot);
 		i = 0;
 		while (i < 7)
 			ft_lst_del(bot->incant.req[i++], NULL);
+	}
+	if (bot->life_unit > 0)
+	{
+		bot->level++;
+		notify_all_gfx_plv(e, bot);
 	}
 }
 
@@ -104,6 +108,8 @@ void				timer(t_env *e, t_bot *bot)
 			handle_status_incantation(e, bot);
 		bot->action_timer = -1;
 		while (buf_unload(bot->buf_action, buf) != -1)
+		{
 			buf_load(e->fds[bot->fd].buf_write, buf);
+		}
 	}
 }

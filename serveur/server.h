@@ -6,7 +6,7 @@
 /*   By: vdefilip <vdefilip@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/06/25 13:04:04 by vdefilip          #+#    #+#             */
-/*   Updated: 2014/06/25 20:04:35 by vdefilip         ###   ########.fr       */
+/*   Updated: 2014/06/26 16:37:49 by vdefilip         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@
 # include "libft.h"
 
 # define CONNEXION_QUEUE  42
-# define CONNEXION_LIMIT  200
+# define CONNEXION_LIMIT  400
 
 # define FD_FREE          0
 # define FD_SRV           1
@@ -338,7 +338,8 @@ void			notify_all_gfx_edi(t_env *e, t_bot *bot);
 void			notify_all_gfx_ebo(t_env *e, t_bot *bot);
 void			notify_all_gfx_bct(t_env *e, int sq);
 void			notify_all_gfx_pic(t_env *e, t_bot *bot);
-void			notify_all_gfx_incant(t_env *e, t_bot *bot, int res);
+void			notify_all_gfx_plv(t_env *e, t_bot *bot);
+void			notify_all_gfx_pie(t_env *e, t_bot *bot, int res);
 void			notify_all_gfx_seg(t_env *e, t_team *team);
 void			notify_all_gfx_sgt(t_env *e);
 
