@@ -29,8 +29,8 @@ var Bot = function(game, number, x, y, orientation, level, teamName) {
 
 		// Set placement in block from players quantity in block
 		var index = block.getBots().indexOf(self) % 9,
-			xa = parseInt(index) % 3,
-			ya = parseInt(index / 3);
+			xa = (index + 4) % 3,
+			ya = parseInt((index + 4) / 3);
 
 		// Check Mesh Rotation before animating it
 		if (o == 4 && self.orientation == 1)
@@ -47,20 +47,20 @@ var Bot = function(game, number, x, y, orientation, level, teamName) {
 				a: self.mesh.rotation.y,
 			})
 			.to({
-				x: block.position.x - 1 / 3 + xa * 1 / 3,
-				y: block.position.y - 1 / 3 + ya * 1 / 3,
+				x: block.position.x - 1 / 4 + xa * 1 / 4,
+				y: block.position.y - 1 / 4 + ya * 1 / 4,
 				a: newRotation
 			}, 7000 / game.time)
 			.easing(TWEEN.Easing.Cubic.InOut)
 			.onUpdate(function() {
 
-				self.mesh.position.set(this.x, 0, this.y);
+				self.mesh.position.set(this.x, 0.01, this.y);
 				self.mesh.rotation.set(0, this.a, 0);
 
 				// Update Self Position
 				self.position = {
-					x: block.position.x - 1 / 3 + xa * 1 / 3,
-					y: block.position.y - 1 / 3 + ya * 1 / 3
+					x: block.position.x - 1 / 4 + xa * 1 / 4,
+					y: block.position.y - 1 / 4 + ya * 1 / 4
 				}
 			})
 			.start();
@@ -108,6 +108,15 @@ var Bot = function(game, number, x, y, orientation, level, teamName) {
 
 		self.setPosition(self.x, self.y, self.orientation);
 
+		self.mesh.onMouseOver = function(e) {
+			self.highlight();
+			$('#infoBar .view').text('Bot #' + self.name + ' (dead)');
+		}
+		self.mesh.onMouseOut = function(e) {
+			self.unlight();
+			$('#infoBar a').text('');
+			$('#infoBar .view').text('');
+		}
 		game.scene.add(self.mesh);
 	}
 
@@ -121,10 +130,10 @@ var Bot = function(game, number, x, y, orientation, level, teamName) {
 
 		// Animation Up
 		var tweenUp = new TWEEN.Tween({
-			z: 0.025
+			z: 0
 		})
 		.to({
-			z: 0
+			z: 0.76
 		}, time * 7000 / game.time)
 		.easing(TWEEN.Easing.Bounce.InOut)
 		.onUpdate(function() {
@@ -164,18 +173,15 @@ var Bot = function(game, number, x, y, orientation, level, teamName) {
 		// Set Mesh position
 		self.setPosition(self.x, self.y, self.orientation);
 
-		self.mesh.onClick = function(e, pick) {
-			// var pickedMesh = pick.pickedMesh;
-			console.log(self);
-		}
-		self.mesh.onMouseOver = function(e, pick) {
-			console.log();
+		self.mesh.onMouseOver = function(e) {
 			self.highlight();
+			$('#infoBar .view').text('Bot #' + self.name + ' (level ' + self.level + ')');
 			self.displayInventory();
 		}
-		self.mesh.onMouseOut = function(e, pick) {
+		self.mesh.onMouseOut = function(e) {
 			self.unlight();
 			$('#infoBar a').text('');
+			$('#infoBar .view').text('');
 		}
 		game.scene.add(self.mesh);
 	}
@@ -192,7 +198,14 @@ var Bot = function(game, number, x, y, orientation, level, teamName) {
 		// Set Mesh position
 		self.setPosition(self.x, self.y, self.orientation);
 
-		self.mesh.onClick = function(e, pick) {
+		self.mesh.onMouseOver = function(e) {
+			self.highlight();
+			$('#infoBar .view').text('Egg #' + self.name);
+		}
+		self.mesh.onMouseOut = function(e) {
+			self.unlight();
+			$('#infoBar a').text('');
+			$('#infoBar .view').text('');
 		}
 		game.scene.add(self.mesh);
 	}

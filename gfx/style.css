@@ -234,34 +234,45 @@ button[type="submit"]:hover {
 	opacity: 1.0;
 }
 
-#infoBar ul li.checked{
+#infoBar ul li.checked {
 	opacity: 0.5;
 }
 
-#infoBar ul li a.t0{
+#infoBar ul li a.t0 {
 	background: #dacd60;
 }
 
-#infoBar ul li a.t1{
+#infoBar ul li a.t1 {
 	background: #da428c;
 }
 
-#infoBar ul li a.t2{
+#infoBar ul li a.t2 {
 	background: #8046db;
 }
 
-#infoBar ul li a.t3{
+#infoBar ul li a.t3 {
 	background: #40abdb;
 }
 
-#infoBar ul li a.t4{
+#infoBar ul li a.t4 {
 	background: #47dc37;
 }
 
-#infoBar ul li a.t5{
+#infoBar ul li a.t5 {
 	background: #dc6a28;
 }
 
-#infoBar ul li a.t6{
+#infoBar ul li a.t6 {
 	background: #b1dc41;
+}
+
+#infoBar .view {
+	color: #666;
+	font-family: "Helvetica";
+	font-size: 22px;
+	position: absolute;
+	right: 29px;
+	text-align: right;
+	width: 200px;
+	bottom: 7px;
 }

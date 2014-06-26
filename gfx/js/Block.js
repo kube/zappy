@@ -27,12 +27,14 @@ var Block = function(map, x, y) {
 	}
 	this.mesh.onMouseOver = function(e, pick) {
 		self.mesh.material = game.materials.blockSelected;
+		$('#infoBar .view').text('x: ' + self.x + ', y: ' + self.y);
 		for (var i in self.ressources)
 			$('#infoBar .t' + i).text(self.ressources[i].quantity);
 	}
 	this.mesh.onMouseOut = function(e, pick) {
 		self.mesh.material = game.materials.block;
 		$('#infoBar a').text('');
+		$('#infoBar .view').text('');
 	}
 	game.scene.add(this.mesh);
 
