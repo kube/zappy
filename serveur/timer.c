@@ -6,7 +6,7 @@
 /*   By: vdefilip <vdefilip@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/06/13 11:02:20 by vdefilip          #+#    #+#             */
-/*   Updated: 2014/06/25 13:18:53 by vdefilip         ###   ########.fr       */
+/*   Updated: 2014/06/26 11:05:32 by vdefilip         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,7 @@ void				timer(t_env *e, t_bot *bot)
 		else if (bot->status == STATUS_INCANTATION)
 			handle_status_incantation(e, bot);
 		bot->action_timer = -1;
-		if (buf_unload(bot->buf_action, buf) != -1)
+		while (buf_unload(bot->buf_action, buf) != -1)
 			buf_load(e->fds[bot->fd].buf_write, buf);
 	}
 }
