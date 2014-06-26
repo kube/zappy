@@ -18,6 +18,9 @@ var Bot = function(game, number, x, y, orientation, level, teamName) {
 	// Add Bot to Team
 	game.getTeamByName(teamName).addBot(self);
 
+	// Set default material
+	this.material = this.team.material;
+
 	this.setPosition = function(x, y, o) {
 		self.x = x;
 		self.y = y;
@@ -72,8 +75,41 @@ var Bot = function(game, number, x, y, orientation, level, teamName) {
 		self.inventory = inventory;
 	}
 
-	this.elevate = function() {
+	this.finishElevation = function() {
+		self.mesh.material = self.team.material;
 
+		// Animation Down
+		var tweenDown = new TWEEN.Tween({
+			z: 0.76
+		})
+		.to({
+			z: 0
+		}, 2000 / game.time)
+		.easing(TWEEN.Easing.Cubic.InOut)
+		.onUpdate(function() {
+			self.mesh.position.y = this.z;
+		}).start();
+	}
+
+	this.startElevation = function() {
+		self.mesh.material = game.materials.randomRainbow;
+
+		// Animation Up
+		var tweenUp = new TWEEN.Tween({
+			z: 0
+		})
+		.to({
+			z: 0.76
+		}, 2000 / game.time)
+		.easing(TWEEN.Easing.Cubic.InOut)
+		.onUpdate(function() {
+			self.mesh.position.y = this.z;
+		}).start();
+	}
+
+	this.elevate = function(level) {
+		console.log('Elevate ' +self.name + ' to ' + level)
+		self.level = level;
 	}
 
 	// Passes from Egg to Bot
@@ -92,15 +128,16 @@ var Bot = function(game, number, x, y, orientation, level, teamName) {
 	}
 
 	this.unlight = function() {
-		self.mesh.material = self.team.material;
+		self.mesh.material = self.material;
 	}
 
 	this.die = function() {
 
 		// Remove current Mesh from scene and create new one
 		game.scene.remove(self.mesh);
+		self.material = self.team.material;
 		self.mesh = new THREE.Mesh(game.RIPGeometry,
-			self.team.material);
+			self.material);
 
 		self.mesh.scale.x = 0.05;
 		self.mesh.scale.y = 0.05;
@@ -164,7 +201,7 @@ var Bot = function(game, number, x, y, orientation, level, teamName) {
 
 	function createBotMesh() {
 		self.mesh = new THREE.Mesh(game.stickmanGeometry,
-			self.team.material);
+			self.material);
 
 		self.mesh.scale.x = 0.05;
 		self.mesh.scale.y = 0.05;
@@ -189,7 +226,7 @@ var Bot = function(game, number, x, y, orientation, level, teamName) {
 
 	function createEggMesh() {
 		self.mesh = new THREE.Mesh(new THREE.SphereGeometry(1, 20, 20),
-			self.team.material);
+			self.material);
 
 		self.mesh.scale.x = 0.04;
 		self.mesh.scale.y = 0.04;

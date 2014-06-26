@@ -44,6 +44,10 @@ var Game = function(options) {
 			color: 0x2e2e3f
 		}),
 
+		randomRainbow: new THREE.MeshBasicMaterial({
+			color: 0xe91a70
+		}),
+
 		ressources: [
 			new THREE.MeshBasicMaterial({
 				color: 0xdacd60,
@@ -285,6 +289,9 @@ var Game = function(options) {
 		// Ressources opacity animation
 		for (var i in self.materials.ressources)
 			self.materials.ressources[i].opacity = 0.65 + Math.sin(d.getTime() * 0.005) * 0.25;
+
+		// RandomRainbow Material color update
+		self.materials.randomRainbow.color = Math.random();
 
 		renderer.render(scene, camera);
 	};

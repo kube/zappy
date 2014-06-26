@@ -97,8 +97,9 @@ var ResponseParser = function(client, game) {
 			**	plv #n L
 			*/
 			case 'plv':
+				console.log(a);
 				var player = parseInt(a[1].replace('#', ''));
-				game.bots[player].elevateBot(a[2]);
+				game.bots[player].elevate(a[2]);
 				break;
 
 			/*
@@ -106,7 +107,6 @@ var ResponseParser = function(client, game) {
 			**	pin #n X Y q q q q q q q
 			*/
 			case 'pin':
-				console.log(a);
 				var playerNumber = parseInt(a[1].replace('#', '')),
 					player = game.bots[playerNumber];
 				player.setInventory([a.i(4), a.i(5), a.i(6), a.i(7), a.i(8), a.i(9), a.i(10)]);
@@ -139,7 +139,10 @@ var ResponseParser = function(client, game) {
 			**	pic X Y L #n #n ...
 			*/
 			case 'pic':
-
+				console.log('Starts Incantation')
+				var players = game.map.blocks[a.i(1)][a.i(2)].getBots();
+				for (var i in players)
+					player[i].finishElevation();
 				break;
 
 			/*
@@ -147,7 +150,10 @@ var ResponseParser = function(client, game) {
 			**	pie X Y R
 			*/
 			case 'pie':
-
+				console.log('Ends Incantation')
+				var players = game.map.blocks[a.i(1)][a.i(2)].getBots();
+				for (var i in players)
+					player[i].finishElevation();
 				break;
 
 			/*
@@ -162,7 +168,6 @@ var ResponseParser = function(client, game) {
 			**	pdr #n i
 			*/
 			case 'pdr':
-				console.log(a[0]);
 				// Ask server current player's inventory
 				client.write('pin ' + a[1] + '\n');
 				break;
@@ -172,7 +177,6 @@ var ResponseParser = function(client, game) {
 			**	pgt #n i
 			*/
 			case 'pgt':
-				console.log(a[0]);
 				// Ask server current player's inventory
 				client.write('pin ' + a[1] + '\n');
 				break;
