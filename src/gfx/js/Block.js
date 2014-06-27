@@ -40,14 +40,16 @@ var Block = function(map, x, y) {
 	game.scene.add(this.mesh);
 
 	this.addBot = function(bot) {
-		_bots.push(bot);
+		if (_bots.indexOf(bot) == -1) {
+			_bots.push(bot);
+		}
 		bot.block = self;
 	}
 
 	this.removeBot = function(bot) {
 		var index = _bots.indexOf(bot);
 		if (index > -1) {
-			_bots.slice(index, 1);
+			_bots.splice(index, 1);
 			bot.block = null;
 		}
 	}

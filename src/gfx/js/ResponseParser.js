@@ -87,9 +87,12 @@ var ResponseParser = function(client, game) {
 			**	ppo #n X Y O
 			*/
 			case 'ppo':
-				var player = parseInt(a[1].replace('#', ''));
-				if (game.bots[player])
-					game.bots[player].setPosition(a.i(2), a.i(3), a.i(4));
+				var playerNumber = parseInt(a[1].replace('#', '')),
+					player = game.bots[playerNumber];
+				if (player) {	
+					game.map.blocks[player.x][player.y].removeBot(player);
+					player.setPosition(a.i(2), a.i(3), a.i(4));
+				}
 				break;
 
 			/*
@@ -120,7 +123,6 @@ var ResponseParser = function(client, game) {
 					player = game.bots[playerNumber],
 					bots = game.map.blocks[player.x][player.y].getBots();
 
-				console.log(bots);
 				for (var i in bots) {
 					console.log(i)
 					if (bots[i] != player)

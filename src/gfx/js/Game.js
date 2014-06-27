@@ -240,8 +240,8 @@ var Game = function(options) {
 
 			// Space
 			case 32:
-				// currentDisplayedRessource = (currentDisplayedRessource + 2) % 8 - 1;
-				// self.map.displayRessource(currentDisplayedRessource);
+				// Slow motion server time
+				server.write('sst 4\n');
 				break;
 		}
 	});
